@@ -1,54 +1,14 @@
-//Tipos de variables
-export enum Tipo{
-    NUMBER = "number",
-    STRING = "string",
-    BOOLEAN = "boolean",
-    NULL = "null",
-    ARRAY = "array",
-    TYPE = "type"
-}
+import { Simbolo } from "../Entorno/Simbolo";
 
-
-//Variables de retorno
-export type Retorno ={
-    valor : any,
-    tipo : Tipo
-}
-
-//Tipos de operaciones Aritmeticas
-export enum TipoAritmetico{
-    MAS,
-    MENOS,
-    MULT,
-    DIV,
-    POT,
-    MOD,
-    INC,
-    DEC,
-    UMENOS,
-    UMAS
-}
-
-//Tipos de operaciones logicas
-export enum TipoRelacional{
-    MAYORQUE,
-    MENORQUE,
-    MAYORIGUAL,
-    MENORIGUAL,
-    IGUAL,
-    DIFERENCIA
-}
-
-//Tipos de operaciones logicas
-export enum TipoLogica{
-    AND,
-    OR,
-    NOT 
-}
-
-//Tipo de dato
-export enum TipoDato{
-    LET ="let",
-    CONST = "const",
-    NADA =""
+export class Retorno{
+    
+    Ltrue: string;
+    Lfalse: string;
+    simbol : Simbolo | null;
+    constructor(simbol: Simbolo | null = null){
+        this.Ltrue = "";
+        this.Lfalse = "";
+        this.simbol = simbol;
+    }
+    
 }

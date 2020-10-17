@@ -154,17 +154,117 @@ Expresion:
     '(' Expresion ')'       {$$=$2;}
     | OpeTernario           {$$=$1;}
     | E_aritmetica          {$$=$1;}
+    | E_relacional          {$$=$1;}
+    | E_logica              {$$=$1;}
+    | Factor                {$$=$1;}
+    | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la expresion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 
 OpeTernario:
     Expresion '?' Expresion ':' Expresion 
     {
-
     }
 ;
 
 E_aritmetica:
     Expresion '+' Expresion
+    {
+
+    }
+    | Expresion '-' Expresion
+    {
+
+    }
+    | Expresion '*' Expresion
+    {
+
+    }
+    | Expresion '/' Expresion
+    {
+
+    }
+    | Expresion '**' Expresion
+    {
+
+    }
+    | Expresion '%' Expresion
+    {
+
+    }
+    | '-' Expresion %prec UMENOS
+    {
+
+    }
+    | '+' Expresion %prec UMAS
+    {
+
+    }
+;
+
+E_relacional:
+    Expresion '>' Expresion
+    {
+
+    }
+    | Expresion '<' Expresion
+    {
+
+    }
+    | Expresion '>=' Expresion
+    {
+
+    }
+    | Expresion '<=' Expresion
+    {
+
+    }
+    | Expresion '==' Expresion
+    {
+
+    }
+    | Expresion '!=' Expresion
+    {
+
+    }
+;
+
+E_logica:
+    Expresion '&&' Expresion
+    {
+
+    }
+    | Expresion '||' Expresion
+    {
+
+    }
+    | '!' Expresion
+    {
+
+    }
+;
+
+Factor:
+    tk_entero
+    { 
+
+    }
+    | tk_decimal
+    { 
+
+    }
+    | tk_cadena
+    {
+
+    }
+    | tk_bool
+    { 
+
+    }
+    | tk_null
+    {
+
+    }
+    | tk_id
     {
 
     }

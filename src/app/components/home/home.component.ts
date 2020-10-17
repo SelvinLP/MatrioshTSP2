@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit {
   };
 
   Ev_Traducir(){
-    this.Salida=this.Entrada
     this.Consola="";
 
   }

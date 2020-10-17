@@ -75,9 +75,9 @@ var Gramatica = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,6],$V2=[1,7],$V3=[2,5,8,11];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"START":3,"LInstrucciones":4,"EOF":5,"Instruccion":6,"Declaracion":7,"tk_let":8,"tk_id":9,";":10,"tk_const":11,"Expresion":12,"(":13,")":14,"OpeTernario":15,"E_aritmetica":16,"?":17,":":18,"+":19,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",8:"tk_let",9:"tk_id",10:";",11:"tk_const",13:"(",14:")",17:"?",18:":",19:"+"},
-productions_: [0,[3,2],[4,2],[4,1],[6,1],[6,1],[7,3],[7,3],[12,3],[12,1],[12,1],[15,5],[16,3]],
+symbols_: {"error":2,"START":3,"LInstrucciones":4,"EOF":5,"Instruccion":6,"Declaracion":7,"tk_let":8,"tk_id":9,";":10,"tk_const":11,"Expresion":12,"(":13,")":14,"OpeTernario":15,"E_aritmetica":16,"E_relacional":17,"E_logica":18,"Factor":19,"?":20,":":21,"+":22,"-":23,"*":24,"/":25,"**":26,"%":27,">":28,"<":29,">=":30,"<=":31,"==":32,"!=":33,"&&":34,"||":35,"!":36,"tk_entero":37,"tk_decimal":38,"tk_cadena":39,"tk_bool":40,"tk_null":41,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",8:"tk_let",9:"tk_id",10:";",11:"tk_const",13:"(",14:")",20:"?",21:":",22:"+",23:"-",24:"*",25:"/",26:"**",27:"%",28:">",29:"<",30:">=",31:"<=",32:"==",33:"!=",34:"&&",35:"||",36:"!",37:"tk_entero",38:"tk_decimal",39:"tk_cadena",40:"tk_bool",41:"tk_null"},
+productions_: [0,[3,2],[4,2],[4,1],[6,1],[6,1],[7,3],[7,3],[12,3],[12,1],[12,1],[12,1],[12,1],[12,1],[12,1],[15,5],[16,3],[16,3],[16,3],[16,3],[16,3],[16,3],[16,2],[16,2],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[18,3],[18,3],[18,2],[19,1],[19,1],[19,1],[19,1],[19,1],[19,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -92,19 +92,31 @@ break;
 case 3:
 this.$ = [$$[$0]];
 break;
-case 4: case 9: case 10:
+case 4: case 9: case 10: case 11: case 12: case 13:
 this.$=$$[$0];
 break;
 case 5:
 CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la Instruccion "+yytext,"",this._$.first_line,this._$.first_column));
 break;
-case 6: case 7: case 11: case 12:
+case 6: case 7: case 16: case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 24: case 25: case 26: case 27: case 28: case 29: case 30: case 31: case 32: case 35: case 37: case 38:
 
 
     
 break;
 case 8:
 this.$=$$[$0-1];
+break;
+case 14:
+CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la expresion "+yytext,"",this._$.first_line,this._$.first_column));
+break;
+case 15:
+
+    
+break;
+case 33: case 34: case 36:
+ 
+
+    
 break;
 }
 },
@@ -707,7 +719,7 @@ case 7:return 'tk_boolean'
 break;
 case 8:return 'tk_void'
 break;
-case 9:return 'tk_null'
+case 9:return 41
 break;
 case 10:return 'tk_if'
 break;
@@ -751,23 +763,23 @@ case 29:return 'tk_in'
 break;
 case 30:return 'tk_of'
 break;
-case 31:return '=='
+case 31:return 32
 break;
-case 32:return '!='
+case 32:return 33
 break;
-case 33:return '>='
+case 33:return 30
 break;
-case 34:return '>'
+case 34:return 28
 break;
-case 35:return '<='
+case 35:return 31
 break;
-case 36:return '<' 
+case 36:return 29 
 break;
-case 37:return '&&'
+case 37:return 34
 break;
-case 38:return '||'
+case 38:return 35
 break;
-case 39:return '!'
+case 39:return 36
 break;
 case 40:return '++'
 break;
@@ -787,7 +799,7 @@ case 47:return 14
 break;
 case 48:return ','
 break;
-case 49:return 18
+case 49:return 21
 break;
 case 50:return '.'
 break;
@@ -795,29 +807,29 @@ case 51:return '['
 break;
 case 52:return ']'
 break;
-case 53:return 17
+case 53:return 20
 break;
-case 54:return 'tk_bool'
+case 54:return 40
 break;
-case 55:return 'tk_decimal'
+case 55:return 38
 break;
-case 56:return 'tk_entero'
+case 56:return 37
 break;
-case 57:return 'tk_cadena'
+case 57:return 39
 break;
 case 58:return 9;
 break;
-case 59:return '**'
+case 59:return 26
 break;
-case 60:return 19
+case 60:return 22
 break;
-case 61:return '-'
+case 61:return 23
 break;
-case 62:return '*'
+case 62:return 24
 break;
-case 63:return '/'
+case 63:return 25
 break;
-case 64:return '%'
+case 64:return 27
 break;
 case 65: /*se ignoran*/ 
 break;

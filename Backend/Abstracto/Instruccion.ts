@@ -2,13 +2,8 @@ import { Entorno } from "../Entorno/Entorno";
 import { N_Ast } from "../Ast/Ast";
 
 export abstract class Instruccion {
-
-    public linea: number;
-    public columna: number;
-
-    constructor(line: number, column: number) {
-        this.linea = line;
-        this.columna = column;
+    
+    constructor(public linea: number, public columna: number) {
     }
 
     public abstract ejecutar(entorno:Entorno) : any;
