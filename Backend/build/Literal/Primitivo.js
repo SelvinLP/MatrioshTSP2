@@ -15,8 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LPrimitivo = void 0;
 var Expresion_1 = require("../Abstracto/Expresion");
-var Tipos_1 = require("../Otros/Tipos");
+var Retorno_1 = require("../Abstracto/Retorno");
 var N_Error_1 = require("../Errores/N_Error");
+var Tipos_1 = require("../Otros/Tipos");
+var Generador_1 = require("../Generador/Generador");
 var LPrimitivo = /** @class */ (function (_super) {
     __extends(LPrimitivo, _super);
     function LPrimitivo(valor, tipo, linea, columna) {
@@ -25,17 +27,32 @@ var LPrimitivo = /** @class */ (function (_super) {
         _this.tipo = tipo;
         return _this;
     }
-    LPrimitivo.prototype.ejecutar = function () {
-        if (this.tipo == Tipos_1.Tipo.NUMBER) {
+    LPrimitivo.prototype.ejecutar = function (entorno) {
+        if (this.tipo == Tipos_1.Tipos.BOOLEAN) {
+            var generator = Generador_1.Generador.getInstancia();
+            //Comprobacion de banderas
+            if (this.Ltrue == "") {
+                this.Ltrue = generator.newEtiq();
+            }
+            if (this.Lfalse == "") {
+                this.Lfalse = generator.newEtiq();
+            }
+            if (this.valor) {
+                generator.addGoto(this.Ltrue);
+            }
+            else {
+                generator.addGoto(this.Lfalse);
+            }
+            var retorn = new Retorno_1.Retorno('', new Tipos_1.Tipo(this.tipo), false);
+            retorn.Ltrue = this.Ltrue;
+            retorn.Lfalse = this.Lfalse;
+            return retorn;
         }
-        else if (this.tipo == Tipos_1.Tipo.STRING) {
-        }
-        else if (this.tipo == Tipos_1.Tipo.BOOLEAN) {
-        }
-        else if (this.tipo == Tipos_1.Tipo.NULL) {
+        else if (this.tipo == Tipos_1.Tipos.NULL) {
+            return new Retorno_1.Retorno('', new Tipos_1.Tipo(this.tipo), false);
         }
         else {
-            throw new N_Error_1.N_Error('Semantico', 'El tipo no existe', '', this.linea, this.columna);
+            throw new N_Error_1.N_Error('Semantico', 'El tipo de dato no existe', '', this.linea, this.columna);
         }
     };
     LPrimitivo.prototype.ejecutarast = function (ast) {

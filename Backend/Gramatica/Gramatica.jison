@@ -2,6 +2,9 @@
 %{
     const CL_Error = require('../build/Errores/L_Error');
     const CN_Error = require('../build/Errores/N_Error');
+    const { LPrimitivo } = require('../build/Literal/Primitivo');
+    const { Tipos } = require('../build/Otros/Tipos');
+    const { Mast } = require('../build/Expresiones/Aritmeticas/Mas');
 
 %}
 
@@ -169,7 +172,7 @@ OpeTernario:
 E_aritmetica:
     Expresion '+' Expresion
     {
-
+        $$ = new Mast($1, $3, @1.first_line, @1.first_column);
     }
     | Expresion '-' Expresion
     {
@@ -246,11 +249,11 @@ E_logica:
 Factor:
     tk_entero
     { 
-
+        $$ = new LPrimitivo($1, Tipos.NUMBER, @1.first_line, @1.first_column);
     }
     | tk_decimal
     { 
-
+        $$ = new LPrimitivo($1, Tipos.NUMBER, @1.first_line, @1.first_column);
     }
     | tk_cadena
     {
@@ -258,11 +261,11 @@ Factor:
     }
     | tk_bool
     { 
-
+        $$ = new LPrimitivo($1, Tipos.BOOLEAN, @1.first_line, @1.first_column);
     }
     | tk_null
     {
-
+        $$ = new LPrimitivo($1, Tipos.NULL, @1.first_line, @1.first_column);
     }
     | tk_id
     {

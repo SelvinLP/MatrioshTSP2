@@ -1,5 +1,12 @@
+export class Tipo{
+
+    constructor(public tipo: Tipos, public idtipo: string = '', public struct: null = null){
+    }
+
+}
+
 //Tipos de variables
-export enum Tipo{
+export enum Tipos{
     NUMBER = "number",
     STRING = "string",
     BOOLEAN = "boolean",
@@ -8,4 +15,3 @@ export enum Tipo{
     ARRAY = "array",
     TYPE = "type"
 }
-
