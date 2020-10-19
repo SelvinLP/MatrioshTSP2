@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tipos = exports.Tipo = void 0;
+exports.TipoDato = exports.Tipos = exports.Tipo = void 0;
 var Tipo = /** @class */ (function () {
     function Tipo(tipo, idtipo, struct) {
         if (idtipo === void 0) { idtipo = ''; }
@@ -19,7 +19,13 @@ var Tipos;
     Tipos["STRING"] = "string";
     Tipos["BOOLEAN"] = "boolean";
     Tipos["NULL"] = "null";
-    Tipos["VOID"] = "void";
     Tipos["ARRAY"] = "array";
     Tipos["TYPE"] = "type";
 })(Tipos = exports.Tipos || (exports.Tipos = {}));
+//Tipo de dato
+var TipoDato;
+(function (TipoDato) {
+    TipoDato["LET"] = "let";
+    TipoDato["CONST"] = "const";
+    TipoDato["NADA"] = " ";
+})(TipoDato = exports.TipoDato || (exports.TipoDato = {}));

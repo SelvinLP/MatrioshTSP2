@@ -28,7 +28,10 @@ var LPrimitivo = /** @class */ (function (_super) {
         return _this;
     }
     LPrimitivo.prototype.ejecutar = function (entorno) {
-        if (this.tipo == Tipos_1.Tipos.BOOLEAN) {
+        if (this.tipo == Tipos_1.Tipos.NUMBER) {
+            return new Retorno_1.Retorno(this.valor, new Tipos_1.Tipo(this.tipo), false);
+        }
+        else if (this.tipo == Tipos_1.Tipos.BOOLEAN) {
             var generator = Generador_1.Generador.getInstancia();
             //Comprobacion de banderas
             if (this.Ltrue == "") {
@@ -57,6 +60,10 @@ var LPrimitivo = /** @class */ (function (_super) {
     };
     LPrimitivo.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
+        Cadena += ast.posdes + " [label =\"Expresion\"];\n";
+        Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        Cadena += (ast.posdes + 1) + " [label =\"" + this.valor + "\"];\n";
+        Cadena += ast.posdes + " -> " + (ast.posdes + 1) + ";\n";
         return { posant: ast.posdes + 1, posdes: ast.posdes + 2, cadena: Cadena };
     };
     return LPrimitivo;

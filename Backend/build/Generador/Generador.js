@@ -29,6 +29,13 @@ var Generador = /** @class */ (function () {
         var cadtem = this.sfunc + "goto" + etiq + ";";
         this.codigo.push(cadtem);
     };
+    //Cadena Expresion
+    Generador.prototype.addExp = function (nizq, nder, operador, etiquet) {
+        if (operador === void 0) { operador = ''; }
+        if (etiquet === void 0) { etiquet = ""; }
+        var cadtem = this.sfunc + etiquet + nizq + operador + nder + ";";
+        this.codigo.push(cadtem);
+    };
     return Generador;
 }());
 exports.Generador = Generador;

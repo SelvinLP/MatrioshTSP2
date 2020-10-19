@@ -12,7 +12,9 @@ export class LPrimitivo extends Expresion{
     }
 
     public ejecutar(entorno:Entorno): Retorno{
-        if(this.tipo == Tipos.BOOLEAN){
+        if(this.tipo == Tipos.NUMBER){
+            return new Retorno(this.valor, new Tipo(this.tipo), false);
+        }else if(this.tipo == Tipos.BOOLEAN){
             const generator = Generador.getInstancia();
             //Comprobacion de banderas
             if(this.Ltrue == ""){
@@ -41,6 +43,10 @@ export class LPrimitivo extends Expresion{
 
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
+        Cadena += ast.posdes+" [label =\"Expresion\"];\n";
+        Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        Cadena += (ast.posdes+1)+" [label =\""+this.valor+"\"];\n";
+        Cadena += ast.posdes+" -> "+(ast.posdes+1)+";\n";
 
         return {posant:ast.posdes+1, posdes:ast.posdes+2,cadena:Cadena};
     }

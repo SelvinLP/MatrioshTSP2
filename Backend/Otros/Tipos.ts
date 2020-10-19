@@ -11,7 +11,13 @@ export enum Tipos{
     STRING = "string",
     BOOLEAN = "boolean",
     NULL = "null",
-    VOID = "void",
     ARRAY = "array",
     TYPE = "type"
+}
+
+//Tipo de dato
+export enum TipoDato{
+    LET = "let",
+    CONST = "const",
+    NADA = " "
 }

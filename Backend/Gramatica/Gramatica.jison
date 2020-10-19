@@ -3,9 +3,10 @@
     const CL_Error = require('../build/Errores/L_Error');
     const CN_Error = require('../build/Errores/N_Error');
     const { LPrimitivo } = require('../build/Literal/Primitivo');
-    const { Tipos } = require('../build/Otros/Tipos');
+    const { Tipos, Tipo, TipoDato } = require('../build/Otros/Tipos');
     const { Mast } = require('../build/Expresiones/Aritmeticas/Mas');
 
+    const { Declaracion } = require('../build/Instrucciones/Declaracion');
 %}
 
 /*------------------------------------------------PARTE LEXICA--------------------------------------------------- */
@@ -143,14 +144,44 @@ Instruccion:
 ;
 
 Declaracion:
-    tk_let tk_id ';'
+    tk_let tk_id Tipodeclaracion Posiblearray PosibleAsignacion ';'
     {
-
+        $$ = new Declaracion(TipoDato.LET, $2, $3, $4, $5, @1.first_line, @1.first_column);
     }
-    | tk_const tk_id ';'  
+    | tk_const tk_id Tipodeclaracion Posiblearray PosibleAsignacion ';'  
     {
-
+        $$ = new Declaracion(TipoDato.CONST, $2, $3, $4, $5, @1.first_line, @1.first_column);
     }
+;
+
+Tipodeclaracion:
+    ':' tk_number                       { $$ = new Tipo(Tipos.NUMBER); }
+    | ':' tk_string                     { $$ = new Tipo(Tipos.STRING); }
+    | ':' tk_boolean                    { $$ = new Tipo(Tipos.BOOLEAN); }
+    | ':' tk_void                       { $$ = new Tipo(Tipos.NULL); }
+    | ':' tk_id                         { $$ = new Tipo(Tipos.TYPE, $2); }
+    | ':' tk_array '<' TipoDato '>'     { $$ = new Tipo(Tipos.ARRAY, $4); }
+    | %empty                            { $$ = null; } 
+    | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error al definir tipo "+yytext,"",this._$.first_line,this._$.first_column))}
+;
+
+Posiblearray:
+    arrayllaves                         { $$ = $1; }
+    | %empty                            { $$ = null; } 
+;
+
+arrayllaves:
+    arrayllaves '[' ']'
+    {
+    }
+    | '['']'
+    {
+    }  
+;
+
+PosibleAsignacion:
+    '=' Expresion                       { $$ = $2; }
+    | %empty                            { $$ = null; } 
 ;
 
 Expresion:
@@ -271,4 +302,13 @@ Factor:
     {
 
     }
+;
+
+TipoDato:
+    tk_number                       {$$ = "number";}
+    | tk_string                     {$$ = "string";}
+    | tk_boolean                    {$$ = "boolean";}
+    | tk_void                       {$$ = "void";}
+    | tk_id                         {$$ = $1;}
+    | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error al definir tipo "+yytext,"",this._$.first_line,this._$.first_column))}
 ;

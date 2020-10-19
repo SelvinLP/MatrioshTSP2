@@ -15,7 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mast = void 0;
 var Expresion_1 = require("../../Abstracto/Expresion");
+var Retorno_1 = require("../../Abstracto/Retorno");
 var Generador_1 = require("../../Generador/Generador");
+var Tipos_1 = require("../../Otros/Tipos");
+var N_Error_1 = require("../../Errores/N_Error");
 var Mast = /** @class */ (function (_super) {
     __extends(Mast, _super);
     function Mast(izq, der, linea, columna) {
@@ -29,6 +32,19 @@ var Mast = /** @class */ (function (_super) {
         var nder = this.der.ejecutar(entorno);
         var generador = Generador_1.Generador.getInstancia();
         var ntem = generador.newTem();
+        if (nizq.tipo.tipo == Tipos_1.Tipos.NUMBER) {
+            if (nder.tipo.tipo == Tipos_1.Tipos.NUMBER) {
+                generador.addExp(nizq.valor, nder.valor, '+', ntem);
+                var retorn = new Retorno_1.Retorno(ntem, nizq.tipo, true);
+                return retorn;
+            }
+            else {
+                throw new N_Error_1.N_Error('Semantico', 'No se puede traducir ' + nizq.valor + "+" + nder.valor, '', this.linea, this.columna);
+            }
+        }
+        else {
+            throw new N_Error_1.N_Error('Semantico', 'No se puede traducir ' + nizq.valor + "+" + nder.valor, '', this.linea, this.columna);
+        }
     };
     Mast.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";

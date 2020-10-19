@@ -3,6 +3,8 @@ import { Retorno } from "../../Abstracto/Retorno";
 import { N_Ast } from "../../Ast/Ast";
 import { Entorno } from "../../Entorno/Entorno";
 import { Generador } from "../../Generador/Generador";
+import { Tipos } from "../../Otros/Tipos";
+import { N_Error } from "../../Errores/N_Error";
 
 export class Mast extends Expresion{
     constructor(private izq: Expresion, public der:Expresion, linea: number, columna: number){
@@ -13,6 +15,17 @@ export class Mast extends Expresion{
         const nder = this.der.ejecutar(entorno);
         const generador = Generador.getInstancia();
         const ntem = generador.newTem();
+        if(nizq.tipo.tipo == Tipos.NUMBER){
+            if(nder.tipo.tipo == Tipos.NUMBER){
+                generador.addExp(nizq.valor, nder.valor, '+', ntem);
+                const retorn = new Retorno(ntem, nizq.tipo, true);
+                return retorn;
+            }else{
+                throw new N_Error('Semantico','No se puede traducir ' + nizq.valor + "+" + nder.valor,'', this.linea,this.columna);
+            }
+        }else{
+            throw new N_Error('Semantico','No se puede traducir ' + nizq.valor + "+" + nder.valor,'', this.linea,this.columna);
+        }
     }
     
     public ejecutarast(ast:N_Ast):N_Ast{

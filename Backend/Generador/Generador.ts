@@ -35,4 +35,10 @@ export class Generador{
         const cadtem = this.sfunc + "goto" + etiq + ";";
         this.codigo.push(cadtem);
     }
+
+    //Cadena Expresion
+    public addExp(nizq: string, nder:string, operador: string = '', etiquet:string = ""){
+        const cadtem = this.sfunc + etiquet + nizq + operador + nder + ";";
+        this.codigo.push(cadtem);
+    }
 }
