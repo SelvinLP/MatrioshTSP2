@@ -34,8 +34,32 @@ var Mast = /** @class */ (function (_super) {
         var ntem = generador.newTem();
         if (nizq.tipo.tipo == Tipos_1.Tipos.NUMBER) {
             if (nder.tipo.tipo == Tipos_1.Tipos.NUMBER) {
-                generador.addExp(nizq.valor, nder.valor, '+', ntem);
+                generador.addExp(ntem, nizq.valor, nder.valor, '+');
                 var retorn = new Retorno_1.Retorno(ntem, nizq.tipo, true);
+                return retorn;
+            }
+            else {
+                throw new N_Error_1.N_Error('Semantico', 'No se puede traducir ' + nizq.valor + "+" + nder.valor, '', this.linea, this.columna);
+            }
+        }
+        else if (nizq.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
+            if (nder.tipo.tipo == Tipos_1.Tipos.STRING) {
+                var nuevotem = generador.newTem();
+                var nuevaetiq = generador.newEtiq();
+                generador.addExp(nuevotem, 'p', entorno.size + 1, '+');
+                generador.addEtiq(nizq.Ltrue);
+                generador.setstack(nuevotem, '1');
+                generador.addGoto(nuevaetiq);
+                generador.addEtiq(nizq.Lfalse);
+                generador.setstack(nuevotem, '0');
+                generador.addEtiq(nuevaetiq);
+                generador.addExp(nuevotem, nuevotem, '1', '+');
+                generador.setstack(nuevotem, nder.valor);
+                //generador.addNextEnv(entorno.size);
+                //generator.addCall('native_concat_bol_str');
+                //generator.addGetStack(temp,'p');
+                //generator.addAntEnv(enviorement.size);
+                //const retorn = new Retorno(ntem, nizq.tipo, true);
                 return retorn;
             }
             else {

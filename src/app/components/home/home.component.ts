@@ -44,7 +44,11 @@ export class HomeComponent implements OnInit {
     L_Errores.splice(0, L_Errores.length);
     L_Simbs.splice(0, L_Simbs.length);
     const entorno = new Entorno(null);
+    let gener = Generador.getInstancia();
+    gener.limpiartodo();
+
     this.ast = Parser.parse(this.Entrada);
+    
     for(const Instruccion of this.ast){
       try {
         const valor=Instruccion.ejecutar(entorno);
@@ -64,24 +68,24 @@ export class HomeComponent implements OnInit {
     //Imprimimos el encabezado
     let cadtem = ""; 
     cadtem += "#include <stdio.h> \n";
-    cadtem += "float heap[16384]; \n";
-    cadtem += "float stack[16384]; \n";
-    cadtem += "float p; \n";
-    cadtem += "float h; \n";
+    cadtem += "double heap[16384]; \n";
+    cadtem += "double stack[16384]; \n";
+    cadtem += "double p; \n";
+    cadtem += "double h; \n";
     let gener = Generador.getInstancia();
     //Obtenemos los temporales
-    cadtem += "float ";
-    cadtem += "t" + 0;
+    cadtem += "double ";
+    cadtem += "T" + 0;
     for(let pos = 1; pos <= gener.temporal; pos++){
-      cadtem += "," + "t" + pos;
+      cadtem += "," + "T" + pos;
     }
     cadtem += "; \n";
     cadtem += "void main() { \n";
     //Intrucciones de Imprimir
     for(let datos of gener.codigo){
-      cadtem += datos + '\n';
+      cadtem += "  " + datos + '\n';
     }
-    cadtem += " return; \n";
+    cadtem += "  return; \n";
     cadtem += "}";
     this.Consola = cadtem;
   }

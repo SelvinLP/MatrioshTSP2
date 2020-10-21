@@ -30,7 +30,6 @@ var Declaracion = /** @class */ (function (_super) {
         return _this;
     }
     Declaracion.prototype.ejecutar = function (entorno) {
-        var generator = Generador_1.Generador.getInstancia();
         if (this.posiblearr == null) {
             if (this.valor == null) {
                 //Validaciones de const
@@ -43,30 +42,56 @@ var Declaracion = /** @class */ (function (_super) {
                     }
                     entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
                     //validaciones de codigo intermedio
+                    this.codigointermedio(entorno, null);
                 }
             }
             else {
-                var banderainsertar = false;
                 var resp = this.valor.ejecutar(entorno);
                 //Definicion de tipo sino tiene
                 if (this.tipo == null) {
                     this.tipo = new Tipos_1.Tipo(Tipos_1.Tipos.NULL);
-                    banderainsertar = true;
                 }
-                else {
-                    //comprobacion de compatibilidad de datos
-                    if (this.tipo.tipo == resp.tipo.tipo) {
-                        banderainsertar = true;
-                    }
-                    else {
-                        throw new N_Error_1.N_Error('Semantico', 'La variable ' + this.id + " no es de tipo compatible con la expresion", '', this.linea, this.columna);
-                    }
+                else if (this.tipo.tipo != resp.tipo.tipo) {
+                    throw new N_Error_1.N_Error('Semantico', 'La variable ' + this.id + " no es de tipo compatible con la expresion", '', this.linea, this.columna);
                 }
-                //Insertamos si cumple con las condiciones
-                if (banderainsertar == true) {
-                    entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
-                }
+                entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
                 //validaciones codigo intermedio
+                this.codigointermedio(entorno, resp);
+            }
+        }
+    };
+    Declaracion.prototype.codigointermedio = function (entorno, nvalor) {
+        var generator = Generador_1.Generador.getInstancia();
+        var variable = entorno.obtenervar(this.id);
+        if (variable === null || variable === void 0 ? void 0 : variable.global) {
+            if (this.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
+                var etiqnueva = generator.newEtiq();
+                generator.addEtiq(nvalor.Ltrue);
+                generator.setstack(variable.pos, '1');
+                generator.addGoto(etiqnueva);
+                generator.addEtiq(nvalor.Lfalse);
+                generator.setstack(variable.pos, '0');
+                generator.addEtiq(etiqnueva);
+            }
+            else {
+                generator.setstack(variable.pos, nvalor.valor);
+            }
+        }
+        else {
+            var temnueva = generator.newTem();
+            //generator.freeTemp(temp);
+            generator.addExp(temnueva, 'p', variable === null || variable === void 0 ? void 0 : variable.pos, '+');
+            if (this.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
+                var tempetiq = generator.newEtiq();
+                generator.addEtiq(nvalor.Ltrue);
+                generator.setstack(temnueva, '1');
+                generator.addGoto(tempetiq);
+                generator.addEtiq(nvalor.Lfalse);
+                generator.setstack(temnueva, '0');
+                generator.addEtiq(tempetiq);
+            }
+            else {
+                generator.setstack(temnueva, nvalor.valor);
             }
         }
     };

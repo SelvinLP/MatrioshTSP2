@@ -13,7 +13,6 @@ export class Declaracion extends Instruccion{
     }
 
     public ejecutar(entorno:Entorno){
-        const generator = Generador.getInstancia();
         if(this.posiblearr == null){
             if(this.valor == null){
                 //Validaciones de const
@@ -25,30 +24,54 @@ export class Declaracion extends Instruccion{
                     }
                     entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna); 
                     //validaciones de codigo intermedio
+                    this.codigointermedio(entorno, null);
                 }
             }else{
-
-                let banderainsertar=false;
                 let resp=this.valor.ejecutar(entorno);
                 //Definicion de tipo sino tiene
                 if( this.tipo == null){
                     this.tipo=new Tipo(Tipos.NULL);
-                    banderainsertar=true;
-                }else{
-                    //comprobacion de compatibilidad de datos
-                    if(this.tipo.tipo == resp.tipo.tipo){
-                        banderainsertar=true;
-                    }else{
-                        throw new N_Error('Semantico','La variable '+this.id+" no es de tipo compatible con la expresion",'', this.linea, this.columna);
-                    }
+                }else if(this.tipo.tipo != resp.tipo.tipo){
+                    throw new N_Error('Semantico','La variable '+this.id+" no es de tipo compatible con la expresion",'', this.linea, this.columna);
                 }
-                //Insertamos si cumple con las condiciones
-                if(banderainsertar == true){
-                    entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna); 
-                }
+                entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
                 //validaciones codigo intermedio
-
+                this.codigointermedio(entorno,resp);
             }
+        }
+    }
+
+    public codigointermedio(entorno:Entorno, nvalor:any){
+        const generator = Generador.getInstancia();
+        let variable=entorno.obtenervar(this.id);
+        if(variable?.global){
+            if(this.tipo.tipo == Tipos.BOOLEAN){
+                const etiqnueva = generator.newEtiq();
+                generator.addEtiq(nvalor.Ltrue);
+                generator.setstack(variable.pos,'1');
+                generator.addGoto(etiqnueva);
+                generator.addEtiq(nvalor.Lfalse);
+                generator.setstack(variable.pos,'0');
+                generator.addEtiq(etiqnueva);
+            }else{
+                generator.setstack(variable.pos,nvalor.valor);
+            }
+        }else{
+            const temnueva = generator.newTem(); 
+            //generator.freeTemp(temp);
+            generator.addExp(temnueva, 'p', variable?.pos,'+');
+            if(this.tipo.tipo == Tipos.BOOLEAN){
+                const tempetiq = generator.newEtiq();
+                generator.addEtiq(nvalor.Ltrue);
+                generator.setstack(temnueva,'1');
+                generator.addGoto(tempetiq);
+                generator.addEtiq(nvalor.Lfalse);
+                generator.setstack(temnueva,'0');
+                generator.addEtiq(tempetiq);
+                }
+                else{
+                    generator.setstack(temnueva,nvalor.valor);
+                }
         }
     }
 

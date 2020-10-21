@@ -3,10 +3,12 @@
     const CL_Error = require('../build/Errores/L_Error');
     const CN_Error = require('../build/Errores/N_Error');
     const { LPrimitivo } = require('../build/Literal/Primitivo');
+     const { Cadenat } = require('../build/Literal/Cadena');
     const { Tipos, Tipo, TipoDato } = require('../build/Otros/Tipos');
     const { Mast } = require('../build/Expresiones/Aritmeticas/Mas');
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
+    const { Imprimirt } = require('../build/Instrucciones/Imprimir');
 %}
 
 /*------------------------------------------------PARTE LEXICA--------------------------------------------------- */
@@ -90,8 +92,8 @@
 "true"|"false"                     return 'tk_bool'
 [0-9]+"."[0-9]+                    return 'tk_decimal'
 [0-9]+                             return 'tk_entero'
-[\"|\']([^\"\n]|(\\\"))*[\"|\']    return 'tk_cadena'
-([a-zA-Z])[a-zA-Z0-9_ñÑ]*	       return 'tk_id';
+[\"|\']([^\"\n]|(\\\"))*[\"|\']    { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); return 'tk_cadena';}
+([a-zA-Z_])[a-zA-Z0-9_ñÑ]*         return 'tk_id'; 
 
 
 //Operaciones Aritmeticas
@@ -134,13 +136,28 @@ START:
 ;
 
 LInstrucciones:
-    LInstrucciones Instruccion          {$1.push($2); $$ = $1;}
-    | Instruccion                       {$$ = [$1];}
+    LInstrucciones Instruccion          
+    {
+        $1.push($2); 
+        $$ = $1;
+    }
+    | Instruccion                       
+    {
+        $$ = [$1];
+    }
 ;
 
 Instruccion:
     Declaracion             {$$=$1;}
+    | Impresion             {$$=$1;}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la Instruccion "+yytext,"",this._$.first_line,this._$.first_column));}
+;
+
+Impresion:
+    tk_console '(' ListaExp ')' ';'
+    {
+        $$ = new Imprimirt($3, @1.first_line, @1.first_column);
+    }
 ;
 
 Declaracion:
@@ -192,6 +209,18 @@ Expresion:
     | E_logica              {$$=$1;}
     | Factor                {$$=$1;}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la expresion "+yytext,"",this._$.first_line,this._$.first_column));}
+;
+
+ListaExp:
+    ListaExp ',' Expresion
+    {
+        $1.push($3); 
+        $$ = $1;
+    }
+    | Expresion
+    {
+        $$ = [$1];
+    }
 ;
 
 OpeTernario:
@@ -288,7 +317,7 @@ Factor:
     }
     | tk_cadena
     {
-
+        $$ = new Cadenat($1, Tipos.STRING, @1.first_line, @1.first_column);
     }
     | tk_bool
     { 

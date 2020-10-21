@@ -15,6 +15,8 @@ export class LPrimitivo extends Expresion{
         if(this.tipo == Tipos.NUMBER){
             return new Retorno(this.valor, new Tipo(this.tipo), false);
         }else if(this.tipo == Tipos.BOOLEAN){
+            //cambiamos el true y false de string al real
+            this.valor = this.valor == "true" ? true : false;
             const generator = Generador.getInstancia();
             //Comprobacion de banderas
             if(this.Ltrue == ""){
@@ -35,7 +37,7 @@ export class LPrimitivo extends Expresion{
             return retorn;
 
         }else if(this.tipo == Tipos.NULL){
-            return new Retorno('', new Tipo(this.tipo), false);
+            return new Retorno('-1', new Tipo(this.tipo), false);
         }else{
             throw new N_Error('Semantico','El tipo de dato no existe','', this.linea,this.columna);
         }

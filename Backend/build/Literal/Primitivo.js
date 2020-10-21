@@ -32,6 +32,8 @@ var LPrimitivo = /** @class */ (function (_super) {
             return new Retorno_1.Retorno(this.valor, new Tipos_1.Tipo(this.tipo), false);
         }
         else if (this.tipo == Tipos_1.Tipos.BOOLEAN) {
+            //cambiamos el true y false de string al real
+            this.valor = this.valor == "true" ? true : false;
             var generator = Generador_1.Generador.getInstancia();
             //Comprobacion de banderas
             if (this.Ltrue == "") {
@@ -52,7 +54,7 @@ var LPrimitivo = /** @class */ (function (_super) {
             return retorn;
         }
         else if (this.tipo == Tipos_1.Tipos.NULL) {
-            return new Retorno_1.Retorno('', new Tipos_1.Tipo(this.tipo), false);
+            return new Retorno_1.Retorno('-1', new Tipos_1.Tipo(this.tipo), false);
         }
         else {
             throw new N_Error_1.N_Error('Semantico', 'El tipo de dato no existe', '', this.linea, this.columna);
