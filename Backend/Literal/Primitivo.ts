@@ -17,23 +17,17 @@ export class LPrimitivo extends Expresion{
         }else if(this.tipo == Tipos.BOOLEAN){
             //cambiamos el true y false de string al real
             this.valor = this.valor == "true" ? true : false;
-            const generator = Generador.getInstancia();
+            const generador = Generador.getInstancia();
             //Comprobacion de banderas
             if(this.Ltrue == ""){
-                this.Ltrue = generator.newEtiq();
+                this.Ltrue = generador.newEtiq();
             }
             if(this.Lfalse == ""){
-                this.Lfalse = generator.newEtiq();
+                this.Lfalse = generador.newEtiq();
             }
-            if(this.valor){
-                generator.addGoto(this.Ltrue)
-            }else{
-                generator.addGoto(this.Lfalse);
-            }
-            const retorn = new Retorno('',new Tipo(this.tipo),false);
+            const retorn = new Retorno(this.valor,new Tipo(this.tipo),false);
             retorn.Ltrue = this.Ltrue;
             retorn.Lfalse = this.Lfalse;
-    
             return retorn;
 
         }else if(this.tipo == Tipos.NULL){

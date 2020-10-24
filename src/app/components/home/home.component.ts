@@ -6,6 +6,7 @@ import { L_Simbs } from "../../../../Backend/build/Otros/L_Simb";
 import { Generador } from "../../../../Backend/build/Generador/Generador";
 import { N_Ast } from "../../../../Backend/build/Ast/Ast";
 import { Entorno } from "../../../../Backend/build/Entorno/Entorno";
+import { Func_native } from "../../../../Backend/build/Generador/FuncNativas";
 import Parser from "../../../../Backend/Gramatica/Gramatica";
 
 
@@ -46,26 +47,18 @@ export class HomeComponent implements OnInit {
     const entorno = new Entorno(null);
     let gener = Generador.getInstancia();
     gener.limpiartodo();
-
     this.ast = Parser.parse(this.Entrada);
-    
-    for(const Instruccion of this.ast){
-      try {
-        const valor=Instruccion.ejecutar(entorno);
-      } catch (err) {
-        L_Errores.push(err);
-      }
-    }
     //mandamos a imprimir el codigo nuevo
-    this.Inst_Print();
+    this.Inst_Print(entorno);
   }
 
   Ev_Ejecutar(){
     this.Consola="";
   }
 
-  Inst_Print(){
+  Inst_Print(entorno:Entorno){
     //Imprimimos el encabezado
+    let nativa= new Func_native();
     let cadtem = ""; 
     cadtem += "#include <stdio.h> \n";
     cadtem += "double heap[16384]; \n";
@@ -73,10 +66,23 @@ export class HomeComponent implements OnInit {
     cadtem += "double p; \n";
     cadtem += "double h; \n";
     let gener = Generador.getInstancia();
+    let temimprimir = nativa.getImprimircad();
+    let cad_str_str = nativa.concat_string_string();
+    let imprimirtrue = nativa.getImprimirctrue();
+    let imprimirfalse = nativa.getImprimircfalse();
+    let imprimirnull = nativa.getImprimircnull();
+    //ejecutamos traduccion
+    for(const Instruccion of this.ast){
+      try {
+        const valor=Instruccion.ejecutar(entorno);
+      } catch (err) {
+        L_Errores.push(err);
+      }
+    }
     //Obtenemos los temporales
     cadtem += "double ";
     cadtem += "T" + 0;
-    for(let pos = 1; pos <= gener.temporal; pos++){
+    for(let pos = 1; pos < gener.temporal; pos++){
       cadtem += "," + "T" + pos;
     }
     cadtem += "; \n";
@@ -86,7 +92,14 @@ export class HomeComponent implements OnInit {
       cadtem += "  " + datos + '\n';
     }
     cadtem += "  return; \n";
-    cadtem += "}";
+    cadtem += "}\n";
+    //agregamos funciones nativas
+    cadtem += "/**** FUNCIONES NATIVAS ****/\n";
+    cadtem += temimprimir;
+    cadtem += cad_str_str;
+    cadtem += imprimirtrue;
+    cadtem += imprimirfalse;
+    cadtem += imprimirnull;
     this.Consola = cadtem;
   }
 
@@ -101,7 +114,7 @@ export class HomeComponent implements OnInit {
       inicio.cadena=cadenainst.cadena;
     }
     this.CadenaGraphviz+=cadenainst.cadena;
-    this.CadenaGraphviz+="}";
+    this.CadenaGraphviz+="}\n";
     wasmFolder('assets/');
     graphviz('body').renderDot(this.CadenaGraphviz);
   }

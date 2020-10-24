@@ -31,30 +31,37 @@ var Imprimirt = /** @class */ (function (_super) {
             var nexp = _a[_i];
             var nvalor = nexp.ejecutar(entorno);
             if (nvalor.tipo.tipo == Tipos_1.Tipos.NUMBER) {
+                generador.addComentario("IMPRIMIR");
                 generador.addImpr("f", nvalor.valor);
             }
             else if (nvalor.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
+                generador.addComentario("IMPRIMIR");
                 var newtem = generador.newEtiq();
+                this.valor ? generador.addGoto(nvalor.Ltrue) : generador.addGoto(nvalor.Lfalse);
                 generador.addEtiq(nvalor.Ltrue);
-                generador.ImpriTrue();
-                generador.addEtiq(newtem);
+                generador.llamarfunc('native_imprimir_true');
+                generador.addGoto(newtem);
                 generador.addEtiq(nvalor.Lfalse);
-                generador.ImpriFalse();
+                generador.llamarfunc('native_imprimir_false');
                 generador.addEtiq(newtem);
             }
             else if (nvalor.tipo.tipo == Tipos_1.Tipos.NULL) {
-                generador.ImpriNull();
+                generador.addComentario("IMPRIMIR");
+                generador.llamarfunc('native_imprimir_null');
             }
             else if (nvalor.tipo.tipo == Tipos_1.Tipos.STRING) {
-                //generador.addNextEnv(enviorement.size);
-                //generador.addSetStack('p', value.getValue());
-                //generador.addCall('native_print_str');
-                //generador.addAntEnv(enviorement.size);
+                generador.addComentario("IMPRIMIR");
+                generador.sigEnt(entorno.size);
+                generador.setstack('p', nvalor.valor);
+                generador.addExp("T0", nvalor.valor);
+                generador.llamarfunc('native_imprimir');
+                generador.regEnt(entorno.size);
             }
             else {
                 throw new N_Error_1.N_Error('Semantico', 'No se puede Imprimir ' + nvalor.tipo.tipo, '', this.linea, this.columna);
             }
             generador.addImpr('c', 10);
+            generador.addComentario("FIN IMPRIMIR");
         }
     };
     Imprimirt.prototype.ejecutarast = function (ast) {

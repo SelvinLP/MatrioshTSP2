@@ -32,13 +32,13 @@ export class Generador{
 
     //Cadena agregar goto
     public addGoto(etiq: string){
-        const cadtem = this.sfunc + "goto" + etiq + ";";
+        const cadtem = this.sfunc + "goto " + etiq + ";";
         this.codigo.push(cadtem);
     }
 
     //Cadena agregar expresion
     public addExp(etiquet:string, nizq: any, nder:any = "", operador: string = ''){
-        const cadtem = this.sfunc + etiquet + "=" + nizq + operador + nder + ";";
+        const cadtem = this.sfunc + etiquet + " = " + nizq + " " + operador + " " + nder + ";";
         this.codigo.push(cadtem);
     }
 
@@ -62,7 +62,13 @@ export class Generador{
 
     //Guardamos en el stack
     public setstack(pos: any, valor : any){
-        const cadtem = this.sfunc + "stack[" + pos + "] = " + valor + ";";
+        const cadtem = this.sfunc + "stack[(int)" + pos + "] = " + valor + ";";
+        this.codigo.push(cadtem);
+    }
+
+    //Obtener de stack
+    public getstack(etiq : any, pos: any){
+        const cadtem = this.sfunc + etiq + " = stack[(int)" + pos + "];";
         this.codigo.push(cadtem);
     }
 
@@ -73,40 +79,45 @@ export class Generador{
         this.etiqueta = 0;
     }
 
-    //Imprime la cadena true
-    public ImpriTrue(){
-        this.addImpr('c','t'.charCodeAt(0));
-        this.addImpr('c','r'.charCodeAt(0));
-        this.addImpr('c','u'.charCodeAt(0));
-        this.addImpr('c','e'.charCodeAt(0));
-    }
-
-    //Imprime la cadena false
-    public ImpriFalse(){
-        this.addImpr('c','f'.charCodeAt(0));
-        this.addImpr('c','a'.charCodeAt(0));
-        this.addImpr('c','l'.charCodeAt(0));
-        this.addImpr('c','s'.charCodeAt(0));
-        this.addImpr('c','e'.charCodeAt(0));
-    }
-
-    //Imprime la cadena null
-    public ImpriNull(){
-        this.addImpr('c','n'.charCodeAt(0));
-        this.addImpr('c','u'.charCodeAt(0));
-        this.addImpr('c','l'.charCodeAt(0));
-        this.addImpr('c','l'.charCodeAt(0));
-    }
-
     //Asignar a heap
     public setHeap(pos:any, valor:any){
-        const cadtem = this.sfunc + "heap[" + pos + "] = " + valor + ";";
+        const cadtem = this.sfunc + "heap[(int)" + pos + "] = " + valor + ";";
+        this.codigo.push(cadtem);
+    }
+
+    //Obtener heap
+    public getHeap(etiq : any, pos: any){
+        const cadtem = this.sfunc + etiq + "= Heap[(int)" + pos + "];";
         this.codigo.push(cadtem);
     }
 
     //Proximo heap
     public sigHeap(){
         const cadtem = this.sfunc + 'h = h + 1;'
+        this.codigo.push(cadtem);
+    }
+
+    //Cambio de entorno
+    public sigEnt(pos: number){
+        const cadtem = this.sfunc + "p = p + "+ pos +";"
+        this.codigo.push(cadtem);
+    }
+
+    //Regreso de Entorno
+    public regEnt(pos: number){
+        const cadtem = this.sfunc + "p = p - "+ pos +";"
+        this.codigo.push(cadtem);
+    }
+
+    //Comentario
+    public addComentario(cad:any){
+        const cadtem = this.sfunc + "/**** " + cad + "****/";
+        this.codigo.push(cadtem);
+    }
+
+    //Llamar funcion 
+    public llamarfunc(cad:string){
+        const cadtem = this.sfunc + cad +"();";
         this.codigo.push(cadtem);
     }
 }
