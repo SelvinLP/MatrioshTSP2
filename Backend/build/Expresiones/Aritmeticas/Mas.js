@@ -64,19 +64,40 @@ var Mast = /** @class */ (function (_super) {
         else if (nizq.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
             if (nder.tipo.tipo == Tipos_1.Tipos.STRING) {
                 var nuevotem = generador.newTem();
-                var nuevaetiq = generador.newEtiq();
-                generador.addExp(nuevotem, 'p', entorno.size + 1, '+');
-                generador.addEtiq(nizq.Ltrue);
-                generador.setstack(nuevotem, '1');
-                generador.addGoto(nuevaetiq);
-                generador.addEtiq(nizq.Lfalse);
-                generador.setstack(nuevotem, '0');
-                generador.addEtiq(nuevaetiq);
-                generador.addExp(nuevotem, nuevotem, '1', '+');
-                generador.setstack(nuevotem, nder.valor);
+                generador.addExp(nuevotem, "h");
+                if (nizq.valor) {
+                    generador.setHeap('h', 't'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'r'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'u'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'e'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', '-1');
+                    generador.sigHeap();
+                }
+                else {
+                    generador.setHeap('h', 'f'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'a'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'l'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 's'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'e'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', '-1');
+                    generador.sigHeap();
+                }
+                // para concatenar
+                generador.addExp("T3", nuevotem);
+                generador.addExp("T5", nder.valor);
+                //llamamos
                 generador.sigEnt(entorno.size);
-                //generador.addCall('native_concat_bol_str');
-                generador.setstack(nuevotem, 'p');
+                generador.llamarfunc('concat_string_string');
+                generador.addExp(ntem, "T2");
                 generador.regEnt(entorno.size);
                 var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
                 return retorn;
@@ -103,14 +124,56 @@ var Mast = /** @class */ (function (_super) {
                 generador.addExp("T3", nizq.valor);
                 generador.addExp("T5", nder.valor);
                 //llamamos
+                generador.sigEnt(entorno.size);
                 generador.llamarfunc('concat_string_string');
                 generador.addExp(ntem, "T2");
-                //generador.getstack(ntem,'p');
                 generador.regEnt(entorno.size);
                 var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
                 return retorn;
             }
-            throw new N_Error_1.N_Error('Semantico', 'No se puede traducir ' + nizq.valor + "+" + nder.valor, '', this.linea, this.columna);
+            else if (nder.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
+                var nuevotem = generador.newTem();
+                generador.addExp(nuevotem, "h");
+                if (nder.valor) {
+                    generador.setHeap('h', 't'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'r'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'u'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'e'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', '-1');
+                    generador.sigHeap();
+                }
+                else {
+                    generador.setHeap('h', 'f'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'a'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'l'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 's'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', 'e'.charCodeAt(0));
+                    generador.sigHeap();
+                    generador.setHeap('h', '-1');
+                    generador.sigHeap();
+                }
+                // para concatenar
+                generador.addExp("T3", nizq.valor);
+                generador.addExp("T5", nuevotem);
+                //llamamos
+                generador.sigEnt(entorno.size);
+                generador.llamarfunc('concat_string_string');
+                generador.addExp(ntem, "T2");
+                generador.regEnt(entorno.size);
+                var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
+                return retorn;
+            }
+            else {
+                throw new N_Error_1.N_Error('Semantico', 'No se puede traducir ' + nizq.valor + "+" + nder.valor, '', this.linea, this.columna);
+            }
         }
         else {
             throw new N_Error_1.N_Error('Semantico', 'No se puede traducir ' + nizq.valor + "+" + nder.valor, '', this.linea, this.columna);

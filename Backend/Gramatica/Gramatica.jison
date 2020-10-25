@@ -3,9 +3,16 @@
     const CL_Error = require('../build/Errores/L_Error');
     const CN_Error = require('../build/Errores/N_Error');
     const { LPrimitivo } = require('../build/Literal/Primitivo');
-     const { Cadenat } = require('../build/Literal/Cadena');
-    const { Tipos, Tipo, TipoDato } = require('../build/Otros/Tipos');
+    const { Cadenat } = require('../build/Literal/Cadena');
+    const { Tipos, Tipo, TipoDato, TipoRelacional } = require('../build/Otros/Tipos');
+
     const { Mast } = require('../build/Expresiones/Aritmeticas/Mas');
+    const { Menost } = require('../build/Expresiones/Aritmeticas/Menos');
+    const { Mult } = require('../build/Expresiones/Aritmeticas/Mult');
+    const { Divt } = require('../build/Expresiones/Aritmeticas/Div');
+    const { Unariot } = require('../build/Expresiones/Aritmeticas/Unario');
+    const { MayoryMenort } = require('../build/Expresiones/Relacionales/MayoryMenor');
+    const { Igualt } = require('../build/Expresiones/Relacionales/Igual');
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
     const { Imprimirt } = require('../build/Instrucciones/Imprimir');
@@ -236,15 +243,15 @@ E_aritmetica:
     }
     | Expresion '-' Expresion
     {
-
+        $$ = new Menost($1, $3, @1.first_line, @1.first_column);
     }
     | Expresion '*' Expresion
     {
-
+        $$ = new Mult($1, $3, @1.first_line, @1.first_column);
     }
     | Expresion '/' Expresion
     {
-
+        $$ = new Divt($1, $3, @1.first_line, @1.first_column);
     }
     | Expresion '**' Expresion
     {
@@ -256,34 +263,34 @@ E_aritmetica:
     }
     | '-' Expresion %prec UMENOS
     {
-
+        $$ = new Unariot($2, false, @1.first_line, @1.first_column);
     }
     | '+' Expresion %prec UMAS
     {
-
+        $$ = new Unariot($2, true, @1.first_line, @1.first_column);
     }
 ;
 
 E_relacional:
     Expresion '>' Expresion
     {
-
+        $$ = new MayoryMenort($1, $3, TipoRelacional.MAYORQUE, @1.first_line, @1.first_column);
     }
     | Expresion '<' Expresion
     {
-
+        $$ = new MayoryMenort($1, $3, TipoRelacional.MENORQUE, @1.first_line, @1.first_column);
     }
     | Expresion '>=' Expresion
     {
-
+        $$ = new MayoryMenort($1, $3, TipoRelacional.MAYORIGUAL, @1.first_line, @1.first_column);
     }
     | Expresion '<=' Expresion
     {
-
+        $$ = new MayoryMenort($1, $3, TipoRelacional.MENORIGUAL, @1.first_line, @1.first_column);
     }
     | Expresion '==' Expresion
     {
-
+        $$ = new Igualt($1, $3, @1.first_line, @1.first_column);
     }
     | Expresion '!=' Expresion
     {

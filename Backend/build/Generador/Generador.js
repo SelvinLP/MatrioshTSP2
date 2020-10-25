@@ -43,7 +43,7 @@ var Generador = /** @class */ (function () {
     };
     //Cadena agregar if
     Generador.prototype.addIf = function (nizq, nder, operador, etiq) {
-        var cadtem = this.sfunc + "if (" + nizq + operador + nder + ") goto " + etiq + ";";
+        var cadtem = this.sfunc + "if (" + nizq + " " + operador + " " + nder + ") goto " + etiq + ";";
         this.codigo.push(cadtem);
     };
     //Cadena imprimir

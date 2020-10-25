@@ -104,6 +104,45 @@ var Func_native = /** @class */ (function () {
 
         */
     };
+    Func_native.prototype.compare_str_str = function () {
+        var generador = Generador_1.Generador.getInstancia();
+        var etiq8 = generador.newEtiq();
+        var etiq9 = generador.newEtiq();
+        var etiq10 = generador.newEtiq();
+        var etiq11 = generador.newEtiq();
+        var etiq12 = generador.newEtiq();
+        var etiq13 = generador.newEtiq();
+        var tem7 = generador.newTem();
+        var tem8 = generador.newTem();
+        var tem9 = generador.newTem();
+        var tem10 = generador.newTem();
+        var tem11 = generador.newTem();
+        var retorn = "";
+        retorn += 'void native_cmp_str() {\n';
+        retorn += "  " + etiq8 + ":\n";
+        retorn += "  " + tem9 + " =  heap[(int)" + tem7 + "];\n";
+        retorn += "  " + tem10 + " =  heap[(int)" + tem8 + "];\n";
+        retorn += "  " + tem7 + " = " + tem7 + " + 1;\n";
+        retorn += "  " + tem8 + " = " + tem8 + " + 1;\n";
+        retorn += "  if (" + tem9 + " == " + tem10 + ") goto " + etiq9 + ";\n";
+        retorn += "  goto " + etiq10 + ';\n';
+        retorn += "  " + etiq9 + ":\n";
+        retorn += "  if (" + tem9 + " == -1) goto " + etiq11 + ";\n";
+        retorn += "  goto " + etiq8 + ';\n';
+        retorn += "  " + etiq11 + ":\n";
+        retorn += "  if (" + tem10 + " == -1) goto " + etiq12 + ";\n";
+        retorn += "  goto " + etiq8 + ';\n';
+        retorn += "  " + etiq12 + ":\n";
+        retorn += "  " + tem11 + " = 1;\n";
+        retorn += "  goto " + etiq13 + ';\n';
+        retorn += "  " + etiq10 + ":\n";
+        retorn += "  " + tem11 + " = 0;\n";
+        retorn += "  goto " + etiq13 + ';\n';
+        retorn += "  " + etiq13 + ":\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
+    };
     Func_native.prototype.getImprimirctrue = function () {
         var retorn = "";
         retorn += 'void native_imprimir_true() {\n';

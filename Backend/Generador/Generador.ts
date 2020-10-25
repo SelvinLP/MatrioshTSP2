@@ -50,7 +50,7 @@ export class Generador{
 
     //Cadena agregar if
     public addIf(nizq: any, nder: any, operador: string, etiq: string){
-        const cadtem = this.sfunc + "if (" +  nizq + operador + nder + ") goto " +etiq + ";";
+        const cadtem = this.sfunc + "if (" +  nizq +" "+ operador +" "+ nder + ") goto " +etiq + ";";
         this.codigo.push(cadtem);
     }
 

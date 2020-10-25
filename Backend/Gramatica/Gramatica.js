@@ -163,9 +163,59 @@ case 34:
         this.$ = new Mast($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
     
 break;
-case 35: case 36: case 37: case 38: case 39: case 40: case 41: case 42: case 43: case 44: case 45: case 46: case 47: case 48: case 49: case 50: case 56:
+case 35:
+
+        this.$ = new Menost($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 36:
+
+        this.$ = new Mult($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 37:
+
+        this.$ = new Divt($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 38: case 39: case 47: case 48: case 49: case 50: case 56:
 
 
+    
+break;
+case 40:
+
+        this.$ = new Unariot($$[$0], false, _$[$0-1].first_line, _$[$0-1].first_column);
+    
+break;
+case 41:
+
+        this.$ = new Unariot($$[$0], true, _$[$0-1].first_line, _$[$0-1].first_column);
+    
+break;
+case 42:
+
+        this.$ = new MayoryMenort($$[$0-2], $$[$0], TipoRelacional.MAYORQUE, _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 43:
+
+        this.$ = new MayoryMenort($$[$0-2], $$[$0], TipoRelacional.MENORQUE, _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 44:
+
+        this.$ = new MayoryMenort($$[$0-2], $$[$0], TipoRelacional.MAYORIGUAL, _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 45:
+
+        this.$ = new MayoryMenort($$[$0-2], $$[$0], TipoRelacional.MENORIGUAL, _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 46:
+
+        this.$ = new Igualt($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
     
 break;
 case 51: case 52:
@@ -458,9 +508,16 @@ _handle_error:
     const CL_Error = require('../build/Errores/L_Error');
     const CN_Error = require('../build/Errores/N_Error');
     const { LPrimitivo } = require('../build/Literal/Primitivo');
-     const { Cadenat } = require('../build/Literal/Cadena');
-    const { Tipos, Tipo, TipoDato } = require('../build/Otros/Tipos');
+    const { Cadenat } = require('../build/Literal/Cadena');
+    const { Tipos, Tipo, TipoDato, TipoRelacional } = require('../build/Otros/Tipos');
+
     const { Mast } = require('../build/Expresiones/Aritmeticas/Mas');
+    const { Menost } = require('../build/Expresiones/Aritmeticas/Menos');
+    const { Mult } = require('../build/Expresiones/Aritmeticas/Mult');
+    const { Divt } = require('../build/Expresiones/Aritmeticas/Div');
+    const { Unariot } = require('../build/Expresiones/Aritmeticas/Unario');
+    const { MayoryMenort } = require('../build/Expresiones/Relacionales/MayoryMenor');
+    const { Igualt } = require('../build/Expresiones/Relacionales/Igual');
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
     const { Imprimirt } = require('../build/Instrucciones/Imprimir');

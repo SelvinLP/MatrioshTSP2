@@ -21,3 +21,12 @@ export enum TipoDato{
     CONST = "const",
     NADA = " "
 }
+
+export enum TipoRelacional{
+    MAYORQUE = ">",
+    MENORQUE = "<",
+    MAYORIGUAL = ">=",
+    MENORIGUAL = "<=",
+    IGUAL = "==",
+    DIFERENCIA = "!="
+}

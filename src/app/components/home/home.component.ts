@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit {
     let gener = Generador.getInstancia();
     let temimprimir = nativa.getImprimircad();
     let cad_str_str = nativa.concat_string_string();
+    let cmp_str = nativa.compare_str_str();
     let imprimirtrue = nativa.getImprimirctrue();
     let imprimirfalse = nativa.getImprimircfalse();
     let imprimirnull = nativa.getImprimircnull();
@@ -97,6 +98,7 @@ export class HomeComponent implements OnInit {
     cadtem += "/**** FUNCIONES NATIVAS ****/\n";
     cadtem += temimprimir;
     cadtem += cad_str_str;
+    cadtem += cmp_str;
     cadtem += imprimirtrue;
     cadtem += imprimirfalse;
     cadtem += imprimirnull;

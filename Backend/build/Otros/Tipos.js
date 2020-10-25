@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TipoDato = exports.Tipos = exports.Tipo = void 0;
+exports.TipoRelacional = exports.TipoDato = exports.Tipos = exports.Tipo = void 0;
 var Tipo = /** @class */ (function () {
     function Tipo(tipo, idtipo, struct) {
         if (idtipo === void 0) { idtipo = ''; }
@@ -29,3 +29,12 @@ var TipoDato;
     TipoDato["CONST"] = "const";
     TipoDato["NADA"] = " ";
 })(TipoDato = exports.TipoDato || (exports.TipoDato = {}));
+var TipoRelacional;
+(function (TipoRelacional) {
+    TipoRelacional["MAYORQUE"] = ">";
+    TipoRelacional["MENORQUE"] = "<";
+    TipoRelacional["MAYORIGUAL"] = ">=";
+    TipoRelacional["MENORIGUAL"] = "<=";
+    TipoRelacional["IGUAL"] = "==";
+    TipoRelacional["DIFERENCIA"] = "!=";
+})(TipoRelacional = exports.TipoRelacional || (exports.TipoRelacional = {}));

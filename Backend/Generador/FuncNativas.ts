@@ -105,6 +105,48 @@ export class Func_native{
         */
     }
 
+    public compare_str_str():string {
+        const generador = Generador.getInstancia();
+        const etiq8 = generador.newEtiq();   
+        const etiq9 = generador.newEtiq();   
+        const etiq10 = generador.newEtiq();
+        const etiq11 = generador.newEtiq();   
+        const etiq12 = generador.newEtiq();
+        const etiq13 = generador.newEtiq();
+        const tem7 = generador.newTem();    
+        const tem8 = generador.newTem();
+        const tem9 = generador.newTem();
+        const tem10 = generador.newTem();
+        const tem11 = generador.newTem();         
+        let retorn:string = "";
+        retorn += 'void native_cmp_str() {\n';
+        retorn += "  " + etiq8 +":\n";
+        retorn += "  " + tem9 + " =  heap[(int)" + tem7 +"];\n";
+        retorn += "  " + tem10 + " =  heap[(int)" + tem8 +"];\n";
+        retorn += "  " + tem7 + " = " + tem7 + " + 1;\n";
+        retorn += "  " + tem8 + " = " + tem8 + " + 1;\n";
+        retorn += "  if (" + tem9 +  " == "+ tem10 +") goto " + etiq9 + ";\n";
+        retorn += "  goto " + etiq10 + ';\n';
+        retorn += "  " + etiq9 + ":\n";
+
+        retorn += "  if (" + tem9 +  " == -1) goto " + etiq11 + ";\n";
+        retorn += "  goto " + etiq8 + ';\n';
+        retorn += "  " + etiq11 + ":\n";
+
+        retorn += "  if (" + tem10 +  " == -1) goto " + etiq12 + ";\n";
+        retorn += "  goto " + etiq8 + ';\n';
+        retorn += "  " + etiq12 + ":\n";
+        retorn += "  " + tem11 + " = 1;\n";
+        retorn += "  goto " + etiq13 + ';\n';
+        retorn += "  " + etiq10 + ":\n";
+        retorn += "  " + tem11 + " = 0;\n";
+        retorn += "  goto " + etiq13 + ';\n';
+        retorn += "  " + etiq13 + ":\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
+    }
+
     public getImprimirctrue(): string{
         let retorn:string = "";
         retorn += 'void native_imprimir_true() {\n';
@@ -138,6 +180,5 @@ export class Func_native{
         retorn += '}\n';
         return retorn;
     }
-
 
 }
