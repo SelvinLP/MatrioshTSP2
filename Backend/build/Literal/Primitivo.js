@@ -32,16 +32,11 @@ var LPrimitivo = /** @class */ (function (_super) {
             return new Retorno_1.Retorno(this.valor, new Tipos_1.Tipo(this.tipo), false);
         }
         else if (this.tipo == Tipos_1.Tipos.BOOLEAN) {
-            //cambiamos el true y false de string al real
-            this.valor = this.valor == "true" ? true : false;
             var generador = Generador_1.Generador.getInstancia();
             //Comprobacion de banderas
-            if (this.Ltrue == "") {
-                this.Ltrue = generador.newEtiq();
-            }
-            if (this.Lfalse == "") {
-                this.Lfalse = generador.newEtiq();
-            }
+            this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
+            this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
+            this.valor = this.valor == "true" ? "1" : "0";
             var retorn = new Retorno_1.Retorno(this.valor, new Tipos_1.Tipo(this.tipo), false);
             retorn.Ltrue = this.Ltrue;
             retorn.Lfalse = this.Lfalse;

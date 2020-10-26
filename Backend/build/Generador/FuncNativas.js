@@ -7,11 +7,11 @@ var Func_native = /** @class */ (function () {
     }
     Func_native.prototype.getImprimircad = function () {
         var generador = Generador_1.Generador.getInstancia();
-        var etiq0 = generador.newEtiq(); //L0
-        var etiq1 = generador.newEtiq(); //L1
-        var etiq2 = generador.newEtiq(); //L2
-        var tem0 = generador.newTem(); //t0
-        var tem1 = generador.newTem(); //t1
+        var etiq0 = generador.newEtiq();
+        var etiq1 = generador.newEtiq();
+        var etiq2 = generador.newEtiq();
+        var tem0 = generador.newTem();
+        var tem1 = generador.newTem();
         var retorn = "";
         retorn += 'void native_imprimir() {\n';
         retorn += "  " + etiq0 + ":\n";
@@ -26,19 +26,6 @@ var Func_native = /** @class */ (function () {
         retorn += "  return;\n";
         retorn += '}\n';
         return retorn;
-        /*
-            L0:
-            T1 =  heap[(int)T0];
-            T0 = T0 + 1;
-            if (T1 != -1) goto L1;
-            goto L2;
-            L1:
-            printf("%c", (int)T1);
-            goto L0;
-            L2:
-            return;
-
-        */
     };
     Func_native.prototype.concat_string_string = function () {
         var generador = Generador_1.Generador.getInstancia();
@@ -79,30 +66,6 @@ var Func_native = /** @class */ (function () {
         retorn += "  return;\n";
         retorn += '}\n';
         return retorn;
-        /*
-            T2 = h;
-            L3:
-            T4 =  heap[(int)T3];
-            T3 = T3 + 1;
-            if (T4 != -1) goto L4;
-            goto L5;
-            L4:
-            heap[(int)T2] = T4
-            t2 = t2 + 1
-            goto L3;
-            L5:
-            T6 =  heap[(int)T5];
-            T5 = T5 + 1;
-            if (T6 != -1) goto L6;
-            goto L7;
-            L6:
-            heap[(int)T2] = T6
-            t2 = t2 + 1
-            goto L5;
-            L7:
-            return;
-
-        */
     };
     Func_native.prototype.compare_str_str = function () {
         var generador = Generador_1.Generador.getInstancia();
@@ -139,6 +102,62 @@ var Func_native = /** @class */ (function () {
         retorn += "  " + tem11 + " = 0;\n";
         retorn += "  goto " + etiq13 + ';\n';
         retorn += "  " + etiq13 + ":\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
+    };
+    Func_native.prototype.getpot = function () {
+        var generador = Generador_1.Generador.getInstancia();
+        var etiq14 = generador.newEtiq();
+        var etiq15 = generador.newEtiq();
+        var etiq16 = generador.newEtiq();
+        var etiq17 = generador.newEtiq();
+        var etiq18 = generador.newEtiq();
+        var tem12 = generador.newTem();
+        var tem13 = generador.newTem();
+        var tem14 = generador.newTem();
+        var retorn = "";
+        retorn += 'void native_pot() {\n';
+        retorn += "  " + tem12 + " = 1;\n";
+        retorn += "  if (" + tem14 + " > 0) goto " + etiq14 + ";\n";
+        retorn += "  goto " + etiq15 + ';\n';
+        retorn += "  " + etiq14 + ":\n";
+        retorn += "  if (" + tem14 + " > 0) goto " + etiq16 + ";\n";
+        retorn += "  goto " + etiq17 + ';\n';
+        retorn += "  " + etiq16 + ":\n";
+        retorn += "  " + tem12 + " = " + tem12 + " * " + tem13 + ";\n";
+        retorn += "  " + tem14 + " = " + tem14 + " - 1;\n";
+        retorn += "  goto " + etiq14 + ';\n';
+        retorn += "  " + etiq15 + ":\n";
+        retorn += "  if (" + tem14 + " < 0) goto " + etiq18 + ";\n";
+        retorn += "  goto " + etiq17 + ';\n';
+        retorn += "  " + etiq18 + ":\n";
+        retorn += "  " + tem12 + " = " + tem12 + " / " + tem13 + ";\n";
+        retorn += "  " + tem14 + " = " + tem14 + " + 1;\n";
+        retorn += "  goto " + etiq15 + ';\n';
+        retorn += "  " + etiq17 + ":\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
+    };
+    Func_native.prototype.concat_num_str = function () {
+        var generador = Generador_1.Generador.getInstancia();
+        var etiq0 = generador.newEtiq();
+        var etiq1 = generador.newEtiq();
+        var etiq2 = generador.newEtiq();
+        var tem0 = generador.newTem();
+        var tem1 = generador.newTem();
+        var retorn = "";
+        retorn += 'void native_concat_num_str() {\n';
+        retorn += "  " + etiq0 + ":\n";
+        retorn += "  " + tem1 + " =  heap[(int)" + tem0 + "];\n";
+        retorn += "  " + tem0 + " = " + tem0 + " + 1;\n";
+        retorn += "  if (" + tem1 + " != -1) goto " + etiq1 + ";\n";
+        retorn += "  goto " + etiq2 + ';\n';
+        retorn += "  " + etiq1 + ":\n";
+        retorn += "  printf(\"%c\", (int)" + tem1 + ");\n";
+        retorn += "  goto " + etiq0 + ';\n';
+        retorn += "  " + etiq2 + ":\n";
         retorn += "  return;\n";
         retorn += '}\n';
         return retorn;

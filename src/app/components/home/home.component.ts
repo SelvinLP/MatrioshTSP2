@@ -61,6 +61,7 @@ export class HomeComponent implements OnInit {
     let nativa= new Func_native();
     let cadtem = ""; 
     cadtem += "#include <stdio.h> \n";
+    cadtem += "#include <math.h> \n";
     cadtem += "double heap[16384]; \n";
     cadtem += "double stack[16384]; \n";
     cadtem += "double p; \n";
@@ -69,6 +70,9 @@ export class HomeComponent implements OnInit {
     let temimprimir = nativa.getImprimircad();
     let cad_str_str = nativa.concat_string_string();
     let cmp_str = nativa.compare_str_str();
+    let nat_pot = nativa.getpot();
+    let cad_num_str = nativa.concat_num_str();
+
     let imprimirtrue = nativa.getImprimirctrue();
     let imprimirfalse = nativa.getImprimircfalse();
     let imprimirnull = nativa.getImprimircnull();
@@ -99,6 +103,8 @@ export class HomeComponent implements OnInit {
     cadtem += temimprimir;
     cadtem += cad_str_str;
     cadtem += cmp_str;
+    cadtem += nat_pot;
+    cadtem += cad_num_str;
     cadtem += imprimirtrue;
     cadtem += imprimirfalse;
     cadtem += imprimirnull;

@@ -20,7 +20,8 @@ export class Imprimirt extends Instruccion{
             }else if(nvalor.tipo.tipo == Tipos.BOOLEAN){
                 generador.addComentario("IMPRIMIR");
                 const newtem = generador.newEtiq();
-                this.valor ? generador.addGoto(nvalor.Ltrue) : generador.addGoto(nvalor.Lfalse);
+                //let tetiq= nvalor.valor == "1" ? nvalor.Ltrue : nvalor.Lfalse;
+                //generador.addGoto(tetiq);
                 generador.addEtiq(nvalor.Ltrue);
                 generador.llamarfunc('native_imprimir_true');
                 generador.addGoto(newtem);

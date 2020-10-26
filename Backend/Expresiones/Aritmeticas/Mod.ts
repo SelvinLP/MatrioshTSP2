@@ -6,7 +6,7 @@ import { Generador } from "../../Generador/Generador";
 import { Tipos } from "../../Otros/Tipos";
 import { N_Error } from "../../Errores/N_Error";
 
-export class Menost extends Expresion{
+export class Modt extends Expresion{
     constructor(private izq: Expresion, public der:Expresion, linea: number, columna: number){
         super(linea,columna);
     }
@@ -17,11 +17,12 @@ export class Menost extends Expresion{
         const generador = Generador.getInstancia();
         const ntem = generador.newTem();
         if(nizq.tipo.tipo == Tipos.NUMBER && nder.tipo.tipo == Tipos.NUMBER){
-            generador.addExp(ntem, nizq.valor, nder.valor, '-');
+
+            generador.addExp(ntem, "fmod( "+ nizq.valor +", "+ nder.valor +" )");
             const retorn = new Retorno(ntem, nizq.tipo, true);
             return retorn;
         }else{
-            throw new N_Error('Semantico','No se puede traducir ' + nizq.valor + "-" + nder.valor,'', this.linea,this.columna);
+            throw new N_Error('Semantico','No se puede traducir ' + nizq.valor + "%" + nder.valor,'', this.linea,this.columna);
         }
     }
     

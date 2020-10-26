@@ -15,16 +15,11 @@ export class LPrimitivo extends Expresion{
         if(this.tipo == Tipos.NUMBER){
             return new Retorno(this.valor, new Tipo(this.tipo), false);
         }else if(this.tipo == Tipos.BOOLEAN){
-            //cambiamos el true y false de string al real
-            this.valor = this.valor == "true" ? true : false;
             const generador = Generador.getInstancia();
             //Comprobacion de banderas
-            if(this.Ltrue == ""){
-                this.Ltrue = generador.newEtiq();
-            }
-            if(this.Lfalse == ""){
-                this.Lfalse = generador.newEtiq();
-            }
+            this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
+            this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
+            this.valor = this.valor == "true" ? "1" : "0";
             const retorn = new Retorno(this.valor,new Tipo(this.tipo),false);
             retorn.Ltrue = this.Ltrue;
             retorn.Lfalse = this.Lfalse;

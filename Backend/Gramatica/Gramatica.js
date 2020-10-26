@@ -178,9 +178,14 @@ case 37:
         this.$ = new Divt($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
     
 break;
-case 38: case 39: case 47: case 48: case 49: case 50: case 56:
+case 38:
 
+        this.$ = new Pott($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 39:
 
+        this.$ = new Modt($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
     
 break;
 case 40:
@@ -218,6 +223,26 @@ case 46:
         this.$ = new Igualt($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
     
 break;
+case 47:
+
+        this.$ = new Notigualt($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 48:
+
+        this.$ = new Andt($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 49:
+
+        this.$ = new Ort($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
+    
+break;
+case 50:
+
+        this.$ = new Nott($$[$0], _$[$0-1].first_line, _$[$0-1].first_column);
+    
+break;
 case 51: case 52:
  
         this.$ = new LPrimitivo($$[$0], Tipos.NUMBER, _$[$0].first_line, _$[$0].first_column);
@@ -236,6 +261,11 @@ break;
 case 55:
 
         this.$ = new LPrimitivo($$[$0], Tipos.NULL, _$[$0].first_line, _$[$0].first_column);
+    
+break;
+case 56:
+
+
     
 break;
 case 57:
@@ -516,8 +546,15 @@ _handle_error:
     const { Mult } = require('../build/Expresiones/Aritmeticas/Mult');
     const { Divt } = require('../build/Expresiones/Aritmeticas/Div');
     const { Unariot } = require('../build/Expresiones/Aritmeticas/Unario');
+    const { Modt } = require('../build/Expresiones/Aritmeticas/Mod');
+    const { Pott } = require('../build/Expresiones/Aritmeticas/Potencia');
+
     const { MayoryMenort } = require('../build/Expresiones/Relacionales/MayoryMenor');
     const { Igualt } = require('../build/Expresiones/Relacionales/Igual');
+    const { Notigualt } = require('../build/Expresiones/Relacionales/Notigual');
+    const { Andt } = require('../build/Expresiones/Logicas/Andt');
+    const { Nott } = require('../build/Expresiones/Logicas/Nott');
+    const { Ort } = require('../build/Expresiones/Logicas/Ort');
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
     const { Imprimirt } = require('../build/Instrucciones/Imprimir');

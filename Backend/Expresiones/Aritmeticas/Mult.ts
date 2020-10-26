@@ -3,7 +3,7 @@ import { N_Ast } from "../../Ast/Ast";
 import { Entorno } from "../../Entorno/Entorno";
 import { Retorno } from "../../Abstracto/Retorno";
 import { Generador } from "../../Generador/Generador";
-import { Tipo, Tipos } from "../../Otros/Tipos";
+import { Tipos } from "../../Otros/Tipos";
 import { N_Error } from "../../Errores/N_Error";
 
 export class Mult extends Expresion{

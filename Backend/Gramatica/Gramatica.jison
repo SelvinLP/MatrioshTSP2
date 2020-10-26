@@ -11,8 +11,15 @@
     const { Mult } = require('../build/Expresiones/Aritmeticas/Mult');
     const { Divt } = require('../build/Expresiones/Aritmeticas/Div');
     const { Unariot } = require('../build/Expresiones/Aritmeticas/Unario');
+    const { Modt } = require('../build/Expresiones/Aritmeticas/Mod');
+    const { Pott } = require('../build/Expresiones/Aritmeticas/Potencia');
+
     const { MayoryMenort } = require('../build/Expresiones/Relacionales/MayoryMenor');
     const { Igualt } = require('../build/Expresiones/Relacionales/Igual');
+    const { Notigualt } = require('../build/Expresiones/Relacionales/Notigual');
+    const { Andt } = require('../build/Expresiones/Logicas/Andt');
+    const { Nott } = require('../build/Expresiones/Logicas/Nott');
+    const { Ort } = require('../build/Expresiones/Logicas/Ort');
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
     const { Imprimirt } = require('../build/Instrucciones/Imprimir');
@@ -255,11 +262,11 @@ E_aritmetica:
     }
     | Expresion '**' Expresion
     {
-
+        $$ = new Pott($1, $3, @1.first_line, @1.first_column);
     }
     | Expresion '%' Expresion
     {
-
+        $$ = new Modt($1, $3, @1.first_line, @1.first_column);
     }
     | '-' Expresion %prec UMENOS
     {
@@ -294,22 +301,22 @@ E_relacional:
     }
     | Expresion '!=' Expresion
     {
-
+        $$ = new Notigualt($1, $3, @1.first_line, @1.first_column);
     }
 ;
 
 E_logica:
     Expresion '&&' Expresion
     {
-
+        $$ = new Andt($1, $3, @1.first_line, @1.first_column);
     }
     | Expresion '||' Expresion
     {
-
+        $$ = new Ort($1, $3, @1.first_line, @1.first_column);
     }
     | '!' Expresion
     {
-
+        $$ = new Nott($2, @1.first_line, @1.first_column);
     }
 ;
 

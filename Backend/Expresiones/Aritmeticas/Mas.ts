@@ -91,11 +91,6 @@ export class Mast extends Expresion{
         }else if(nizq.tipo.tipo == Tipos.STRING){
             if(nder.tipo.tipo == Tipos.STRING){
                 const nuevotem = generador.newTem();
-                generador.addExp(nuevotem,'p',entorno.size + 1, '+');
-                generador.setstack(nuevotem,nizq.valor);
-                generador.addExp(nuevotem,nuevotem,'1','+');
-                generador.setstack(nuevotem,nder.valor);
-                generador.sigEnt(entorno.size);
                 // para concatenar
                 generador.addExp("T3",nizq.valor);
                 generador.addExp("T5",nder.valor);

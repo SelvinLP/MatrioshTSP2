@@ -115,11 +115,6 @@ var Mast = /** @class */ (function (_super) {
         else if (nizq.tipo.tipo == Tipos_1.Tipos.STRING) {
             if (nder.tipo.tipo == Tipos_1.Tipos.STRING) {
                 var nuevotem = generador.newTem();
-                generador.addExp(nuevotem, 'p', entorno.size + 1, '+');
-                generador.setstack(nuevotem, nizq.valor);
-                generador.addExp(nuevotem, nuevotem, '1', '+');
-                generador.setstack(nuevotem, nder.valor);
-                generador.sigEnt(entorno.size);
                 // para concatenar
                 generador.addExp("T3", nizq.valor);
                 generador.addExp("T5", nder.valor);

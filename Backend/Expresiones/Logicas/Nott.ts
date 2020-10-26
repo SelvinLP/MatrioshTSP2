@@ -6,22 +6,25 @@ import { Generador } from "../../Generador/Generador";
 import { Tipos } from "../../Otros/Tipos";
 import { N_Error } from "../../Errores/N_Error";
 
-export class Menost extends Expresion{
-    constructor(private izq: Expresion, public der:Expresion, linea: number, columna: number){
+export class Nott extends Expresion{
+    constructor(private izq: Expresion, linea: number, columna: number){
         super(linea,columna);
     }
 
     public ejecutar(entorno:Entorno): Retorno{
-        const nizq = this.izq.ejecutar(entorno);
-        const nder = this.der.ejecutar(entorno);
         const generador = Generador.getInstancia();
-        const ntem = generador.newTem();
-        if(nizq.tipo.tipo == Tipos.NUMBER && nder.tipo.tipo == Tipos.NUMBER){
-            generador.addExp(ntem, nizq.valor, nder.valor, '-');
-            const retorn = new Retorno(ntem, nizq.tipo, true);
-            return retorn;
+        let nizq = this.izq.ejecutar(entorno);
+        this.Ltrue = nizq.Lfalse;
+        this.Lfalse = nizq.Ltrue;
+        nizq.valor = nizq.valor == "1" ? "0" : "1"; 
+        
+        if(nizq.tipo.tipo == Tipos.BOOLEAN){
+            const retorno = new Retorno('',nizq.tipo,false);
+            retorno.Ltrue = this.Ltrue;
+            retorno.Lfalse = this.Lfalse;
+            return retorno;
         }else{
-            throw new N_Error('Semantico','No se puede traducir ' + nizq.valor + "-" + nder.valor,'', this.linea,this.columna);
+            throw new N_Error('Semantico','No se puede traducir !' + nizq.valor ,'', this.linea,this.columna);
         }
     }
     
@@ -29,4 +32,5 @@ export class Menost extends Expresion{
         let Cadena:string=ast.cadena+"\n";
         return {posant:ast.posdes+1, posdes:ast.posdes+2,cadena:Cadena};
     }
+    
 }
