@@ -39,6 +39,25 @@ export class MayoryMenort extends Expresion{
     
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
-        return {posant:ast.posdes+1, posdes:ast.posdes+2,cadena:Cadena};
+        if(this.Tipor == TipoRelacional.MAYORIGUAL){
+            Cadena += ast.posdes+" [label =\"MAYOR IGUAL\"];\n";
+            Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        }else if(this.Tipor == TipoRelacional.MAYORQUE){
+            Cadena += ast.posdes+" [label =\"MAYOR QUE\"];\n";
+            Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        }else if(this.Tipor == TipoRelacional.MENORIGUAL){
+            Cadena += ast.posdes+" [label =\"MENOR IGUAL\"];\n";
+            Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        }else if(this.Tipor == TipoRelacional.MENORQUE){
+            Cadena += ast.posdes+" [label =\"MENOR QUE\"];\n";
+            Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        }
+        
+        
+        let result:N_Ast={posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
+        result=this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result=this.der.ejecutarast(result);
+        return result;
     }
 }

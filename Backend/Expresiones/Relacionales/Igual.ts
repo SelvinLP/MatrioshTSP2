@@ -13,9 +13,10 @@ export class Igualt extends Expresion{
  
     public ejecutar(entorno:Entorno): Retorno{
         let nizq = this.izq.ejecutar(entorno);
-        let nder = this.der.ejecutar(entorno);
+        let nder : Retorno | null = null;
         const generador = Generador.getInstancia();
         if(nizq.tipo.tipo == Tipos.NUMBER){
+            nder = this.der.ejecutar(entorno);
             if(nder.tipo.tipo == Tipos.NUMBER){
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
@@ -30,8 +31,8 @@ export class Igualt extends Expresion{
             }
         }else if(nizq.tipo.tipo == Tipos.BOOLEAN){
             
-            const lbtrue = generador.newEtiq();
-            const lbfalse = generador.newEtiq();
+            let lbtrue = generador.newEtiq();
+            let lbfalse = generador.newEtiq();
             generador.addEtiq(nizq.Ltrue);
             this.der.Ltrue = lbtrue;
             this.der.Lfalse = lbfalse;
@@ -50,6 +51,7 @@ export class Igualt extends Expresion{
                 throw new N_Error('Semantico','No se puede traducir' + nizq.valor +" == "+ nder.valor,'', this.linea,this.columna);
             }
         }else if(nizq.tipo.tipo == Tipos.NULL){
+            nder = this.der.ejecutar(entorno);
             if(nder.tipo.tipo == Tipos.STRING || nder.tipo.tipo == Tipos.NULL){
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse; 
@@ -63,6 +65,7 @@ export class Igualt extends Expresion{
                 throw new N_Error('Semantico','No se puede traducir' + nizq.valor +" == "+ nder.valor,'', this.linea,this.columna);
             }
         }else if(nizq.tipo.tipo == Tipos.STRING){
+            nder = this.der.ejecutar(entorno);
             if(nder.tipo.tipo == Tipos.NULL){
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse; 
@@ -93,12 +96,19 @@ export class Igualt extends Expresion{
                 throw new N_Error('Semantico','No se puede traducir' + nizq.valor +" == "+ nder.valor,'', this.linea,this.columna);
             }
         }else{
+            nder = this.der.ejecutar(entorno);
             throw new N_Error('Semantico','No se puede traducir' + nizq.valor +" == "+ nder.valor,'', this.linea,this.columna);
         }
     }
     
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
-        return {posant:ast.posdes+1, posdes:ast.posdes+2,cadena:Cadena};
+        Cadena += ast.posdes+" [label =\"==\"];\n";
+        Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        let result:N_Ast={posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
+        result=this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result=this.der.ejecutarast(result);
+        return result;
     }
 }

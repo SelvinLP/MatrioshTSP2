@@ -59,7 +59,27 @@ var MayoryMenort = /** @class */ (function (_super) {
     };
     MayoryMenort.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        return { posant: ast.posdes + 1, posdes: ast.posdes + 2, cadena: Cadena };
+        if (this.Tipor == Tipos_1.TipoRelacional.MAYORIGUAL) {
+            Cadena += ast.posdes + " [label =\"MAYOR IGUAL\"];\n";
+            Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        }
+        else if (this.Tipor == Tipos_1.TipoRelacional.MAYORQUE) {
+            Cadena += ast.posdes + " [label =\"MAYOR QUE\"];\n";
+            Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        }
+        else if (this.Tipor == Tipos_1.TipoRelacional.MENORIGUAL) {
+            Cadena += ast.posdes + " [label =\"MENOR IGUAL\"];\n";
+            Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        }
+        else if (this.Tipor == Tipos_1.TipoRelacional.MENORQUE) {
+            Cadena += ast.posdes + " [label =\"MENOR QUE\"];\n";
+            Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        }
+        var result = { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        result = this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result = this.der.ejecutarast(result);
+        return result;
     };
     return MayoryMenort;
 }(Expresion_1.Expresion));

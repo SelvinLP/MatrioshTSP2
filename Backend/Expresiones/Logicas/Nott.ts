@@ -13,10 +13,12 @@ export class Nott extends Expresion{
 
     public ejecutar(entorno:Entorno): Retorno{
         const generador = Generador.getInstancia();
+        this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
+        this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
+
+        this.izq.Ltrue = this.Lfalse;
+        this.izq.Lfalse = this.Ltrue;
         let nizq = this.izq.ejecutar(entorno);
-        this.Ltrue = nizq.Lfalse;
-        this.Lfalse = nizq.Ltrue;
-        nizq.valor = nizq.valor == "1" ? "0" : "1"; 
         
         if(nizq.tipo.tipo == Tipos.BOOLEAN){
             const retorno = new Retorno('',nizq.tipo,false);
@@ -30,7 +32,16 @@ export class Nott extends Expresion{
     
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
-        return {posant:ast.posdes+1, posdes:ast.posdes+2,cadena:Cadena};
+        Cadena += ast.posdes + " [label =\"Expresion\"];\n";
+        Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        let result:N_Ast = {posant:ast.posant, posdes:ast.posdes+1,cadena:Cadena};
+        result.cadena += result.posdes +" [label =\"!\"];\n";
+        result.cadena += ast.posdes + " -> " + result.posdes + ";\n";
+        result = {posant:ast.posdes, posdes:result.posdes+1, cadena:result.cadena};
+        if(this.izq != null){
+            result=this.izq.ejecutarast(result);
+        }
+        return result;
     }
     
 }

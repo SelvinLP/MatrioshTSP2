@@ -11,6 +11,7 @@ var Entorno = /** @class */ (function () {
         this.anterior = anterior;
         this.variables = new Map();
         this.size = (anterior === null || anterior === void 0 ? void 0 : anterior.size) || 0;
+        this.actualFunc = (anterior === null || anterior === void 0 ? void 0 : anterior.actualFunc) || null;
     }
     Entorno.prototype.guardarvar = function (letoconst, id, tipo, sref, linea, columna) {
         var env = this;

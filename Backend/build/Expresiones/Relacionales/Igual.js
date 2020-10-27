@@ -29,9 +29,10 @@ var Igualt = /** @class */ (function (_super) {
     }
     Igualt.prototype.ejecutar = function (entorno) {
         var nizq = this.izq.ejecutar(entorno);
-        var nder = this.der.ejecutar(entorno);
+        var nder = null;
         var generador = Generador_1.Generador.getInstancia();
         if (nizq.tipo.tipo == Tipos_1.Tipos.NUMBER) {
+            nder = this.der.ejecutar(entorno);
             if (nder.tipo.tipo == Tipos_1.Tipos.NUMBER) {
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
@@ -68,6 +69,7 @@ var Igualt = /** @class */ (function (_super) {
             }
         }
         else if (nizq.tipo.tipo == Tipos_1.Tipos.NULL) {
+            nder = this.der.ejecutar(entorno);
             if (nder.tipo.tipo == Tipos_1.Tipos.STRING || nder.tipo.tipo == Tipos_1.Tipos.NULL) {
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
@@ -83,6 +85,7 @@ var Igualt = /** @class */ (function (_super) {
             }
         }
         else if (nizq.tipo.tipo == Tipos_1.Tipos.STRING) {
+            nder = this.der.ejecutar(entorno);
             if (nder.tipo.tipo == Tipos_1.Tipos.NULL) {
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
@@ -115,12 +118,19 @@ var Igualt = /** @class */ (function (_super) {
             }
         }
         else {
+            nder = this.der.ejecutar(entorno);
             throw new N_Error_1.N_Error('Semantico', 'No se puede traducir' + nizq.valor + " == " + nder.valor, '', this.linea, this.columna);
         }
     };
     Igualt.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        return { posant: ast.posdes + 1, posdes: ast.posdes + 2, cadena: Cadena };
+        Cadena += ast.posdes + " [label =\"==\"];\n";
+        Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        var result = { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        result = this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result = this.der.ejecutarast(result);
+        return result;
     };
     return Igualt;
 }(Expresion_1.Expresion));

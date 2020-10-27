@@ -43,7 +43,13 @@ var Modt = /** @class */ (function (_super) {
     };
     Modt.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        return { posant: ast.posdes + 1, posdes: ast.posdes + 2, cadena: Cadena };
+        Cadena += ast.posdes + " [label =\"%\"];\n";
+        Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        var result = { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        result = this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result = this.der.ejecutarast(result);
+        return result;
     };
     return Modt;
 }(Expresion_1.Expresion));

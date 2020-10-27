@@ -149,6 +149,12 @@ export class Mast extends Expresion{
     
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
-        return {posant:ast.posdes+1, posdes:ast.posdes+2,cadena:Cadena};
+        Cadena += ast.posdes+" [label =\"+\"];\n";
+        Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        let result:N_Ast={posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
+        result=this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result=this.der.ejecutarast(result);
+        return result;
     }
 }

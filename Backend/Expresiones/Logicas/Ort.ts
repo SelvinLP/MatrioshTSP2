@@ -13,37 +13,36 @@ export class Ort extends Expresion{
 
     public ejecutar(entorno:Entorno): Retorno{
         const generador = Generador.getInstancia();
-        let nizq = this.izq.ejecutar(entorno);
-        let nder = this.der.ejecutar(entorno);
-        if(nizq.tipo.tipo == Tipos.BOOLEAN && nder.tipo.tipo == Tipos.BOOLEAN){
-            this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
-            this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
-            let petiq = generador.newEtiq();
-            generador.addIf(nizq.valor,"1","==",this.Ltrue);
-            generador.addGoto(petiq);
-            generador.addEtiq(petiq);
-            generador.addIf(nder.valor,"1","==",this.Ltrue);
-            generador.addGoto(this.Lfalse);
+        this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
+        this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
 
-            if(nizq.valor == "1" || nder.valor == "1"){
-                nizq.valor = "1";
-            }else { 
-                nizq.valor = "0"; 
-            }
-            nizq.Ltrue = this.Ltrue;
-            nizq.Lfalse = this.Lfalse;
-            const retorno = new Retorno(nizq.valor,nizq.tipo,false);
+        this.izq.Ltrue = this.der.Ltrue = this.Ltrue;
+        this.izq.Lfalse = generador.newEtiq();
+        this.der.Lfalse = this.Lfalse;
+
+        const nizq = this.izq.ejecutar(entorno);
+        generador.addEtiq(this.izq.Lfalse);
+        const nder = this.der.ejecutar(entorno);
+
+        if(nizq.tipo.tipo == Tipos.BOOLEAN && nder.tipo.tipo == Tipos.BOOLEAN){
+            const retorno = new Retorno('',nizq.tipo,false);
             retorno.Ltrue = this.Ltrue;
-            retorno.Lfalse = this.Lfalse;
+            retorno.Lfalse = this.der.Lfalse;
             return retorno;
         }else{
-            throw new N_Error('Semantico','No se puede traducir' + nizq.valor +" || "+ nder.valor,'', this.linea,this.columna);
+            throw new N_Error('Semantico','No se puede traducir' + nizq.valor +" && "+ nder.valor,'', this.linea,this.columna);
         }
     }
     
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
-        return {posant:ast.posdes+1, posdes:ast.posdes+2,cadena:Cadena};
+        Cadena += ast.posdes+" [label =\"Or\"];\n";
+        Cadena += ast.posant+" -> "+ast.posdes+";\n";
+        let result:N_Ast={posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
+        result=this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result=this.der.ejecutarast(result);
+        return result;
     }
     
 }

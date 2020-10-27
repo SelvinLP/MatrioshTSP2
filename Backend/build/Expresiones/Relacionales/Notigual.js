@@ -29,9 +29,10 @@ var Notigualt = /** @class */ (function (_super) {
     }
     Notigualt.prototype.ejecutar = function (entorno) {
         var nizq = this.izq.ejecutar(entorno);
-        var nder = this.der.ejecutar(entorno);
+        var nder = null;
         var generador = Generador_1.Generador.getInstancia();
         if (nizq.tipo.tipo == Tipos_1.Tipos.NUMBER) {
+            nder = this.der.ejecutar(entorno);
             if (nder.tipo.tipo == Tipos_1.Tipos.NUMBER) {
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
@@ -59,8 +60,8 @@ var Notigualt = /** @class */ (function (_super) {
             nder = this.der.ejecutar(entorno);
             if (nder.tipo.tipo = Tipos_1.Tipos.BOOLEAN) {
                 var retorno = new Retorno_1.Retorno('', nizq.tipo, false);
-                retorno.Ltrue = lbtrue;
-                retorno.Lfalse = lbfalse;
+                retorno.Ltrue = lbfalse;
+                retorno.Lfalse = lbtrue;
                 return retorno;
             }
             else {
@@ -68,6 +69,7 @@ var Notigualt = /** @class */ (function (_super) {
             }
         }
         else if (nizq.tipo.tipo == Tipos_1.Tipos.NULL) {
+            nder = this.der.ejecutar(entorno);
             if (nder.tipo.tipo == Tipos_1.Tipos.STRING || nder.tipo.tipo == Tipos_1.Tipos.NULL) {
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
@@ -83,6 +85,7 @@ var Notigualt = /** @class */ (function (_super) {
             }
         }
         else if (nizq.tipo.tipo == Tipos_1.Tipos.STRING) {
+            nder = this.der.ejecutar(entorno);
             if (nder.tipo.tipo == Tipos_1.Tipos.NULL) {
                 this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
                 this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
@@ -115,12 +118,19 @@ var Notigualt = /** @class */ (function (_super) {
             }
         }
         else {
+            nder = this.der.ejecutar(entorno);
             throw new N_Error_1.N_Error('Semantico', 'No se puede traducir' + nizq.valor + " != " + nder.valor, '', this.linea, this.columna);
         }
     };
     Notigualt.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        return { posant: ast.posdes + 1, posdes: ast.posdes + 2, cadena: Cadena };
+        Cadena += ast.posdes + " [label =\"!=\"];\n";
+        Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        var result = { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        result = this.izq.ejecutarast(result);
+        result.posant = ast.posdes;
+        result = this.der.ejecutarast(result);
+        return result;
     };
     return Notigualt;
 }(Expresion_1.Expresion));

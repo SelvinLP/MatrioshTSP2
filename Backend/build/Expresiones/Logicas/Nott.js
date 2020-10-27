@@ -28,10 +28,11 @@ var Nott = /** @class */ (function (_super) {
     }
     Nott.prototype.ejecutar = function (entorno) {
         var generador = Generador_1.Generador.getInstancia();
+        this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
+        this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
+        this.izq.Ltrue = this.Lfalse;
+        this.izq.Lfalse = this.Ltrue;
         var nizq = this.izq.ejecutar(entorno);
-        this.Ltrue = nizq.Lfalse;
-        this.Lfalse = nizq.Ltrue;
-        nizq.valor = nizq.valor == "1" ? "0" : "1";
         if (nizq.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
             var retorno = new Retorno_1.Retorno('', nizq.tipo, false);
             retorno.Ltrue = this.Ltrue;
@@ -44,7 +45,16 @@ var Nott = /** @class */ (function (_super) {
     };
     Nott.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        return { posant: ast.posdes + 1, posdes: ast.posdes + 2, cadena: Cadena };
+        Cadena += ast.posdes + " [label =\"Expresion\"];\n";
+        Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        var result = { posant: ast.posant, posdes: ast.posdes + 1, cadena: Cadena };
+        result.cadena += result.posdes + " [label =\"!\"];\n";
+        result.cadena += ast.posdes + " -> " + result.posdes + ";\n";
+        result = { posant: ast.posdes, posdes: result.posdes + 1, cadena: result.cadena };
+        if (this.izq != null) {
+            result = this.izq.ejecutarast(result);
+        }
+        return result;
     };
     return Nott;
 }(Expresion_1.Expresion));

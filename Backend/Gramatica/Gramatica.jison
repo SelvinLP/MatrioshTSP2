@@ -5,6 +5,7 @@
     const { LPrimitivo } = require('../build/Literal/Primitivo');
     const { Cadenat } = require('../build/Literal/Cadena');
     const { Tipos, Tipo, TipoDato, TipoRelacional } = require('../build/Otros/Tipos');
+    const {Statement} = require('../build/Instrucciones/Statement');
 
     const { Mast } = require('../build/Expresiones/Aritmeticas/Mas');
     const { Menost } = require('../build/Expresiones/Aritmeticas/Menos');
@@ -23,6 +24,7 @@
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
     const { Imprimirt } = require('../build/Instrucciones/Imprimir');
+    const {Ifelse} = require('../build/Instrucciones/Ifelse');
 %}
 
 /*------------------------------------------------PARTE LEXICA--------------------------------------------------- */
@@ -164,14 +166,20 @@ LInstrucciones:
 Instruccion:
     Declaracion             {$$=$1;}
     | Impresion             {$$=$1;}
+    | Ift                   {$$=$1;}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la Instruccion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 
-Impresion:
-    tk_console '(' ListaExp ')' ';'
+Cuerpo:
+    '{' LInstrucciones '}' 
     {
-        $$ = new Imprimirt($3, @1.first_line, @1.first_column);
+        $$ = new Statement($2, @1.first_line, @1.first_column);
     }
+    | '{' '}' 
+    {
+        $$ = new Statement(new Array(), @1.first_line, @1.first_column);
+    }
+    | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en las llaves {} "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 
 Declaracion:
@@ -183,6 +191,26 @@ Declaracion:
     {
         $$ = new Declaracion(TipoDato.CONST, $2, $3, $4, $5, @1.first_line, @1.first_column);
     }
+;
+
+Impresion:
+    tk_console '(' ListaExp ')' ';'
+    {
+        $$ = new Imprimirt($3, @1.first_line, @1.first_column);
+    }
+;
+
+Ift:
+    tk_if '(' Expresion ')' Cuerpo Elset
+    {
+        $$ = new Ifelse($3, $5, $6, @1.first_line, @1.first_column);
+    }
+;
+
+Elset:
+    tk_else Cuerpo                  {$$=$2;}
+    | tk_else Ift                   {$$=$2;}
+    | %empty                        {$$=null;}
 ;
 
 Tipodeclaracion:

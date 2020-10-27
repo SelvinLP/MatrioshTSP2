@@ -47,7 +47,16 @@ var Unariot = /** @class */ (function (_super) {
     };
     Unariot.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        return { posant: ast.posdes + 1, posdes: ast.posdes + 2, cadena: Cadena };
+        Cadena += ast.posdes + " [label =\"Expresion\"];\n";
+        Cadena += ast.posant + " -> " + ast.posdes + ";\n";
+        var result = { posant: ast.posant, posdes: ast.posdes + 1, cadena: Cadena };
+        result.cadena += result.posdes + " [label =\"Unario\"];\n";
+        result.cadena += ast.posdes + " -> " + result.posdes + ";\n";
+        result = { posant: ast.posdes, posdes: result.posdes + 1, cadena: result.cadena };
+        if (this.izq != null) {
+            result = this.izq.ejecutarast(result);
+        }
+        return result;
     };
     return Unariot;
 }(Expresion_1.Expresion));

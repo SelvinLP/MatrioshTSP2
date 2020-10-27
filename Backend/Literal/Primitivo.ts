@@ -19,8 +19,9 @@ export class LPrimitivo extends Expresion{
             //Comprobacion de banderas
             this.Ltrue = this.Ltrue == '' ? generador.newEtiq() : this.Ltrue;
             this.Lfalse = this.Lfalse == '' ? generador.newEtiq() : this.Lfalse;
-            this.valor = this.valor == "true" ? "1" : "0";
-            const retorn = new Retorno(this.valor,new Tipo(this.tipo),false);
+            this.valor = this.valor == "true" || this.valor == true ? true : false;
+            this.valor ? generador.addGoto(this.Ltrue) : generador.addGoto(this.Lfalse);
+            let retorn = new Retorno('',new Tipo(this.tipo),false);
             retorn.Ltrue = this.Ltrue;
             retorn.Lfalse = this.Lfalse;
             return retorn;

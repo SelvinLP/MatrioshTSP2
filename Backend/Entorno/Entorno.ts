@@ -7,9 +7,11 @@ export class Entorno{
     
     private variables : Map<string,Simbolo>;
     size:number;
+    actualFunc :any/*: SymbolFunction | null;*/;
     constructor(public anterior : Entorno | null = null){
         this.variables = new Map();
         this.size = anterior?.size || 0;
+        this.actualFunc = anterior?.actualFunc || null;
     }
 
     public guardarvar(letoconst: boolean,id: string, tipo: Tipo, sref: boolean, linea: number, columna: number){

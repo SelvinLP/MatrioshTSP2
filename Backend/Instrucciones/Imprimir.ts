@@ -11,8 +11,8 @@ export class Imprimirt extends Instruccion{
         super(linea,columna);
     }
     public ejecutar(entorno:Entorno){
-        const generador = Generador.getInstancia();
         for(let nexp of this.valor){
+            const generador = Generador.getInstancia();
             let nvalor = nexp.ejecutar(entorno);
             if(nvalor.tipo.tipo == Tipos.NUMBER){
                 generador.addComentario("IMPRIMIR");
@@ -20,8 +20,6 @@ export class Imprimirt extends Instruccion{
             }else if(nvalor.tipo.tipo == Tipos.BOOLEAN){
                 generador.addComentario("IMPRIMIR");
                 const newtem = generador.newEtiq();
-                //let tetiq= nvalor.valor == "1" ? nvalor.Ltrue : nvalor.Lfalse;
-                //generador.addGoto(tetiq);
                 generador.addEtiq(nvalor.Ltrue);
                 generador.llamarfunc('native_imprimir_true');
                 generador.addGoto(newtem);
@@ -52,6 +50,10 @@ export class Imprimirt extends Instruccion{
         Cadena += ast.posdes+" [label =\"Console.log\"];\n";
         Cadena += ast.posant+" -> "+ast.posdes+";\n";
         let result:N_Ast={posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
-        return result
+        //Expresion
+        for(let nexp of this.valor){
+            result = nexp.ejecutarast(result);
+        }
+        return result;
     }
 }

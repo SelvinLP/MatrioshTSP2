@@ -26,9 +26,9 @@ var Imprimirt = /** @class */ (function (_super) {
         return _this;
     }
     Imprimirt.prototype.ejecutar = function (entorno) {
-        var generador = Generador_1.Generador.getInstancia();
         for (var _i = 0, _a = this.valor; _i < _a.length; _i++) {
             var nexp = _a[_i];
+            var generador = Generador_1.Generador.getInstancia();
             var nvalor = nexp.ejecutar(entorno);
             if (nvalor.tipo.tipo == Tipos_1.Tipos.NUMBER) {
                 generador.addComentario("IMPRIMIR");
@@ -37,8 +37,6 @@ var Imprimirt = /** @class */ (function (_super) {
             else if (nvalor.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
                 generador.addComentario("IMPRIMIR");
                 var newtem = generador.newEtiq();
-                //let tetiq= nvalor.valor == "1" ? nvalor.Ltrue : nvalor.Lfalse;
-                //generador.addGoto(tetiq);
                 generador.addEtiq(nvalor.Ltrue);
                 generador.llamarfunc('native_imprimir_true');
                 generador.addGoto(newtem);
@@ -70,6 +68,11 @@ var Imprimirt = /** @class */ (function (_super) {
         Cadena += ast.posdes + " [label =\"Console.log\"];\n";
         Cadena += ast.posant + " -> " + ast.posdes + ";\n";
         var result = { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        //Expresion
+        for (var _i = 0, _a = this.valor; _i < _a.length; _i++) {
+            var nexp = _a[_i];
+            result = nexp.ejecutarast(result);
+        }
         return result;
     };
     return Imprimirt;
