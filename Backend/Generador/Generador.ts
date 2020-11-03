@@ -111,7 +111,7 @@ export class Generador{
 
     //Comentario
     public addComentario(cad:any){
-        const cadtem = this.sfunc + "/**** " + cad + "****/";
+        const cadtem = this.sfunc + "/**** " + cad + " ****/";
         this.codigo.push(cadtem);
     }
 

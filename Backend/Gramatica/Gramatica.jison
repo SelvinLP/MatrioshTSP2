@@ -21,10 +21,17 @@
     const { Andt } = require('../build/Expresiones/Logicas/Andt');
     const { Nott } = require('../build/Expresiones/Logicas/Nott');
     const { Ort } = require('../build/Expresiones/Logicas/Ort');
+    const {Opeternario} = require('../build/Expresiones/Opeternario');
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
     const { Imprimirt } = require('../build/Instrucciones/Imprimir');
     const {Ifelse} = require('../build/Instrucciones/Ifelse');
+    const {While} = require('../build/Instrucciones/While');
+    const {Dowhile} = require('../build/Instrucciones/Dowhile');
+    const {For} = require('../build/Instrucciones/For');
+
+    const {Break} = require('../build/Instrucciones/Break');
+    const {Continue} = require('../build/Instrucciones/Continue');
 %}
 
 /*------------------------------------------------PARTE LEXICA--------------------------------------------------- */
@@ -167,6 +174,11 @@ Instruccion:
     Declaracion             {$$=$1;}
     | Impresion             {$$=$1;}
     | Ift                   {$$=$1;}
+    | Whilet                {$$=$1;}
+    | Dowhilet              {$$=$1;}
+    | Fort                  {$$=$1;}
+    | Breakt                {$$=$1;}
+    | BreakyContinuet       {$$=$1;}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la Instruccion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 
@@ -211,6 +223,38 @@ Elset:
     tk_else Cuerpo                  {$$=$2;}
     | tk_else Ift                   {$$=$2;}
     | %empty                        {$$=null;}
+;
+
+Whilet:
+    tk_while '(' Expresion ')' Cuerpo
+    {
+        $$ = new While($3, $5, @1.first_line, @1.first_column);
+    }
+;
+
+Dowhilet:
+    tk_do Cuerpo tk_while '(' Expresion ')' ';'
+    {
+        $$ = new Dowhile($5, $2, @1.first_line, @1.first_column);
+    }
+;
+
+Fort:
+    tk_for '(' Declaracion Expresion ';' Expresion ')' Cuerpo
+    {
+        $$ = new For($3, $4, $6, $8, @1.first_line, @1.first_column);
+    }
+;
+
+BreakyContinuet:
+    tk_break ';'
+    {
+        $$ = new Break(@1.first_line, @1.first_column);
+    }
+    | tk_continue ';'
+    {
+        $$ = new Continue(@1.first_line, @1.first_column);
+    }
 ;
 
 Tipodeclaracion:
@@ -268,6 +312,7 @@ ListaExp:
 OpeTernario:
     Expresion '?' Expresion ':' Expresion 
     {
+        $$ = new Opeternario($1, $3, $5, @1.first_line,@1.first_column);
     }
 ;
 

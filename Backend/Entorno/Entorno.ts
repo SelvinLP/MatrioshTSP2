@@ -8,10 +8,14 @@ export class Entorno{
     private variables : Map<string,Simbolo>;
     size:number;
     actualFunc :any/*: SymbolFunction | null;*/;
+    break: string | null;
+    continue: string | null;
     constructor(public anterior : Entorno | null = null){
         this.variables = new Map();
         this.size = anterior?.size || 0;
         this.actualFunc = anterior?.actualFunc || null;
+        this.break = anterior?.break || null;
+        this.continue = anterior?.continue || null;
     }
 
     public guardarvar(letoconst: boolean,id: string, tipo: Tipo, sref: boolean, linea: number, columna: number){

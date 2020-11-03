@@ -33,6 +33,7 @@ export class Ifelse extends Instruccion{
             else{
                 generator.addEtiq(cond.Lfalse);
             }
+            generator.addComentario('FIN IF');
         }else{
             throw new N_Error('Semantico','La condicion no es booleana:' + cond.tipo.tipo ,'', this.linea,this.columna);
         }

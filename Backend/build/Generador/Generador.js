@@ -94,7 +94,7 @@ var Generador = /** @class */ (function () {
     };
     //Comentario
     Generador.prototype.addComentario = function (cad) {
-        var cadtem = this.sfunc + "/**** " + cad + "****/";
+        var cadtem = this.sfunc + "/**** " + cad + " ****/";
         this.codigo.push(cadtem);
     };
     //Llamar funcion 
