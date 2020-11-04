@@ -1,6 +1,5 @@
 import { Expresion } from "../../Abstracto/Expresion";
 import { Entorno } from "../../Entorno/Entorno";
-import { Retorno } from "../../Abstracto/Retorno";
 import { Generador } from "../../Generador/Generador";
 import { N_Error } from "../../Errores/N_Error";
 import { Tipos } from "../../Otros/Tipos";
@@ -12,7 +11,7 @@ export class Inct extends Instruccion {
         super(linea, columna);
     }
 
-    public ejecutar(entorno: Entorno): Retorno {
+    public ejecutar(entorno: Entorno) {
         const nid = this.id.ejecutar(entorno);
         const simbolo = nid.simbol;
         const generador = Generador.getInstancia();

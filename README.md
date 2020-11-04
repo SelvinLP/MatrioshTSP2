@@ -2,8 +2,14 @@
 Proyecto 2 de Organizacion de Lenguajes y Compiladores 2 2s 2020
 
 ## Entradas permitidas 📋
-
-
+* Expresiones 
+* Relacionales
+* Logicas
+* Console.log
+* If Else
+* While
+* Do while
+  
 ## Comandos 🔧
 _Al descargar de github utilizar_
 ```npm install```
