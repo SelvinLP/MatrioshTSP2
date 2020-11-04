@@ -30,11 +30,16 @@ export class Declaracion extends Instruccion{
                 let resp=this.valor.ejecutar(entorno);
                 //Definicion de tipo sino tiene
                 if( this.tipo == null){
-                    this.tipo=new Tipo(Tipos.NULL);
+                    this.tipo=resp.tipo
                 }else if(this.tipo.tipo != resp.tipo.tipo){
                     throw new N_Error('Semantico','La variable '+this.id+" no es de tipo compatible con la expresion",'', this.linea, this.columna);
                 }
-                entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
+                if(this.letoconst == TipoDato.CONST){ //const es false porque no se puede editar
+                    entorno.guardarvar(false, this.id, this.tipo, false, this.linea, this.columna);
+                }else{
+                    entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
+                }
+                
                 //validaciones codigo intermedio
                 this.codigointermedio(entorno,resp);
             }
@@ -46,6 +51,7 @@ export class Declaracion extends Instruccion{
         let variable=entorno.obtenervar(this.id);
         if(variable?.global){
             if(this.tipo.tipo == Tipos.BOOLEAN){
+                generator.addComentario("DECLARACION");
                 const etiqnueva = generator.newEtiq();
                 generator.addEtiq(nvalor.Ltrue);
                 generator.setstack(variable.pos,'1');
@@ -53,6 +59,7 @@ export class Declaracion extends Instruccion{
                 generator.addEtiq(nvalor.Lfalse);
                 generator.setstack(variable.pos,'0');
                 generator.addEtiq(etiqnueva);
+                generator.addComentario("FIN DECLARACION");
             }else{
                 generator.setstack(variable.pos,nvalor.valor);
             }

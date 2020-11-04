@@ -49,12 +49,17 @@ var Declaracion = /** @class */ (function (_super) {
                 var resp = this.valor.ejecutar(entorno);
                 //Definicion de tipo sino tiene
                 if (this.tipo == null) {
-                    this.tipo = new Tipos_1.Tipo(Tipos_1.Tipos.NULL);
+                    this.tipo = resp.tipo;
                 }
                 else if (this.tipo.tipo != resp.tipo.tipo) {
                     throw new N_Error_1.N_Error('Semantico', 'La variable ' + this.id + " no es de tipo compatible con la expresion", '', this.linea, this.columna);
                 }
-                entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
+                if (this.letoconst == Tipos_1.TipoDato.CONST) { //const es false porque no se puede editar
+                    entorno.guardarvar(false, this.id, this.tipo, false, this.linea, this.columna);
+                }
+                else {
+                    entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
+                }
                 //validaciones codigo intermedio
                 this.codigointermedio(entorno, resp);
             }
@@ -65,6 +70,7 @@ var Declaracion = /** @class */ (function (_super) {
         var variable = entorno.obtenervar(this.id);
         if (variable === null || variable === void 0 ? void 0 : variable.global) {
             if (this.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
+                generator.addComentario("DECLARACION");
                 var etiqnueva = generator.newEtiq();
                 generator.addEtiq(nvalor.Ltrue);
                 generator.setstack(variable.pos, '1');
@@ -72,6 +78,7 @@ var Declaracion = /** @class */ (function (_super) {
                 generator.addEtiq(nvalor.Lfalse);
                 generator.setstack(variable.pos, '0');
                 generator.addEtiq(etiqnueva);
+                generator.addComentario("FIN DECLARACION");
             }
             else {
                 generator.setstack(variable.pos, nvalor.valor);

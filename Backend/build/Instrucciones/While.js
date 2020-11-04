@@ -35,16 +35,14 @@ var While = /** @class */ (function (_super) {
         generador.addEtiq(etiqshile);
         var condicion = this.condicion.ejecutar(entorno);
         if (condicion.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
-            while (condicion.valor == true) {
-                newentorno.break = condicion.Lfalse;
-                newentorno.continue = etiqshile;
-                generador.addEtiq(condicion.Ltrue);
-                this.codigo.ejecutar(newentorno);
-                generador.addGoto(etiqshile);
-                generador.addEtiq(condicion.Lfalse);
-                generador.addComentario('FIN WHILE');
-                return;
-            }
+            newentorno.break = condicion.Lfalse;
+            newentorno.continue = etiqshile;
+            generador.addEtiq(condicion.Ltrue);
+            this.codigo.ejecutar(newentorno);
+            generador.addGoto(etiqshile);
+            generador.addEtiq(condicion.Lfalse);
+            generador.addComentario('FIN WHILE');
+            return;
         }
         else {
             throw new N_Error_1.N_Error('Semantico', 'La condicion no es booleana en el while', '', this.linea, this.columna);

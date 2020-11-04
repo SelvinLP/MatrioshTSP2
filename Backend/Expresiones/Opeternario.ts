@@ -28,6 +28,7 @@ export class Opeternario extends Expresion{
             generator.addEtiq(condicion.Lfalse);
             let condfalse = this.valorfalse.ejecutar(newwntorno);
 
+            generator.addEtiq(salidatrue);
             generator.addComentario('FIN TERNARIO');
             let retorno = condtrue;
             return retorno;

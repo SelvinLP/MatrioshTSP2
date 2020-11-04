@@ -14,6 +14,8 @@
     const { Unariot } = require('../build/Expresiones/Aritmeticas/Unario');
     const { Modt } = require('../build/Expresiones/Aritmeticas/Mod');
     const { Pott } = require('../build/Expresiones/Aritmeticas/Potencia');
+    const { AsigId } = require('../build/Expresiones/Asignaciones/Asigid');
+    const { AccesoId } = require('../build/Expresiones/AccesoId');
 
     const { MayoryMenort } = require('../build/Expresiones/Relacionales/MayoryMenor');
     const { Igualt } = require('../build/Expresiones/Relacionales/Igual');
@@ -24,6 +26,7 @@
     const {Opeternario} = require('../build/Expresiones/Opeternario');
 
     const { Declaracion } = require('../build/Instrucciones/Declaracion');
+    const {Asignacion} = require('../build/Instrucciones/Asignacion');
     const { Imprimirt } = require('../build/Instrucciones/Imprimir');
     const {Ifelse} = require('../build/Instrucciones/Ifelse');
     const {While} = require('../build/Instrucciones/While');
@@ -32,6 +35,8 @@
 
     const {Break} = require('../build/Instrucciones/Break');
     const {Continue} = require('../build/Instrucciones/Continue');
+    const { Inct } = require('../build/Instrucciones/IncyDec/Inc');
+    const { Dect } = require('../build/Instrucciones/IncyDec/Dec');
 %}
 
 /*------------------------------------------------PARTE LEXICA--------------------------------------------------- */
@@ -115,7 +120,7 @@
 "true"|"false"                     return 'tk_bool'
 [0-9]+"."[0-9]+                    return 'tk_decimal'
 [0-9]+                             return 'tk_entero'
-[\"|\']([^\"\n]|(\\\"))*[\"|\']    { yytext = yytext.slice(1,-1).replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r").replace("\\\\", "\\").replace("\\\"", "\""); return 'tk_cadena';}
+[\"|\']([^\"\n]|(\\\"))*[\"|\']    { yytext = yytext.slice(1,-1).replace(/\\n/g, "\n").replace(/\\t/g, "\t").replace(/\\r/g, "\r").replace(/\\\\/g, "\\").replace(/\\\"/g, "\""); return 'tk_cadena';}
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*         return 'tk_id'; 
 
 
@@ -172,6 +177,7 @@ LInstrucciones:
 
 Instruccion:
     Declaracion             {$$=$1;}
+    | Asignacion            {$$=$1;} 
     | Impresion             {$$=$1;}
     | Ift                   {$$=$1;}
     | Whilet                {$$=$1;}
@@ -202,6 +208,21 @@ Declaracion:
     | tk_const tk_id Tipodeclaracion Posiblearray PosibleAsignacion ';'  
     {
         $$ = new Declaracion(TipoDato.CONST, $2, $3, $4, $5, @1.first_line, @1.first_column);
+    }
+;
+
+Asignacion:
+    Asigid '=' Expresion ';'
+    {
+        $$ = new Asignacion($1,$3,@1.first_line,@1.first_column);
+    }
+    | Asigid '++' ';'
+    {
+         $$ = new Inct($1, @1.first_line, @1.first_column);
+    }
+    | Asigid '--' ';'
+    {
+         $$ = new Dect($1, @1.first_line, @1.first_column);
     }
 ;
 
@@ -285,6 +306,17 @@ arrayllaves:
 PosibleAsignacion:
     '=' Expresion                       { $$ = $2; }
     | %empty                            { $$ = null; } 
+;
+
+Asigid:
+    Asigid '.' tk_id 
+    {
+        $$ = new AsigId($3,$1,@1.first_line,@1.first_column);
+    }
+    | tk_id 
+    {
+        $$ = new AsigId($1,null,@1.first_line,@1.first_column);
+    }
 ;
 
 Expresion:
@@ -414,9 +446,27 @@ Factor:
     {
         $$ = new LPrimitivo($1, Tipos.NULL, @1.first_line, @1.first_column);
     }
-    | tk_id
+    | Acceso
     {
+        $$ = $1;
+    }
+;
 
+Acceso:
+    AccesoId 
+    {
+        $$ = $1;
+    }
+;
+
+AccesoId: 
+    AccesoId '.' tk_id 
+    {
+        $$ = new AccesoId($3,$1,@1.first_line,@1.first_column);
+    }
+    | tk_id 
+    {
+        $$ = new AccesoId($1,null,@1.first_line,@1.first_column);
     }
 ;
 

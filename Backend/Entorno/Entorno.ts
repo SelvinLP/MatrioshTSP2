@@ -18,7 +18,7 @@ export class Entorno{
         this.continue = anterior?.continue || null;
     }
 
-    public guardarvar(letoconst: boolean,id: string, tipo: Tipo, sref: boolean, linea: number, columna: number){
+    public guardarvar(letoconst: boolean,id: string, tipo: Tipo, sref: boolean, linea: number, columna: number){ 
         let env : Entorno | null = this;
         if(env.variables.has(id)){
             if(tipo.tipo == Tipos.ARRAY){
