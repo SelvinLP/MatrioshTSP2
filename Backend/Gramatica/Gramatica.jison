@@ -17,6 +17,11 @@
     const { AsigId } = require('../build/Expresiones/Asignaciones/Asigid');
     const { AccesoId } = require('../build/Expresiones/AccesoId');
 
+    const { Tolower } = require('../build/Expresiones/Opestring/Tolower');
+    const { ToUpper } = require('../build/Expresiones/Opestring/Toupper');
+    const { Concat } = require('../build/Expresiones/Opestring/Concat');
+    const { CharAt } = require('../build/Expresiones/Opestring/Charat');
+
     const { MayoryMenort } = require('../build/Expresiones/Relacionales/MayoryMenor');
     const { Igualt } = require('../build/Expresiones/Relacionales/Igual');
     const { Notigualt } = require('../build/Expresiones/Relacionales/Notigual');
@@ -81,6 +86,10 @@
 "length"            return 'tk_length'
 "in"                return 'tk_in'
 "of"                return 'tk_of'
+"toLowerCase"       return 'tk_toLowerCase'
+"toUpperCase"       return 'tk_toUpperCase'
+"concat"            return 'tk_concat'
+"charAt"            return 'tk_charat'
 
 //Relacionales
 "=="    return '=='
@@ -149,8 +158,6 @@
 %left '*' '/'
 %left '**' '%'
 %right '!'
-
-
 
 %right UMENOS UMAS
 
@@ -325,6 +332,7 @@ Expresion:
     | E_aritmetica          {$$=$1;}
     | E_relacional          {$$=$1;}
     | E_logica              {$$=$1;}
+    | Operastring           {$$=$1;}
     | Factor                {$$=$1;}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la expresion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
@@ -425,6 +433,49 @@ E_logica:
     }
 ;
 
+Operastring:
+    AccesoId '.' tk_toLowerCase '(' ')'
+    {
+        $$ = new Tolower($1, @1.first_line, @1.first_column);
+    }
+    | AccesoId '.' tk_toUpperCase '(' ')'
+    {
+        $$ = new ToUpper($1, @1.first_line, @1.first_column);
+    }
+    | AccesoId '.' tk_concat '(' AccesoId ')'
+    {
+        $$ = new Concat($1, $5, @1.first_line, @1.first_column);
+    }
+    | AccesoId '.' tk_concat '(' onlycadena ')'
+    {
+        $$ = new Concat($1, $5, @1.first_line, @1.first_column);
+    }
+    | AccesoId '.' tk_charat '(' Expresion ')'
+    {
+        $$ = new CharAt($1, $5, @1.first_line, @1.first_column);
+    }
+    | onlycadena '.' tk_concat '(' AccesoId ')'
+    {
+        $$ = new Concat($1, $5, @1.first_line, @1.first_column);
+    }
+    | onlycadena '.' tk_concat '(' onlycadena ')'
+    {
+        $$ = new Concat($1, $5, @1.first_line, @1.first_column);
+    }
+    | onlycadena '.' tk_toUpperCase '(' ')'
+    {
+        $$ = new ToUpper($1, @1.first_line, @1.first_column);
+    }
+    | onlycadena '.' tk_toLowerCase '(' ')'
+    {
+        $$ = new Tolower($1, @1.first_line, @1.first_column);
+    }
+    | onlycadena '.' tk_charat '(' Expresion ')'
+    {
+        $$ = new CharAt($1, $5, @1.first_line, @1.first_column);;
+    }
+;
+
 Factor:
     tk_entero
     { 
@@ -434,10 +485,6 @@ Factor:
     { 
         $$ = new LPrimitivo($1, Tipos.NUMBER, @1.first_line, @1.first_column);
     }
-    | tk_cadena
-    {
-        $$ = new Cadenat($1, Tipos.STRING, @1.first_line, @1.first_column);
-    }
     | tk_bool
     { 
         $$ = new LPrimitivo($1, Tipos.BOOLEAN, @1.first_line, @1.first_column);
@@ -446,9 +493,20 @@ Factor:
     {
         $$ = new LPrimitivo($1, Tipos.NULL, @1.first_line, @1.first_column);
     }
+    | onlycadena
+    {
+        $$ = $1;
+    }
     | Acceso
     {
         $$ = $1;
+    }
+;
+
+onlycadena:
+    tk_cadena
+    {
+        $$ = new Cadenat($1, Tipos.STRING, @1.first_line, @1.first_column);
     }
 ;
 

@@ -71,7 +71,9 @@ export class HomeComponent implements OnInit {
     let cad_str_str = nativa.concat_string_string();
     let cmp_str = nativa.compare_str_str();
     let nat_pot = nativa.getpot();
-    let cad_num_str = nativa.concat_num_str();
+    let tostring = nativa.number_tostring();
+    let tolowercase = nativa.tolowercase_str();
+    let touppercase = nativa.touppercase_str();
 
     let imprimirtrue = nativa.getImprimirctrue();
     let imprimirfalse = nativa.getImprimircfalse();
@@ -104,7 +106,10 @@ export class HomeComponent implements OnInit {
     cadtem += cad_str_str;
     cadtem += cmp_str;
     cadtem += nat_pot;
-    cadtem += cad_num_str;
+    cadtem += tostring;
+    cadtem += tolowercase;
+    cadtem += touppercase;
+
     cadtem += imprimirtrue;
     cadtem += imprimirfalse;
     cadtem += imprimirnull;

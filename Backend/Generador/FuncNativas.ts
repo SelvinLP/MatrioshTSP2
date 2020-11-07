@@ -149,28 +149,168 @@ export class Func_native{
         return retorn;
     }
 
-    public concat_num_str(): string {
+    public number_tostring(): string{
         const generador = Generador.getInstancia();
-        const etiq0 = generador.newEtiq();   
-        const etiq1 = generador.newEtiq();   
-        const etiq2 = generador.newEtiq();   
-        const tem0 = generador.newTem();    
-        const tem1 = generador.newTem();    
+        const etiq19 = generador.newEtiq(); 
+        const etiq20 = generador.newEtiq(); 
+        const etiq21 = generador.newEtiq(); 
+        const etiq22 = generador.newEtiq(); 
+        const etiq23 = generador.newEtiq(); 
+        const etiq24 = generador.newEtiq(); 
+        const etiq25 = generador.newEtiq();   //etiqueta del signo 
+        const etiq26 = generador.newEtiq();
+        const tem15 = generador.newTem();   //entrada
+        const tem16 = generador.newTem();   // retorno h
+        const tem17 = generador.newTem();   
+        const tem18 = generador.newTem();   // temporal
+        const tem19 = generador.newTem();   // contador
+        const tem20 = generador.newTem();   // temporal
+        const tem21 = generador.newTem();   // contador 2
+        
         let retorn:string = "";
-        retorn += 'void native_concat_num_str() {\n';
-        retorn += "  " + etiq0 +":\n";
-        retorn += "  " + tem1 + " =  heap[(int)" + tem0 +"];\n";
-        retorn += "  " + tem0 + " = " + tem0 + " + 1;\n";
-        retorn += "  if (" + tem1 +  " != -1) goto " + etiq1 + ";\n";
-        retorn += "  goto " + etiq2 + ';\n';
-        retorn += "  " + etiq1 + ":\n";
-        retorn += "  printf(\"%c\", (int)"+ tem1 + ");\n";
-        retorn += "  goto " + etiq0 + ';\n';
-        retorn += "  " + etiq2 + ":\n";
+        retorn += 'void number_tostring() {\n';
+        retorn += "  " + tem16 + " = h;\n";
+        retorn += "  if (" + tem15 +  " < 0) goto " + etiq25 + ";\n";
+        retorn += "  goto " + etiq26 + ';\n';
+        retorn += "  " + etiq25 + ":\n"
+        retorn += "  " + tem15 + " = " + tem15 + " * -1;\n";
+        retorn += "  heap[(int)h] = 45;\n";
+        retorn += "  h = h + 1;\n";
+        retorn += "  goto " + etiq26 + ';\n';
+
+        retorn += "  " + etiq26 + ":\n"
+        retorn += "  " + tem17 + " = fmod(" + tem15 + ",1);\n";
+        retorn += "  " + tem15 + " = " + tem15 + " - " + tem17 + ";\n";
+        retorn += "  " + tem18 + " = " + tem15 + ";\n";
+        retorn += "  " + tem19 + " = -1;\n";
+        retorn += "  " + tem20 + " = 0;\n";
+
+        retorn += "  " + etiq19 + ":\n"
+        retorn += "  " + tem19 + " = " + tem19 + " + 1;\n";
+        retorn += "  " + tem21 + " = " + tem19 + ";\n";
+        retorn += "  " + tem18 + " = " + tem18 + " / 10;\n";
+        retorn += "  " + tem20 + " = fmod(" + tem18 + ",1);\n";
+        retorn += "  " + tem18 + " = " + tem18 + " - " + tem20 + ";\n";
+        retorn += "  if (" + tem18 +  " > 0) goto " + etiq19 + ";\n";
+        retorn += "  goto " + etiq20 + ';\n';
+
+
+        retorn += "  " + etiq20 + ":\n";
+        retorn += "  " + tem15 + " = " + tem15 + " / 10;\n";
+        retorn += "  " + tem18 + " = fmod(" + tem15 + ",1);\n";
+        retorn += "  " + tem15 + " = " + tem15 + " - " + tem18 + ";\n";
+        retorn += "  " + tem18 + " = " + tem18 + " * 10;\n";
+        retorn += "  " + tem18 + " = " + tem18 + " + 48;\n";
+        retorn += "  h = h + " + tem19 + ";\n"; 
+        retorn += "  heap[(int)h] = (int)" +tem18 + ";\n";
+        retorn += "  h = h - " + tem19 + ";\n"; 
+        retorn += "  " + tem19 + " = " + tem19 + " - 1;\n";
+        retorn += "  if (" + tem15 +  " > 0.1) goto " + etiq20 + ";\n";
+        retorn += "  goto " + etiq21 + ';\n';   
+
+        retorn += "  " + etiq21 + ":\n"  
+        retorn += "  h = h + " + tem21 + ";\n";
+        retorn += "  h = h + 1;\n";    
+        retorn += "  if (" + tem17 +  " > 0) goto " + etiq22 + ";\n";
+        retorn += "  goto " + etiq23 + ';\n';   
+
+        retorn += "  " + etiq22 + ":\n"
+        retorn += "  heap[(int)h] = 46;\n";
+        retorn += "  h = h + 1;\n";
+        retorn += "  goto " + etiq24 + ';\n'; 
+
+        retorn += "  " + etiq24 + ":\n"
+        retorn += "  " + tem17 + " = " + tem17 + " * 10;\n";
+        retorn += "  " + tem20 + " = fmod(" + tem17 + ",1);\n";
+        retorn += "  " + tem17 + " = " + tem17 + " - " + tem20 + ";\n";
+        retorn += "  " + tem17 + " = " + tem17 + " + 48;\n";
+        retorn += "  heap[(int)h] = " + tem17 + ";\n";
+        retorn += "  h = h + 1;\n";
+        retorn += "  " + tem17 + " = "+ tem20 + ";\n";
+        retorn += "  if (" + tem17 +  " > 0.001) goto " + etiq24 + ";\n";
+        retorn += "  goto " + etiq23 + ';\n'; 
+
+        retorn += "  " + etiq23 + ":\n"
+        retorn += "  heap[(int)h] = -1;\n";
+        retorn += "  h = h + 1;\n";
+
         retorn += "  return;\n";
         retorn += '}\n';
         return retorn;
-    
+    }
+
+    public tolowercase_str(): string{
+        const generador = Generador.getInstancia();
+        const etiq27 = generador.newEtiq();     
+        const etiq28 = generador.newEtiq();   
+        const etiq29 = generador.newEtiq(); 
+        const etiq30 = generador.newEtiq();
+        const etiq31 = generador.newEtiq();      
+        const tem22 = generador.newTem();       // Entrada por de h
+        const tem23 = generador.newTem();    
+        let retorn:string = "";
+        retorn += 'void tolowercase_str() {\n';
+        retorn += "  " + etiq27 + ":\n";
+        retorn += "  " + tem23 + " =  heap[(int)" + tem22 +"];\n";
+        retorn += "  " + tem22 + " = " + tem22 + " + 1;\n";
+        retorn += "  if (" + tem23 +  " != -1) goto " + etiq28 + ";\n";
+        retorn += "  goto " + etiq29 + ';\n';
+
+        retorn += "  " + etiq28 + ":\n";
+        retorn += "  if (" + tem23 +  " >= 65) goto " + etiq30 + ";\n";
+        retorn += "  goto " + etiq27 + ';\n';
+
+        retorn += "  " + etiq30 + ":\n";
+        retorn += "  if (" + tem23 +  " <= 90) goto " + etiq31 + ";\n";
+        retorn += "  goto " + etiq27 + ';\n';
+        retorn += "  " + etiq31 + ":\n";
+        retorn += "  " + tem23 +  " = " + tem23 + " + 32;\n";
+        retorn += "  " + tem22 + " = " + tem22 + " - 1;\n";
+        retorn += "  heap[(int)" + tem22 +"] = " + tem23 + ";\n";
+        retorn += "  " + tem22 + " = " + tem22 + " + 1;\n";
+        retorn += "  goto " + etiq27 + ';\n';
+
+        retorn += "  " + etiq29 + ":\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
+    }
+
+    public touppercase_str(): string{
+        const generador = Generador.getInstancia();
+        const etiq32 = generador.newEtiq();     
+        const etiq33 = generador.newEtiq();   
+        const etiq34 = generador.newEtiq(); 
+        const etiq35 = generador.newEtiq();
+        const etiq36 = generador.newEtiq();      
+        const tem24 = generador.newTem();       // Entrada por de h
+        const tem25 = generador.newTem();    
+        let retorn:string = "";
+        retorn += 'void touppercase_str() {\n';
+        retorn += "  " + etiq32 + ":\n";
+        retorn += "  " + tem25 + " =  heap[(int)" + tem24 +"];\n";
+        retorn += "  " + tem24 + " = " + tem24 + " + 1;\n";
+        retorn += "  if (" + tem25 +  " != -1) goto " + etiq33 + ";\n";
+        retorn += "  goto " + etiq34 + ';\n';
+
+        retorn += "  " + etiq33 + ":\n";
+        retorn += "  if (" + tem25 +  " >= 97) goto " + etiq35 + ";\n";
+        retorn += "  goto " + etiq32 + ';\n';
+
+        retorn += "  " + etiq35 + ":\n";
+        retorn += "  if (" + tem25 +  " <= 122) goto " + etiq36 + ";\n";
+        retorn += "  goto " + etiq32 + ';\n';
+        retorn += "  " + etiq36 + ":\n";
+        retorn += "  " + tem25 +  " = " + tem25 + " - 32;\n";
+        retorn += "  " + tem24 + " = " + tem24 + " - 1;\n";
+        retorn += "  heap[(int)" + tem24 +"] = " + tem25 + ";\n";
+        retorn += "  " + tem24 + " = " + tem24 + " + 1;\n";
+        retorn += "  goto " + etiq32 + ';\n';
+
+        retorn += "  " + etiq34 + ":\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
     }
 
     public getImprimirctrue(): string{

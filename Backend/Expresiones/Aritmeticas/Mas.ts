@@ -26,16 +26,20 @@ export class Mast extends Expresion{
                 const retorn = new Retorno(ntem, nizq.tipo, true);
                 return retorn;
             }else if(nder.tipo.tipo == Tipos.STRING){
-                //const nuevotem = generador.newTem();
-                //generador.addExp(nuevotem,'p',entorno.size + 1, '+');
-                //generador.setstack(nuevotem,nizq.valor);
-                //generador.addExp(nuevotem,nuevotem,'1','+');
-                //generador.setstack(nuevotem,nder.valor);
-                
-                //generador.sigEnt(entorno.size);
-                //generador.llamarfunc('concat_number_string');
-                //generador.getstack(ntem,'p');
-                //generador.regEnt(entorno.size);
+                generador.addExp("T15",nizq.valor);
+                generador.sigEnt(entorno.size);
+                generador.llamarfunc('number_tostring');
+                generador.addExp(ntem,"T16");
+                generador.regEnt(entorno.size);
+                //concatenar string
+                generador.addExp("T3",ntem);
+                generador.addExp("T5",nder.valor);
+                //llamamos
+                generador.sigEnt(entorno.size);
+                generador.llamarfunc('concat_string_string');
+                generador.addExp(ntem,"T2");
+                generador.regEnt(entorno.size);
+
                 const retorn = new Retorno(ntem, new Tipo(Tipos.STRING), true);
                 return retorn;
             }else{
@@ -89,8 +93,24 @@ export class Mast extends Expresion{
                 throw new N_Error('Semantico','No se puede traducir ' + nizq.valor + "+" + nder.valor,'', this.linea,this.columna);
             }
         }else if(nizq.tipo.tipo == Tipos.STRING){
-            if(nder.tipo.tipo == Tipos.STRING){
-                const nuevotem = generador.newTem();
+            if(nder.tipo.tipo == Tipos.NUMBER){
+                generador.addExp("T15",nder.valor);
+                generador.sigEnt(entorno.size);
+                generador.llamarfunc('number_tostring');
+                generador.addExp(ntem,"T16");
+                generador.regEnt(entorno.size);
+                //concatenar string
+                generador.addExp("T5",ntem);
+                generador.addExp("T3",nizq.valor);
+                //llamamos
+                generador.sigEnt(entorno.size);
+                generador.llamarfunc('concat_string_string');
+                generador.addExp(ntem,"T2");
+                generador.regEnt(entorno.size);
+
+                const retorn = new Retorno(ntem, new Tipo(Tipos.STRING), true);
+                return retorn;
+            }else if(nder.tipo.tipo == Tipos.STRING){
                 // para concatenar
                 generador.addExp("T3",nizq.valor);
                 generador.addExp("T5",nder.valor);
