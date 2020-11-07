@@ -87,7 +87,7 @@ export class Generador{
 
     //Obtener heap
     public getHeap(etiq : any, pos: any){
-        const cadtem = this.sfunc + etiq + "= Heap[(int)" + pos + "];";
+        const cadtem = this.sfunc + etiq + " = heap[(int)" + pos + "];";
         this.codigo.push(cadtem);
     }
 

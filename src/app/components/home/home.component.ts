@@ -74,6 +74,7 @@ export class HomeComponent implements OnInit {
     let tostring = nativa.number_tostring();
     let tolowercase = nativa.tolowercase_str();
     let touppercase = nativa.touppercase_str();
+    let length_str = nativa.getlength_str();
 
     let imprimirtrue = nativa.getImprimirctrue();
     let imprimirfalse = nativa.getImprimircfalse();
@@ -109,6 +110,7 @@ export class HomeComponent implements OnInit {
     cadtem += tostring;
     cadtem += tolowercase;
     cadtem += touppercase;
+    cadtem += length_str;
 
     cadtem += imprimirtrue;
     cadtem += imprimirfalse;

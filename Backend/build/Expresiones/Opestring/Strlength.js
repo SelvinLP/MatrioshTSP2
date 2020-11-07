@@ -18,6 +18,7 @@ var Expresion_1 = require("../../Abstracto/Expresion");
 var Retorno_1 = require("../../Abstracto/Retorno");
 var Generador_1 = require("../../Generador/Generador");
 var Tipos_1 = require("../../Otros/Tipos");
+var N_Error_1 = require("../../Errores/N_Error");
 var StrLength = /** @class */ (function (_super) {
     __extends(StrLength, _super);
     function StrLength(valor, linea, columna) {
@@ -27,8 +28,21 @@ var StrLength = /** @class */ (function (_super) {
     }
     StrLength.prototype.ejecutar = function (entorno) {
         var generador = Generador_1.Generador.getInstancia();
-        var nuevatem = generador.newTem();
-        return new Retorno_1.Retorno(nuevatem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
+        var nvalor = this.valor.ejecutar(entorno);
+        var ntem = generador.newTem();
+        if (nvalor.tipo.tipo == Tipos_1.Tipos.STRING) {
+            generador.addExp("T26", nvalor.valor);
+            //llamamos
+            generador.sigEnt(entorno.size);
+            generador.llamarfunc('length_str');
+            generador.addExp(ntem, "T27");
+            generador.regEnt(entorno.size);
+            var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.NUMBER), true);
+            return retorn;
+        }
+        else {
+            throw new N_Error_1.N_Error('Semantico', 'Tipo no compatible para toLowerCase()', '', this.linea, this.columna);
+        }
     };
     StrLength.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";

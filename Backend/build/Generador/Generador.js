@@ -74,7 +74,7 @@ var Generador = /** @class */ (function () {
     };
     //Obtener heap
     Generador.prototype.getHeap = function (etiq, pos) {
-        var cadtem = this.sfunc + etiq + "= Heap[(int)" + pos + "];";
+        var cadtem = this.sfunc + etiq + " = heap[(int)" + pos + "];";
         this.codigo.push(cadtem);
     };
     //Proximo heap

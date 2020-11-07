@@ -4,6 +4,7 @@ import { Entorno } from "../../Entorno/Entorno";
 import { Retorno } from "../../Abstracto/Retorno";
 import { Generador } from "../../Generador/Generador";
 import { Tipo, Tipos } from "../../Otros/Tipos";
+import { N_Error } from "../../Errores/N_Error";
 
 export class StrLength extends Expresion{
     constructor(public valor: Expresion, linea: number, columna: number){
@@ -12,9 +13,20 @@ export class StrLength extends Expresion{
 
     public ejecutar(entorno:Entorno): Retorno{
         const generador = Generador.getInstancia();
-        const nuevatem = generador.newTem();
-
-        return new Retorno(nuevatem, new Tipo(Tipos.STRING),true);
+        const nvalor = this.valor.ejecutar(entorno);
+        const ntem =  generador.newTem();
+        if(nvalor.tipo.tipo == Tipos.STRING){
+            generador.addExp("T26",nvalor.valor);
+            //llamamos
+            generador.sigEnt(entorno.size);
+            generador.llamarfunc('length_str');
+            generador.addExp(ntem,"T27");
+            generador.regEnt(entorno.size);
+            const retorn = new Retorno(ntem, new Tipo(Tipos.NUMBER), true);
+            return retorn;
+        }else{
+            throw new N_Error('Semantico','Tipo no compatible para toLowerCase()','', this.linea, this.columna);
+        }
     }
     
     public ejecutarast(ast:N_Ast):N_Ast{

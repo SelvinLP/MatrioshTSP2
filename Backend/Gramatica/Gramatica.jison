@@ -21,6 +21,7 @@
     const { ToUpper } = require('../build/Expresiones/Opestring/Toupper');
     const { Concat } = require('../build/Expresiones/Opestring/Concat');
     const { CharAt } = require('../build/Expresiones/Opestring/Charat');
+    const { StrLength } = require('../build/Expresiones/Opestring/Strlength');
 
     const { MayoryMenort } = require('../build/Expresiones/Relacionales/MayoryMenor');
     const { Igualt } = require('../build/Expresiones/Relacionales/Igual');
@@ -454,6 +455,10 @@ Operastring:
     {
         $$ = new CharAt($1, $5, @1.first_line, @1.first_column);
     }
+    | AccesoId '.' tk_length 
+    {
+        $$ = new StrLength($1, @1.first_line, @1.first_column);
+    }
     | onlycadena '.' tk_concat '(' AccesoId ')'
     {
         $$ = new Concat($1, $5, @1.first_line, @1.first_column);
@@ -473,6 +478,10 @@ Operastring:
     | onlycadena '.' tk_charat '(' Expresion ')'
     {
         $$ = new CharAt($1, $5, @1.first_line, @1.first_column);;
+    }
+    | onlycadena '.' tk_length 
+    {
+        $$ = new StrLength($1, @1.first_line, @1.first_column);
     }
 ;
 

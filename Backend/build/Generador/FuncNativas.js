@@ -285,6 +285,24 @@ var Func_native = /** @class */ (function () {
         retorn += '}\n';
         return retorn;
     };
+    Func_native.prototype.getlength_str = function () {
+        var generador = Generador_1.Generador.getInstancia();
+        var etiq37 = generador.newEtiq();
+        var tem26 = generador.newTem(); // Entrada por de h
+        var tem27 = generador.newTem(); // Contador  
+        var tem28 = generador.newTem(); // Temporal
+        var retorn = "";
+        retorn += 'void length_str() {\n';
+        retorn += "  " + tem27 + " = -1;\n";
+        retorn += "  " + etiq37 + ":\n";
+        retorn += "  " + tem27 + " = " + tem27 + " + 1;\n";
+        retorn += "  " + tem28 + " =  heap[(int)" + tem26 + "];\n";
+        retorn += "  " + tem26 + " = " + tem26 + " + 1;\n";
+        retorn += "  if (" + tem28 + " != -1) goto " + etiq37 + ";\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
+    };
     Func_native.prototype.getImprimirctrue = function () {
         var retorn = "";
         retorn += 'void native_imprimir_true() {\n';

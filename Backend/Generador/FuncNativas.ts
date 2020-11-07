@@ -313,6 +313,25 @@ export class Func_native{
         return retorn;
     }
 
+    public getlength_str(): string{
+        const generador = Generador.getInstancia();
+        const etiq37 = generador.newEtiq();     
+        const tem26 = generador.newTem();       // Entrada por de h
+        const tem27 = generador.newTem();       // Contador  
+        const tem28 = generador.newTem();       // Temporal
+        let retorn:string = "";
+        retorn += 'void length_str() {\n';
+        retorn += "  " + tem27 + " = -1;\n";
+
+        retorn += "  " + etiq37 + ":\n"
+        retorn += "  " + tem27 + " = " + tem27 + " + 1;\n";
+        retorn += "  " + tem28 + " =  heap[(int)" + tem26 +"];\n";
+        retorn += "  " + tem26 + " = " + tem26 + " + 1;\n";
+        retorn += "  if (" + tem28 +  " != -1) goto " + etiq37 + ";\n";
+        retorn += "  return;\n";
+        retorn += '}\n';
+        return retorn;
+    }
     public getImprimirctrue(): string{
         let retorn:string = "";
         retorn += 'void native_imprimir_true() {\n';

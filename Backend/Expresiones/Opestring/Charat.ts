@@ -15,13 +15,20 @@ export class CharAt extends Expresion{
         const generador = Generador.getInstancia();
         const nvalor = this.valor.ejecutar(entorno);
         const npos = this.pos.ejecutar(entorno);
+        const naux =  generador.newTem();
+        const ntem =  generador.newTem();
+        const ntemvalor =  generador.newTem();
         if(nvalor.tipo.tipo == Tipos.STRING){
-            generador.addExp("T22",nvalor.valor);
+            generador.addExp(naux,nvalor.valor,npos.valor, "+");
+            generador.getHeap(ntemvalor,naux);
+            generador.addExp(ntem,"h");            
+            generador.setHeap('h', ntemvalor);
+            generador.sigHeap();
+            generador.setHeap('h', '-1');
+            generador.sigHeap();
             //llamamos
-            generador.sigEnt(entorno.size);
-            generador.llamarfunc('tolowercase_str');
-            generador.regEnt(entorno.size);
-            return nvalor;
+            const retorn = new Retorno(ntem, new Tipo(Tipos.STRING), true);
+            return retorn;
         }else{
             throw new N_Error('Semantico','Tipo no compatible para charat()','', this.linea, this.columna);
         }
