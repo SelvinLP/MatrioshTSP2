@@ -5,15 +5,18 @@ var Simbolo_1 = require("./Simbolo");
 var Tipos_1 = require("../Otros/Tipos");
 var N_Error_1 = require("../Errores/N_Error");
 var L_Simb_1 = require("../Otros/L_Simb");
+var Simbolofunc_1 = require("./Simbolofunc");
 var Entorno = /** @class */ (function () {
     function Entorno(anterior) {
         if (anterior === void 0) { anterior = null; }
         this.anterior = anterior;
         this.variables = new Map();
+        this.funciones = new Map();
         this.size = (anterior === null || anterior === void 0 ? void 0 : anterior.size) || 0;
         this.actualFunc = (anterior === null || anterior === void 0 ? void 0 : anterior.actualFunc) || null;
         this.break = (anterior === null || anterior === void 0 ? void 0 : anterior.break) || null;
         this.continue = (anterior === null || anterior === void 0 ? void 0 : anterior.continue) || null;
+        this.return = (anterior === null || anterior === void 0 ? void 0 : anterior.return) || null;
     }
     Entorno.prototype.guardarvar = function (letoconst, id, tipo, sref, linea, columna) {
         var env = this;
@@ -40,6 +43,17 @@ var Entorno = /** @class */ (function () {
             env = env.anterior;
         }
         return null;
+    };
+    Entorno.prototype.guardarfunc = function (id, newfunc, linea, columna) {
+        var env = this;
+        if (env.funciones.has(id)) {
+            throw new N_Error_1.N_Error('Semantico', 'La funcion ya existe: ' + id, '', linea, columna);
+        }
+        this.funciones.set(id, new Simbolofunc_1.SimboloFunc(newfunc));
+    };
+    Entorno.prototype.obtenerfunc = function (id) {
+        var retorno = this.funciones.get(id);
+        return retorno;
     };
     return Entorno;
 }());

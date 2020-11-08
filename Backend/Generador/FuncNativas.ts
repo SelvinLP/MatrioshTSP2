@@ -332,6 +332,7 @@ export class Func_native{
         retorn += '}\n';
         return retorn;
     }
+    
     public getImprimirctrue(): string{
         let retorn:string = "";
         retorn += 'void native_imprimir_true() {\n';

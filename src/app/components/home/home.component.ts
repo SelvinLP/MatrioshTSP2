@@ -94,14 +94,6 @@ export class HomeComponent implements OnInit {
       cadtem += "," + "T" + pos;
     }
     cadtem += "; \n";
-    cadtem += "void main() { \n";
-    //Intrucciones de Imprimir
-    for(let datos of gener.codigo){
-      cadtem += "  " + datos + '\n';
-    }
-    cadtem += "  return; \n";
-    cadtem += "}\n";
-    //agregamos funciones nativas
     cadtem += "/**** FUNCIONES NATIVAS ****/\n";
     cadtem += temimprimir;
     cadtem += cad_str_str;
@@ -115,6 +107,16 @@ export class HomeComponent implements OnInit {
     cadtem += imprimirtrue;
     cadtem += imprimirfalse;
     cadtem += imprimirnull;
+    cadtem += "/**** MAIN ****/\n";
+    cadtem += "int main() { \n";
+    //Intrucciones de Imprimir
+    for(let datos of gener.codigo){
+      cadtem += "  " + datos + '\n';
+    }
+    cadtem += "  return 0; \n";
+    cadtem += "}\n";
+    //agregamos funciones nativas
+
     this.Consola = cadtem;
   }
 

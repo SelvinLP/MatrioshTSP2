@@ -38,11 +38,16 @@
     const {While} = require('../build/Instrucciones/While');
     const {Dowhile} = require('../build/Instrucciones/Dowhile');
     const {For} = require('../build/Instrucciones/For');
+    const { SwitchCase, Case } = require('../build/Instrucciones/Switch');
+
+    const { Paramfunc } = require('../build/Instrucciones/Funciones/Parametrosfunc');
+    const { Funciont } = require('../build/Instrucciones/Funciones/Funciont');
 
     const {Break} = require('../build/Instrucciones/Break');
     const {Continue} = require('../build/Instrucciones/Continue');
     const { Inct } = require('../build/Instrucciones/IncyDec/Inc');
     const { Dect } = require('../build/Instrucciones/IncyDec/Dec');
+
 %}
 
 /*------------------------------------------------PARTE LEXICA--------------------------------------------------- */
@@ -192,7 +197,9 @@ Instruccion:
     | Dowhilet              {$$=$1;}
     | Fort                  {$$=$1;}
     | Breakt                {$$=$1;}
+    | Switcht               {$$=$1;}
     | BreakyContinuet       {$$=$1;}
+    | Funciones             {$$=$1;}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la Instruccion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 
@@ -269,10 +276,58 @@ Dowhilet:
 ;
 
 Fort:
-    tk_for '(' Declaracion Expresion ';' Expresion ')' Cuerpo
+    tk_for '(' Declaracion Expresion ';' incydecfor ')' Cuerpo
     {
         $$ = new For($3, $4, $6, $8, @1.first_line, @1.first_column);
     }
+;
+
+incydecfor:
+    Asigid '++' 
+    {
+         $$ = new Inct($1, @1.first_line, @1.first_column);
+    }
+    | Asigid '--' 
+    {
+         $$ = new Dect($1, @1.first_line, @1.first_column);
+    }
+;
+
+Switcht:
+    tk_switch '(' Expresion ')' '{' Casos Posibledefault '}'
+    {
+        $$= new SwitchCase($3,$6,$7,@1.first_line, @1.first_column);
+    }
+;
+
+Casos:
+    Casos tk_case  Expresion ':' LInstrucciones  
+    {
+        $1.push(new Case($3,$5));
+        $$=$1;
+    }
+    | Casos tk_case  Expresion ':'
+    {
+        $1.push(new Case($3,new Array()));
+        $$=$1;
+    }
+    | tk_case  Expresion ':' LInstrucciones 
+    {
+        $$=[new Case($2,$4)];
+    }
+    | tk_case  Expresion ':' 
+    {
+        $$=[new Case($2,new Array())];
+    }
+    | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error al definir case "+yytext,"",this._$.first_line,this._$.first_column))}
+;
+
+Posibledefault:
+    tk_default ':' LInstrucciones 
+    {
+        $$=$3;
+    }
+    | %empty                        {$$=null;}
 ;
 
 BreakyContinuet:
@@ -284,6 +339,45 @@ BreakyContinuet:
     {
         $$ = new Continue(@1.first_line, @1.first_column);
     }
+;
+
+Funciones:
+    tk_function tk_id '(' PosibleParametrosFucnc ')' Posibleretorno '{' Posiblecuerpo '}'
+    {
+        $$ = new Funcion($2, $4, $6, $8, @1.first_line, @1.first_column);
+    }
+    | tk_function tk_id '(' PosibleParametrosFucnc ')' Posibleretorno '{' '}'
+    {
+        $$ = new Funcion($2, $4, $6, null, @1.first_line, @1.first_column);
+    }
+
+;
+
+PosibleParametrosFucnc:
+    Parametros 
+    {
+        $$ = $1;
+    }
+    | %empty 
+    {
+        $$ = [];
+    }
+;
+
+Parametros:
+    Parametros ',' tk_id ':' TipoDato{
+        $$ = $1;
+        $$.push(new Paramfunc($3,$5));
+    }
+    | tk_id ':' TipoDato{
+        
+        $$ = [new Paramfunc($1,$3)];
+    }
+;
+
+Posibleretorno:
+    ':' TipoDato                                {$$=$2}  
+    | %empty                                    {$$=null;}
 ;
 
 Tipodeclaracion:
@@ -538,10 +632,9 @@ AccesoId:
 ;
 
 TipoDato:
-    tk_number                       {$$ = "number";}
-    | tk_string                     {$$ = "string";}
-    | tk_boolean                    {$$ = "boolean";}
-    | tk_void                       {$$ = "void";}
-    | tk_id                         {$$ = $1;}
+    ':' tk_number                       { $$ = new Tipo(Tipos.NUMBER); }
+    | ':' tk_string                     { $$ = new Tipo(Tipos.STRING); }
+    | ':' tk_boolean                    { $$ = new Tipo(Tipos.BOOLEAN); }
+    | ':' tk_void                       { $$ = new Tipo(Tipos.NULL); }
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error al definir tipo "+yytext,"",this._$.first_line,this._$.first_column))}
 ;

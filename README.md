@@ -9,6 +9,8 @@ Proyecto 2 de Organizacion de Lenguajes y Compiladores 2 2s 2020
 * If Else
 * While
 * Do while
+* Switch 
+* For
   
 ## Comandos 🔧
 _Al descargar de github utilizar_

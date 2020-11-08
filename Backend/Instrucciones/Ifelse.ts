@@ -35,7 +35,7 @@ export class Ifelse extends Instruccion{
             }
             generator.addComentario('FIN IF');
         }else{
-            throw new N_Error('Semantico','La condicion no es booleana:' + cond.tipo.tipo ,'', this.linea,this.columna);
+            throw new N_Error('Semantico','La condicion en el if no es booleana:' + cond.tipo.tipo ,'', this.linea,this.columna);
         }
     }
 
