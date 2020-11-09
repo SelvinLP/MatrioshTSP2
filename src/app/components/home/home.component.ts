@@ -7,6 +7,7 @@ import { Generador } from "../../../../Backend/build/Generador/Generador";
 import { N_Ast } from "../../../../Backend/build/Ast/Ast";
 import { Entorno } from "../../../../Backend/build/Entorno/Entorno";
 import { Func_native } from "../../../../Backend/build/Generador/FuncNativas";
+import { Funciont } from "../../../../Backend/build/Instrucciones/Funciones/Funciont";
 import Parser from "../../../../Backend/Gramatica/Gramatica";
 
 
@@ -79,10 +80,29 @@ export class HomeComponent implements OnInit {
     let imprimirtrue = nativa.getImprimirctrue();
     let imprimirfalse = nativa.getImprimircfalse();
     let imprimirnull = nativa.getImprimircnull();
-    //ejecutamos traduccion
+    //ejecutamos funciones
     for(const Instruccion of this.ast){
       try {
-        const valor=Instruccion.ejecutar(entorno);
+        if(Instruccion instanceof Funciont){
+          Instruccion.ejecutar(entorno);
+        }
+      } catch (err) {
+        L_Errores.push(err);
+      }
+    }
+    let cadtem2 = "/**** FUNCIONES ****/\n";
+    //Intrucciones de Imprimir funciones
+    for(let datos of gener.codigo){
+      cadtem2 += "  " + datos + '\n';
+    }
+
+    //ejecutamos traduccion
+    gener.codigo = new Array();
+    for(const Instruccion of this.ast){
+      try {
+        if(!(Instruccion instanceof Funciont)){
+          Instruccion.ejecutar(entorno);
+        }
       } catch (err) {
         L_Errores.push(err);
       }
@@ -107,6 +127,8 @@ export class HomeComponent implements OnInit {
     cadtem += imprimirtrue;
     cadtem += imprimirfalse;
     cadtem += imprimirnull;
+    //Funciones declaradas
+    cadtem += cadtem2
     cadtem += "/**** MAIN ****/\n";
     cadtem += "int main() { \n";
     //Intrucciones de Imprimir

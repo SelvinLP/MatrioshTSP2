@@ -50,8 +50,9 @@ export class Declaracion extends Instruccion{
         const generator = Generador.getInstancia();
         let variable=entorno.obtenervar(this.id);
         if(variable?.global){
+            generator.addComentario("DECLARACION");
             if(this.tipo.tipo == Tipos.BOOLEAN){
-                generator.addComentario("DECLARACION");
+                
                 const etiqnueva = generator.newEtiq();
                 generator.addEtiq(nvalor.Ltrue);
                 generator.setstack(variable.pos,'1');
@@ -59,11 +60,13 @@ export class Declaracion extends Instruccion{
                 generator.addEtiq(nvalor.Lfalse);
                 generator.setstack(variable.pos,'0');
                 generator.addEtiq(etiqnueva);
-                generator.addComentario("FIN DECLARACION");
+                
             }else{
                 generator.setstack(variable.pos,nvalor.valor);
             }
+            generator.addComentario("FIN DECLARACION");
         }else{
+            generator.addComentario("DECLARACION");
             const temnueva = generator.newTem(); 
             //generator.freeTemp(temp);
             generator.addExp(temnueva, 'p', variable?.pos,'+');
@@ -75,10 +78,10 @@ export class Declaracion extends Instruccion{
                 generator.addEtiq(nvalor.Lfalse);
                 generator.setstack(temnueva,'0');
                 generator.addEtiq(tempetiq);
-                }
-                else{
+            }else{
                     generator.setstack(temnueva,nvalor.valor);
-                }
+            }
+            generator.addComentario("FIN DECLARACION");
         }
     }
 

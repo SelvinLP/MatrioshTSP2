@@ -64,4 +64,22 @@ export class Entorno{
         let retorno = this.funciones.get(id);
         return retorno;
     }
+
+    public setentfunc(newfunc : SimboloFunc, retorno : string){
+        this.actualFunc = newfunc;
+        this.size = 1; 
+        this.return = retorno;
+    }
+
+    public buscarfunc(id: string) : SimboloFunc | null{
+        let entorno : Entorno | null = this;
+        while(entorno != null){
+            const nfunc = entorno.funciones.get(id);
+            if(nfunc != undefined){
+                return nfunc;
+            }
+            entorno = entorno.anterior;
+        }
+        return null;
+    }
 }

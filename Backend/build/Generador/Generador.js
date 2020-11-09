@@ -7,6 +7,7 @@ var Generador = /** @class */ (function () {
         this.temporal = 0;
         this.etiqueta = 0;
         this.codigo = new Array();
+        this.tempstorage = new Set();
     }
     //Obtenemos la instancia
     Generador.getInstancia = function () {
@@ -101,6 +102,66 @@ var Generador = /** @class */ (function () {
     Generador.prototype.llamarfunc = function (cad) {
         var cadtem = this.sfunc + cad + "();";
         this.codigo.push(cadtem);
+    };
+    //Para temporales en funciones
+    Generador.prototype.gettempstorage = function () {
+        return this.tempstorage;
+    };
+    Generador.prototype.clearTempStorage = function () {
+        this.tempstorage.clear();
+    };
+    Generador.prototype.setTempStorage = function (tempSt) {
+        this.tempstorage = tempSt;
+    };
+    //funciones
+    Generador.prototype.addinifunc = function (id) {
+        var cadtem = "\nint " + id + "(){";
+        this.codigo.push(cadtem);
+    };
+    Generador.prototype.addfinfunc = function () {
+        var cadtem = "}";
+        this.codigo.push(cadtem);
+    };
+    Generador.prototype.addTemp = function (temp) {
+        if (!this.tempstorage.has(temp))
+            this.tempstorage.add(temp);
+    };
+    //guardar temporales en funciones
+    Generador.prototype.guardartems = function (entorno) {
+        var _this = this;
+        if (this.tempstorage.size > 0) {
+            var temp_1 = this.newTem();
+            var size_1 = 0;
+            this.addComentario('Guardando temporales');
+            this.addExp(temp_1, 'p', entorno.size, '+');
+            this.tempstorage.forEach(function (value) {
+                size_1++;
+                _this.setstack(temp_1, value);
+                if (size_1 != _this.tempstorage.size)
+                    _this.addExp(temp_1, temp_1, '1', '+');
+            });
+            this.addComentario('Fin Guardando temporales');
+        }
+        var ptr = entorno.size;
+        entorno.size = ptr + this.tempstorage.size;
+        return ptr;
+    };
+    Generador.prototype.recoverTemps = function (entorno, pos) {
+        var _this = this;
+        if (this.tempstorage.size > 0) {
+            var temp_2 = this.newTem();
+            var size_2 = 0;
+            this.addComentario('Obteniendo temporales');
+            this.addExp(temp_2, 'p', pos, '+');
+            this.tempstorage.forEach(function (value) {
+                size_2++;
+                _this.getstack(value, temp_2);
+                if (size_2 != _this.tempstorage.size)
+                    _this.addExp(temp_2, temp_2, '1', '+');
+            });
+            this.addComentario('Fin Obteniendo temporales');
+            entorno.size = pos;
+        }
     };
     return Generador;
 }());

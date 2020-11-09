@@ -69,8 +69,8 @@ var Declaracion = /** @class */ (function (_super) {
         var generator = Generador_1.Generador.getInstancia();
         var variable = entorno.obtenervar(this.id);
         if (variable === null || variable === void 0 ? void 0 : variable.global) {
+            generator.addComentario("DECLARACION");
             if (this.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
-                generator.addComentario("DECLARACION");
                 var etiqnueva = generator.newEtiq();
                 generator.addEtiq(nvalor.Ltrue);
                 generator.setstack(variable.pos, '1');
@@ -78,13 +78,14 @@ var Declaracion = /** @class */ (function (_super) {
                 generator.addEtiq(nvalor.Lfalse);
                 generator.setstack(variable.pos, '0');
                 generator.addEtiq(etiqnueva);
-                generator.addComentario("FIN DECLARACION");
             }
             else {
                 generator.setstack(variable.pos, nvalor.valor);
             }
+            generator.addComentario("FIN DECLARACION");
         }
         else {
+            generator.addComentario("DECLARACION");
             var temnueva = generator.newTem();
             //generator.freeTemp(temp);
             generator.addExp(temnueva, 'p', variable === null || variable === void 0 ? void 0 : variable.pos, '+');
@@ -100,6 +101,7 @@ var Declaracion = /** @class */ (function (_super) {
             else {
                 generator.setstack(temnueva, nvalor.valor);
             }
+            generator.addComentario("FIN DECLARACION");
         }
     };
     Declaracion.prototype.ejecutarast = function (ast) {

@@ -47,6 +47,7 @@
     const {Continue} = require('../build/Instrucciones/Continue');
     const { Inct } = require('../build/Instrucciones/IncyDec/Inc');
     const { Dect } = require('../build/Instrucciones/IncyDec/Dec');
+    const {Returnt} = require('../build/Instrucciones/Returnt');
 
 %}
 
@@ -200,6 +201,8 @@ Instruccion:
     | Switcht               {$$=$1;}
     | BreakyContinuet       {$$=$1;}
     | Funciones             {$$=$1;}
+    | Returnt               {$$=$1;}
+    | Call                  {$$ = new Call($1,@1.first_line,@1.first_column);}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la Instruccion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 
@@ -342,15 +345,10 @@ BreakyContinuet:
 ;
 
 Funciones:
-    tk_function tk_id '(' PosibleParametrosFucnc ')' Posibleretorno '{' Posiblecuerpo '}'
+    tk_function tk_id '(' PosibleParametrosFucnc ')' TipoDato Cuerpo 
     {
-        $$ = new Funcion($2, $4, $6, $8, @1.first_line, @1.first_column);
+        $$ = new Funciont($2, $4, $6, $7, @1.first_line, @1.first_column);
     }
-    | tk_function tk_id '(' PosibleParametrosFucnc ')' Posibleretorno '{' '}'
-    {
-        $$ = new Funcion($2, $4, $6, null, @1.first_line, @1.first_column);
-    }
-
 ;
 
 PosibleParametrosFucnc:
@@ -365,19 +363,21 @@ PosibleParametrosFucnc:
 ;
 
 Parametros:
-    Parametros ',' tk_id ':' TipoDato{
+    Parametros ',' tk_id  TipoDato{
         $$ = $1;
-        $$.push(new Paramfunc($3,$5));
+        $$.push(new Paramfunc($3,$4));
     }
-    | tk_id ':' TipoDato{
+    | tk_id  TipoDato{
         
-        $$ = [new Paramfunc($1,$3)];
+        $$ = [new Paramfunc($1,$2)];
     }
 ;
 
-Posibleretorno:
-    ':' TipoDato                                {$$=$2}  
-    | %empty                                    {$$=null;}
+Call: 
+    tk_id '(' ListaExp ')' ';'
+    {
+        $$ = new AssignmentFunc($1,$3,null,@1.first_line,@1.first_column);
+    }
 ;
 
 Tipodeclaracion:
@@ -389,20 +389,6 @@ Tipodeclaracion:
     | ':' tk_array '<' TipoDato '>'     { $$ = new Tipo(Tipos.ARRAY, $4); }
     | %empty                            { $$ = null; } 
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error al definir tipo "+yytext,"",this._$.first_line,this._$.first_column))}
-;
-
-Posiblearray:
-    arrayllaves                         { $$ = $1; }
-    | %empty                            { $$ = null; } 
-;
-
-arrayllaves:
-    arrayllaves '[' ']'
-    {
-    }
-    | '['']'
-    {
-    }  
 ;
 
 PosibleAsignacion:
@@ -419,6 +405,24 @@ Asigid:
     {
         $$ = new AsigId($1,null,@1.first_line,@1.first_column);
     }
+;
+
+
+Posiblearray:
+    arrayllaves                         {$$=$1;}
+    | %empty                            {$$=null;} 
+;
+
+arrayllaves:
+    arrayllaves '[' ']'
+    {
+        let valor=new L_Array(null,$1);
+        $$=[valor];
+    }
+    | '['']'
+    {
+        $$=[new L_Array(null,null)];
+    }  
 ;
 
 Expresion:
@@ -618,6 +622,9 @@ Acceso:
     {
         $$ = $1;
     }
+    | AccessFunc{
+        $$ = $1;
+    }
 ;
 
 AccesoId: 
@@ -637,4 +644,15 @@ TipoDato:
     | ':' tk_boolean                    { $$ = new Tipo(Tipos.BOOLEAN); }
     | ':' tk_void                       { $$ = new Tipo(Tipos.NULL); }
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error al definir tipo "+yytext,"",this._$.first_line,this._$.first_column))}
+;
+
+Returnt:
+    tk_return ';'
+    {
+        $$=new Returnt(null,@1.first_line, @1.first_column);
+    }
+    | tk_return Expresion ';'
+    {
+        $$=new Returnt($2,@1.first_line, @1.first_column);
+    }
 ;

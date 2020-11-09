@@ -29,9 +29,12 @@ export class Statement extends Instruccion{
         //Seccion de items de array
         let result:N_Ast = {posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
         for(const instr of this.code){
-            let temresult = instr.ejecutarast(result);
-            result.posdes=temresult.posdes;
-            result.cadena=temresult.cadena;
+            try {
+                let temresult = instr.ejecutarast(result);
+                result.posdes=temresult.posdes;
+                result.cadena=temresult.cadena;
+            } catch (error) {}
+            
         }
 
         return result;

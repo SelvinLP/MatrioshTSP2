@@ -55,6 +55,22 @@ var Entorno = /** @class */ (function () {
         var retorno = this.funciones.get(id);
         return retorno;
     };
+    Entorno.prototype.setentfunc = function (newfunc, retorno) {
+        this.actualFunc = newfunc;
+        this.size = 1;
+        this.return = retorno;
+    };
+    Entorno.prototype.buscarfunc = function (id) {
+        var entorno = this;
+        while (entorno != null) {
+            var nfunc = entorno.funciones.get(id);
+            if (nfunc != undefined) {
+                return nfunc;
+            }
+            entorno = entorno.anterior;
+        }
+        return null;
+    };
     return Entorno;
 }());
 exports.Entorno = Entorno;

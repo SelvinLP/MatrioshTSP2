@@ -1,14 +1,18 @@
+import { Entorno } from "../Entorno/Entorno";
+
 export class Generador{
     private static generator: Generador;
     private temporal : number;
     private etiqueta : number;
     private codigo : string[];
+    private tempstorage : Set<string>;
     sfunc = "";
 
     private constructor(){
         this.temporal = 0;
         this.etiqueta = 0;
         this.codigo = new Array();
+        this.tempstorage = new Set();
     }
 
     //Obtenemos la instancia
@@ -119,5 +123,73 @@ export class Generador{
     public llamarfunc(cad:string){
         const cadtem = this.sfunc + cad +"();";
         this.codigo.push(cadtem);
+    }
+
+    //Para temporales en funciones
+    public gettempstorage(){
+        return this.tempstorage;
+    }
+
+    public clearTempStorage(){
+        this.tempstorage.clear();
+    }
+
+    public setTempStorage(tempSt: Set<string>){
+        this.tempstorage = tempSt;
+    }
+
+    //funciones
+    public addinifunc(id: string){
+        const cadtem = "\nint " + id +"(){";
+        this.codigo.push(cadtem);
+    }
+
+    public addfinfunc(){
+        const cadtem = "}";
+        this.codigo.push(cadtem);
+    }
+
+    public addTemp(temp: string){
+        if(!this.tempstorage.has(temp))
+            this.tempstorage.add(temp);
+    }
+
+    //guardar temporales en funciones
+    public guardartems(entorno: Entorno) : number{
+        if(this.tempstorage.size > 0){
+            const temp = this.newTem(); 
+            let size = 0;
+
+            this.addComentario('Guardando temporales');
+            this.addExp(temp,'p',entorno.size,'+');
+            this.tempstorage.forEach((value)=>{
+                size++;
+                this.setstack(temp,value);
+                if(size !=  this.tempstorage.size)
+                    this.addExp(temp,temp,'1','+');
+            });
+            this.addComentario('Fin Guardando temporales');
+        }
+        let ptr = entorno.size;
+        entorno.size = ptr + this.tempstorage.size;
+        return ptr;
+    }
+
+    public recoverTemps(entorno: Entorno, pos: number){
+        if(this.tempstorage.size > 0){
+            const temp = this.newTem(); 
+            let size = 0;
+
+            this.addComentario('Obteniendo temporales');
+            this.addExp(temp,'p',pos,'+');
+            this.tempstorage.forEach((value)=>{
+                size++;
+                this.getstack(value,temp);
+                if(size !=  this.tempstorage.size)
+                    this.addExp(temp,temp,'1','+');
+            });
+            this.addComentario('Fin Obteniendo temporales');
+            entorno.size = pos;
+        }
     }
 }

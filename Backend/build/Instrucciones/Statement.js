@@ -46,9 +46,12 @@ var Statement = /** @class */ (function (_super) {
         var result = { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
         for (var _i = 0, _a = this.code; _i < _a.length; _i++) {
             var instr = _a[_i];
-            var temresult = instr.ejecutarast(result);
-            result.posdes = temresult.posdes;
-            result.cadena = temresult.cadena;
+            try {
+                var temresult = instr.ejecutarast(result);
+                result.posdes = temresult.posdes;
+                result.cadena = temresult.cadena;
+            }
+            catch (error) { }
         }
         return result;
     };
