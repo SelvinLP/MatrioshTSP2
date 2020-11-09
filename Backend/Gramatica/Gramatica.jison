@@ -16,6 +16,7 @@
     const { Pott } = require('../build/Expresiones/Aritmeticas/Potencia');
     const { AsigId } = require('../build/Expresiones/Asignaciones/Asigid');
     const { AccesoId } = require('../build/Expresiones/AccesoId');
+    const { ExpFunc } = require('../build/Expresiones/ExpFunc');
 
     const { Tolower } = require('../build/Expresiones/Opestring/Tolower');
     const { ToUpper } = require('../build/Expresiones/Opestring/Toupper');
@@ -37,11 +38,14 @@
     const {Ifelse} = require('../build/Instrucciones/Ifelse');
     const {While} = require('../build/Instrucciones/While');
     const {Dowhile} = require('../build/Instrucciones/Dowhile');
-    const {For} = require('../build/Instrucciones/For');
+    const {For} = require('../build/Instrucciones/For/For');
+    const {Forin} = require('../build/Instrucciones/For/Forin');
+    const {Forof} = require('../build/Instrucciones/For/Forof');
     const { SwitchCase, Case } = require('../build/Instrucciones/Switch');
 
     const { Paramfunc } = require('../build/Instrucciones/Funciones/Parametrosfunc');
     const { Funciont } = require('../build/Instrucciones/Funciones/Funciont');
+    const {Llamarfuncion} = require('../build/Instrucciones/Call');
 
     const {Break} = require('../build/Instrucciones/Break');
     const {Continue} = require('../build/Instrucciones/Continue');
@@ -197,12 +201,14 @@ Instruccion:
     | Whilet                {$$=$1;}
     | Dowhilet              {$$=$1;}
     | Fort                  {$$=$1;}
+    | Forint                {$$=$1;}
+    | Foroft                {$$=$1;}
     | Breakt                {$$=$1;}
     | Switcht               {$$=$1;}
     | BreakyContinuet       {$$=$1;}
     | Funciones             {$$=$1;}
     | Returnt               {$$=$1;}
-    | Call                  {$$ = new Call($1,@1.first_line,@1.first_column);}
+    | Call ';'              {$$ = new Llamarfuncion($1,@1.first_line,@1.first_column);}
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la Instruccion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 
@@ -284,6 +290,29 @@ Fort:
         $$ = new For($3, $4, $6, $8, @1.first_line, @1.first_column);
     }
 ;
+
+Forint:
+    tk_for '(' tk_let tk_id tk_in tk_id ')' Cuerpo
+    {
+        //$$ = new Forin(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+    }
+    | tk_for '(' tk_const tk_id tk_in tk_id ')' Cuerpo
+    {
+        //$$ = new Forin(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+    }
+;
+
+Foroft:
+    tk_for '(' tk_let tk_id tk_of tk_id ')' Cuerpo
+    {
+        //$$ = new Forof(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+    }
+    | tk_for '(' tk_const tk_id tk_of tk_id ')' Cuerpo
+    {
+        //$$ = new Forof(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+    }
+;
+
 
 incydecfor:
     Asigid '++' 
@@ -374,9 +403,9 @@ Parametros:
 ;
 
 Call: 
-    tk_id '(' ListaExp ')' ';'
+    tk_id '(' ListaExp ')' 
     {
-        $$ = new AssignmentFunc($1,$3,null,@1.first_line,@1.first_column);
+        $$ = new ExpFunc($1,$3,null,@1.first_line,@1.first_column);
     }
 ;
 
@@ -635,6 +664,12 @@ AccesoId:
     | tk_id 
     {
         $$ = new AccesoId($1,null,@1.first_line,@1.first_column);
+    }
+;
+
+AccessFunc
+    : Call {
+        $$ = $1;
     }
 ;
 

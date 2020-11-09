@@ -119,7 +119,7 @@ var Generador = /** @class */ (function () {
         this.codigo.push(cadtem);
     };
     Generador.prototype.addfinfunc = function () {
-        var cadtem = "}";
+        var cadtem = this.sfunc + "return 0;\n}";
         this.codigo.push(cadtem);
     };
     Generador.prototype.addTemp = function (temp) {

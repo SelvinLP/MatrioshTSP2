@@ -145,7 +145,7 @@ export class Generador{
     }
 
     public addfinfunc(){
-        const cadtem = "}";
+        const cadtem = this.sfunc + "return 0;\n}";
         this.codigo.push(cadtem);
     }
 
