@@ -557,11 +557,7 @@ Operastring:
     {
         $$ = new ToUpper($1, @1.first_line, @1.first_column);
     }
-    | AccesoId '.' tk_concat '(' AccesoId ')'
-    {
-        $$ = new Concat($1, $5, @1.first_line, @1.first_column);
-    }
-    | AccesoId '.' tk_concat '(' onlycadena ')'
+    | AccesoId '.' tk_concat '(' Listacadenas ')'
     {
         $$ = new Concat($1, $5, @1.first_line, @1.first_column);
     }
@@ -573,11 +569,7 @@ Operastring:
     {
         $$ = new StrLength($1, @1.first_line, @1.first_column);
     }
-    | onlycadena '.' tk_concat '(' AccesoId ')'
-    {
-        $$ = new Concat($1, $5, @1.first_line, @1.first_column);
-    }
-    | onlycadena '.' tk_concat '(' onlycadena ')'
+    | onlycadena '.' tk_concat '(' Listacadenas ')'
     {
         $$ = new Concat($1, $5, @1.first_line, @1.first_column);
     }
@@ -596,6 +588,27 @@ Operastring:
     | onlycadena '.' tk_length 
     {
         $$ = new StrLength($1, @1.first_line, @1.first_column);
+    }
+;
+
+Listacadenas:
+    Listacadenas ',' onlycadena
+    {
+        $1.push($3); 
+        $$ = $1;
+    }
+    | Listacadenas ',' AccesoId
+    {
+        $1.push($3); 
+        $$ = $1;
+    }
+    | onlycadena
+    {
+        $$ = [$1];
+    }
+    | AccesoId
+    {
+        $$ = [$1];
     }
 ;
 

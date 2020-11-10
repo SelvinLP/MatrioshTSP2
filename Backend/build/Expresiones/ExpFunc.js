@@ -62,8 +62,8 @@ var ExpFunc = /** @class */ (function (_super) {
             generator_1.recoverTemps(entorno, size);
             generator_1.addTemp(temp_1);
             if (funcactual.tipo.tipo != Tipos_1.Tipos.BOOLEAN) {
-                return new Retorno_1.Retorno(temp_1, funcactual.tipo, true);
                 generator_1.addComentario("FIN LLAMADA A FUNCION");
+                return new Retorno_1.Retorno(temp_1, funcactual.tipo, true);
             }
             var retorno = new Retorno_1.Retorno('', funcactual.tipo, false);
             this.Ltrue = this.Ltrue == '' ? generator_1.newEtiq() : this.Ltrue;

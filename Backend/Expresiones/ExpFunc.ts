@@ -49,8 +49,8 @@ export class ExpFunc extends Expresion{
             generator.addTemp(temp);
 
             if (funcactual.tipo.tipo != Tipos.BOOLEAN){
-                return new Retorno(temp,funcactual.tipo,true);
                 generator.addComentario("FIN LLAMADA A FUNCION");
+                return new Retorno(temp,funcactual.tipo,true);
             } 
 
             const retorno = new Retorno('', funcactual.tipo, false);

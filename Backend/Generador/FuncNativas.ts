@@ -247,30 +247,40 @@ export class Func_native{
         const etiq30 = generador.newEtiq();
         const etiq31 = generador.newEtiq();      
         const tem22 = generador.newTem();       // Entrada por de h
-        const tem23 = generador.newTem();    
+        const tem23 = generador.newTem();
+              // Retorno se agrego despues
         let retorn:string = "";
         retorn += 'void tolowercase_str() {\n';
+        retorn += "  T29 = h;\n";
         retorn += "  " + etiq27 + ":\n";
         retorn += "  " + tem23 + " =  heap[(int)" + tem22 +"];\n";
-        retorn += "  " + tem22 + " = " + tem22 + " + 1;\n";
         retorn += "  if (" + tem23 +  " != -1) goto " + etiq28 + ";\n";
         retorn += "  goto " + etiq29 + ';\n';
 
         retorn += "  " + etiq28 + ":\n";
         retorn += "  if (" + tem23 +  " >= 65) goto " + etiq30 + ";\n";
-        retorn += "  goto " + etiq27 + ';\n';
+        retorn += "  goto L38;\n";
 
         retorn += "  " + etiq30 + ":\n";
         retorn += "  if (" + tem23 +  " <= 90) goto " + etiq31 + ";\n";
-        retorn += "  goto " + etiq27 + ';\n';
+        retorn += "  goto L38;\n";
         retorn += "  " + etiq31 + ":\n";
+        //guardar
         retorn += "  " + tem23 +  " = " + tem23 + " + 32;\n";
-        retorn += "  " + tem22 + " = " + tem22 + " - 1;\n";
-        retorn += "  heap[(int)" + tem22 +"] = " + tem23 + ";\n";
+        retorn += "  heap[(int)h] = " + tem23 + ";\n";
+        retorn += "  h = h + 1;\n";
+        retorn += "  " + tem22 + " = " + tem22 + " + 1;\n";
+        retorn += "  goto " + etiq27 + ';\n';
+
+        retorn += "  L38:\n";
+        retorn += "  heap[(int)h] = " + tem23 + ";\n";
+        retorn += "  h = h + 1;\n";
         retorn += "  " + tem22 + " = " + tem22 + " + 1;\n";
         retorn += "  goto " + etiq27 + ';\n';
 
         retorn += "  " + etiq29 + ":\n";
+        retorn += "  heap[(int)h] = -1;\n"
+        retorn += "  h = h + 1;\n"
         retorn += "  return;\n";
         retorn += '}\n';
         return retorn;
@@ -287,27 +297,36 @@ export class Func_native{
         const tem25 = generador.newTem();    
         let retorn:string = "";
         retorn += 'void touppercase_str() {\n';
+        retorn += "  T30 = h;\n";
         retorn += "  " + etiq32 + ":\n";
         retorn += "  " + tem25 + " =  heap[(int)" + tem24 +"];\n";
-        retorn += "  " + tem24 + " = " + tem24 + " + 1;\n";
         retorn += "  if (" + tem25 +  " != -1) goto " + etiq33 + ";\n";
         retorn += "  goto " + etiq34 + ';\n';
 
         retorn += "  " + etiq33 + ":\n";
         retorn += "  if (" + tem25 +  " >= 97) goto " + etiq35 + ";\n";
-        retorn += "  goto " + etiq32 + ';\n';
+        retorn += "  goto L39;\n";
 
         retorn += "  " + etiq35 + ":\n";
         retorn += "  if (" + tem25 +  " <= 122) goto " + etiq36 + ";\n";
-        retorn += "  goto " + etiq32 + ';\n';
+        retorn += "  goto L39;\n";
         retorn += "  " + etiq36 + ":\n";
         retorn += "  " + tem25 +  " = " + tem25 + " - 32;\n";
-        retorn += "  " + tem24 + " = " + tem24 + " - 1;\n";
-        retorn += "  heap[(int)" + tem24 +"] = " + tem25 + ";\n";
+        //guardar
+        retorn += "  heap[(int)h] = " +tem25 + ";\n"
+        retorn += "  h = h + 1;\n";
+        retorn += "  " + tem24 + " = " + tem24 + " + 1;\n";
+        retorn += "  goto " + etiq32 + ';\n';
+
+        retorn += "  L39:\n";
+        retorn += "  heap[(int)h] = " +tem25 + ";\n"
+        retorn += "  h = h + 1;\n";
         retorn += "  " + tem24 + " = " + tem24 + " + 1;\n";
         retorn += "  goto " + etiq32 + ';\n';
 
         retorn += "  " + etiq34 + ":\n";
+        retorn += "  heap[(int)h] = -1;\n"
+        retorn += "  h = h + 1;\n"
         retorn += "  return;\n";
         retorn += '}\n';
         return retorn;
@@ -319,6 +338,13 @@ export class Func_native{
         const tem26 = generador.newTem();       // Entrada por de h
         const tem27 = generador.newTem();       // Contador  
         const tem28 = generador.newTem();       // Temporal
+
+        //temporales extras por error
+        const tem29 = generador.newTem();       // Era de tolower  
+        const tem30 = generador.newTem();       // Era de toupper
+        const etiq38 = generador.newEtiq();     // Era de tolower 
+        const etiq39 = generador.newEtiq();     // Era de toupper
+
         let retorn:string = "";
         retorn += 'void length_str() {\n';
         retorn += "  " + tem27 + " = -1;\n";

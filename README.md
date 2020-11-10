@@ -11,6 +11,8 @@ Proyecto 2 de Organizacion de Lenguajes y Compiladores 2 2s 2020
 * Do while
 * Switch 
 * For
+* Funciones recursivas
+* Ternario
   
 ## Comandos 🔧
 _Al descargar de github utilizar_

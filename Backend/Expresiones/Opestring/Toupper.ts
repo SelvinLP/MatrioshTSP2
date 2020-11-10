@@ -14,13 +14,17 @@ export class ToUpper extends Expresion{
     public ejecutar(entorno:Entorno): Retorno{
         const generador = Generador.getInstancia();
         const nvalor = this.valor.ejecutar(entorno);
+        const ntem = generador.newTem();
         if(nvalor.tipo.tipo == Tipos.STRING){
             generador.addExp("T24",nvalor.valor);
             //llamamos
             generador.sigEnt(entorno.size);
             generador.llamarfunc('touppercase_str');
+            generador.addExp(ntem,"T30");
             generador.regEnt(entorno.size);
-            return nvalor;
+
+            const retorn = new Retorno(ntem, new Tipo(Tipos.STRING), true);
+            return retorn;
         }else{
             throw new N_Error('Semantico','Tipo no compatible para toUpperCase()','', this.linea, this.columna);
         }

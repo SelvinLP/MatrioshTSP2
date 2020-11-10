@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tolower = void 0;
 var Expresion_1 = require("../../Abstracto/Expresion");
+var Retorno_1 = require("../../Abstracto/Retorno");
 var Generador_1 = require("../../Generador/Generador");
 var Tipos_1 = require("../../Otros/Tipos");
 var N_Error_1 = require("../../Errores/N_Error");
@@ -28,13 +29,16 @@ var Tolower = /** @class */ (function (_super) {
     Tolower.prototype.ejecutar = function (entorno) {
         var generador = Generador_1.Generador.getInstancia();
         var nvalor = this.valor.ejecutar(entorno);
+        var ntem = generador.newTem();
         if (nvalor.tipo.tipo == Tipos_1.Tipos.STRING) {
             generador.addExp("T22", nvalor.valor);
             //llamamos
             generador.sigEnt(entorno.size);
             generador.llamarfunc('tolowercase_str');
+            generador.addExp(ntem, "T29");
             generador.regEnt(entorno.size);
-            return nvalor;
+            var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
+            return retorn;
         }
         else {
             throw new N_Error_1.N_Error('Semantico', 'Tipo no compatible para toLowerCase()', '', this.linea, this.columna);
