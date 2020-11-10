@@ -26,8 +26,8 @@ var Asignacion = /** @class */ (function (_super) {
         return _this;
     }
     Asignacion.prototype.ejecutar = function (entorno) {
-        var nid = this.id.ejecutar(entorno);
         var value = this.value.ejecutar(entorno);
+        var nid = this.id.ejecutar(entorno);
         var generador = Generador_1.Generador.getInstancia();
         var simbolo = nid.simbol;
         if (simbolo === null || simbolo === void 0 ? void 0 : simbolo.global) {

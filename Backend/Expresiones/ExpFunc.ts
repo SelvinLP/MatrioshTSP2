@@ -21,8 +21,10 @@ export class ExpFunc extends Expresion{
                 
             const paramsValues = new Array<Retorno>();
             const generator = Generador.getInstancia();
-
-            const size = generator.guardartems(entorno); //Guardo temporales
+            generator.addComentario("LLAMADA A FUNCION");
+            //guardo variables dentro del entorno
+            const size = generator.guardartems(entorno); 
+            //Guardo temporales
             this.params.forEach((param)=>{
                 paramsValues.push(param.ejecutar(entorno));
             })
@@ -48,6 +50,7 @@ export class ExpFunc extends Expresion{
 
             if (funcactual.tipo.tipo != Tipos.BOOLEAN){
                 return new Retorno(temp,funcactual.tipo,true);
+                generator.addComentario("FIN LLAMADA A FUNCION");
             } 
 
             const retorno = new Retorno('', funcactual.tipo, false);
@@ -57,6 +60,7 @@ export class ExpFunc extends Expresion{
             generator.addGoto(this.Lfalse);
             retorno.Ltrue = this.Ltrue;
             retorno.Lfalse = this.Lfalse;
+            generator.addComentario("FIN LLAMADA A FUNCION");
             return retorno;
         }else{
             throw new N_Error('Semantico','La funcion no existe: ' + this.id,'', this.linea,this.columna);

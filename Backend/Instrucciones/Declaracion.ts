@@ -43,6 +43,8 @@ export class Declaracion extends Instruccion{
                 //validaciones codigo intermedio
                 this.codigointermedio(entorno,resp);
             }
+        }else{
+
         }
     }
 
@@ -66,7 +68,7 @@ export class Declaracion extends Instruccion{
             }
             generator.addComentario("FIN DECLARACION");
         }else{
-            generator.addComentario("DECLARACION");
+            generator.addComentario("DECLARACION EN FUNCION");
             const temnueva = generator.newTem(); 
             //generator.freeTemp(temp);
             generator.addExp(temnueva, 'p', variable?.pos,'+');
@@ -79,7 +81,7 @@ export class Declaracion extends Instruccion{
                 generator.setstack(temnueva,'0');
                 generator.addEtiq(tempetiq);
             }else{
-                    generator.setstack(temnueva,nvalor.valor);
+                generator.setstack(temnueva,nvalor.valor);
             }
             generator.addComentario("FIN DECLARACION");
         }

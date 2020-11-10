@@ -123,8 +123,14 @@ var Generador = /** @class */ (function () {
         this.codigo.push(cadtem);
     };
     Generador.prototype.addTemp = function (temp) {
-        if (!this.tempstorage.has(temp))
+        if (!this.tempstorage.has(temp)) {
             this.tempstorage.add(temp);
+        }
+    };
+    Generador.prototype.delTemp = function (temp) {
+        if (this.tempstorage.has(temp)) {
+            this.tempstorage.delete(temp);
+        }
     };
     //guardar temporales en funciones
     Generador.prototype.guardartems = function (entorno) {

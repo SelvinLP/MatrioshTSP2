@@ -436,22 +436,9 @@ Asigid:
     }
 ;
 
-
 Posiblearray:
-    arrayllaves                         {$$=$1;}
+    '['']'                              {$$=[];}
     | %empty                            {$$=null;} 
-;
-
-arrayllaves:
-    arrayllaves '[' ']'
-    {
-        let valor=new L_Array(null,$1);
-        $$=[valor];
-    }
-    | '['']'
-    {
-        $$=[new L_Array(null,null)];
-    }  
 ;
 
 Expresion:

@@ -36,7 +36,10 @@ var ExpFunc = /** @class */ (function (_super) {
             }
             var paramsValues_1 = new Array();
             var generator_1 = Generador_1.Generador.getInstancia();
-            var size = generator_1.guardartems(entorno); //Guardo temporales
+            generator_1.addComentario("LLAMADA A FUNCION");
+            //guardo variables dentro del entorno
+            var size = generator_1.guardartems(entorno);
+            //Guardo temporales
             this.params.forEach(function (param) {
                 paramsValues_1.push(param.ejecutar(entorno));
             });
@@ -60,6 +63,7 @@ var ExpFunc = /** @class */ (function (_super) {
             generator_1.addTemp(temp_1);
             if (funcactual.tipo.tipo != Tipos_1.Tipos.BOOLEAN) {
                 return new Retorno_1.Retorno(temp_1, funcactual.tipo, true);
+                generator_1.addComentario("FIN LLAMADA A FUNCION");
             }
             var retorno = new Retorno_1.Retorno('', funcactual.tipo, false);
             this.Ltrue = this.Ltrue == '' ? generator_1.newEtiq() : this.Ltrue;
@@ -68,6 +72,7 @@ var ExpFunc = /** @class */ (function (_super) {
             generator_1.addGoto(this.Lfalse);
             retorno.Ltrue = this.Ltrue;
             retorno.Lfalse = this.Lfalse;
+            generator_1.addComentario("FIN LLAMADA A FUNCION");
             return retorno;
         }
         else {

@@ -14,14 +14,14 @@ export class Returnt extends Instruccion{
     }
 
     public ejecutar(entorno : Entorno) {
-        const nvalor = this.valoraretorn != null? this.valoraretorn.ejecutar(entorno) : new Retorno('0', new Tipo(Tipos.NULL), false);
+        const nvalor = this.valoraretorn?.ejecutar(entorno) || new Retorno('0',new Tipo(Tipos.NULL), false);
         const actfunc = entorno.actualFunc;
         const generador = Generador.getInstancia();
 
         if (actfunc == null){
             throw new N_Error('Semantico','Return fuera de una funcion','', this.linea,this.columna);
         }
-        
+        generador.addComentario("RETORNO");
         if(actfunc.tipo.tipo == Tipos.BOOLEAN){
             const templabel = generador.newEtiq();
             generador.addEtiq(nvalor.Ltrue);
@@ -30,11 +30,12 @@ export class Returnt extends Instruccion{
             generador.addEtiq(nvalor.Lfalse);
             generador.setstack('p', '0');
             generador.addEtiq(templabel);
-        }else if(actfunc.tipo.tipo == Tipos.BOOLEAN){
+        }else if(actfunc.tipo.tipo != Tipos.NULL){
             generador.setstack('p', nvalor.valor);
         }
 
         generador.addGoto(entorno.return || '');
+        generador.addComentario("FIN RETORNO");
     }
 
     public ejecutarast(ast:N_Ast):N_Ast{

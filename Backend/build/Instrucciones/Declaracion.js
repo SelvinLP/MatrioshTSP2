@@ -64,6 +64,8 @@ var Declaracion = /** @class */ (function (_super) {
                 this.codigointermedio(entorno, resp);
             }
         }
+        else {
+        }
     };
     Declaracion.prototype.codigointermedio = function (entorno, nvalor) {
         var generator = Generador_1.Generador.getInstancia();
@@ -85,7 +87,7 @@ var Declaracion = /** @class */ (function (_super) {
             generator.addComentario("FIN DECLARACION");
         }
         else {
-            generator.addComentario("DECLARACION");
+            generator.addComentario("DECLARACION EN FUNCION");
             var temnueva = generator.newTem();
             //generator.freeTemp(temp);
             generator.addExp(temnueva, 'p', variable === null || variable === void 0 ? void 0 : variable.pos, '+');

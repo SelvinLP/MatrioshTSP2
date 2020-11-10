@@ -150,8 +150,15 @@ export class Generador{
     }
 
     public addTemp(temp: string){
-        if(!this.tempstorage.has(temp))
+        if(!this.tempstorage.has(temp)){
             this.tempstorage.add(temp);
+        }
+    }
+
+    public delTemp(temp: string){
+        if(this.tempstorage.has(temp)){
+            this.tempstorage.delete(temp);
+        }
     }
 
     //guardar temporales en funciones

@@ -27,12 +27,14 @@ var Returnt = /** @class */ (function (_super) {
         return _this;
     }
     Returnt.prototype.ejecutar = function (entorno) {
-        var nvalor = this.valoraretorn != null ? this.valoraretorn.ejecutar(entorno) : new Retorno_1.Retorno('0', new Tipos_1.Tipo(Tipos_1.Tipos.NULL), false);
+        var _a;
+        var nvalor = ((_a = this.valoraretorn) === null || _a === void 0 ? void 0 : _a.ejecutar(entorno)) || new Retorno_1.Retorno('0', new Tipos_1.Tipo(Tipos_1.Tipos.NULL), false);
         var actfunc = entorno.actualFunc;
         var generador = Generador_1.Generador.getInstancia();
         if (actfunc == null) {
             throw new N_Error_1.N_Error('Semantico', 'Return fuera de una funcion', '', this.linea, this.columna);
         }
+        generador.addComentario("RETORNO");
         if (actfunc.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
             var templabel = generador.newEtiq();
             generador.addEtiq(nvalor.Ltrue);
@@ -42,10 +44,11 @@ var Returnt = /** @class */ (function (_super) {
             generador.setstack('p', '0');
             generador.addEtiq(templabel);
         }
-        else if (actfunc.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
+        else if (actfunc.tipo.tipo != Tipos_1.Tipos.NULL) {
             generador.setstack('p', nvalor.valor);
         }
         generador.addGoto(entorno.return || '');
+        generador.addComentario("FIN RETORNO");
     };
     Returnt.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";

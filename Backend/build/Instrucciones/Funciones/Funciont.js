@@ -52,6 +52,7 @@ var Funciont = /** @class */ (function (_super) {
         generador.sfunc = '\t';
         generador.addinifunc(nfuncion.id);
         this.codigo.ejecutar(newwnt);
+        //guardamos para las variables
         generador.addEtiq(Etiqreturn);
         generador.addfinfunc();
         generador.sfunc = '';

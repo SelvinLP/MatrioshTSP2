@@ -13,8 +13,8 @@ export class Asignacion extends Instruccion{
     }
 
     public ejecutar(entorno:Entorno){
-        const nid = this.id.ejecutar(entorno);
         const value = this.value.ejecutar(entorno);
+        const nid = this.id.ejecutar(entorno);
 
         const generador = Generador.getInstancia();
         const simbolo = nid.simbol;

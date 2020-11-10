@@ -50,11 +50,8 @@ var Imprimirt = /** @class */ (function (_super) {
             }
             else if (nvalor.tipo.tipo == Tipos_1.Tipos.STRING) {
                 generador.addComentario("IMPRIMIR");
-                generador.sigEnt(entorno.size);
-                generador.setstack('p', nvalor.valor);
                 generador.addExp("T0", nvalor.valor);
                 generador.llamarfunc('native_imprimir');
-                generador.regEnt(entorno.size);
             }
             else {
                 throw new N_Error_1.N_Error('Semantico', 'No se puede Imprimir ' + nvalor.tipo.tipo, '', this.linea, this.columna);

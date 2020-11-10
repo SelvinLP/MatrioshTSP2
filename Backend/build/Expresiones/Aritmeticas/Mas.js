@@ -28,9 +28,17 @@ var Mast = /** @class */ (function (_super) {
         return _this;
     }
     Mast.prototype.ejecutar = function (entorno) {
-        var nizq = this.izq.ejecutar(entorno);
-        var nder = this.der.ejecutar(entorno);
         var generador = Generador_1.Generador.getInstancia();
+        var nizq = this.izq.ejecutar(entorno);
+        //guardar variables por si se llama 
+        if (entorno.anterior != null) {
+            generador.addTemp(nizq.valor);
+        }
+        var nder = this.der.ejecutar(entorno);
+        //borramos el temporal insertado para funciones
+        if (entorno.anterior != null) {
+            generador.delTemp(nizq.valor);
+        }
         var ntem = generador.newTem();
         if (nizq.tipo.tipo == Tipos_1.Tipos.NUMBER) {
             if (nder.tipo.tipo == Tipos_1.Tipos.NUMBER) {
@@ -46,18 +54,14 @@ var Mast = /** @class */ (function (_super) {
             }
             else if (nder.tipo.tipo == Tipos_1.Tipos.STRING) {
                 generador.addExp("T15", nizq.valor);
-                generador.sigEnt(entorno.size);
                 generador.llamarfunc('number_tostring');
                 generador.addExp(ntem, "T16");
-                generador.regEnt(entorno.size);
                 //concatenar string
                 generador.addExp("T3", ntem);
                 generador.addExp("T5", nder.valor);
                 //llamamos
-                generador.sigEnt(entorno.size);
                 generador.llamarfunc('concat_string_string');
                 generador.addExp(ntem, "T2");
-                generador.regEnt(entorno.size);
                 var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
                 return retorn;
             }
@@ -99,10 +103,8 @@ var Mast = /** @class */ (function (_super) {
                 generador.addExp("T3", nuevotem);
                 generador.addExp("T5", nder.valor);
                 //llamamos
-                generador.sigEnt(entorno.size);
                 generador.llamarfunc('concat_string_string');
                 generador.addExp(ntem, "T2");
-                generador.regEnt(entorno.size);
                 var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
                 return retorn;
             }
@@ -119,30 +121,25 @@ var Mast = /** @class */ (function (_super) {
         else if (nizq.tipo.tipo == Tipos_1.Tipos.STRING) {
             if (nder.tipo.tipo == Tipos_1.Tipos.NUMBER) {
                 generador.addExp("T15", nder.valor);
-                generador.sigEnt(entorno.size);
                 generador.llamarfunc('number_tostring');
                 generador.addExp(ntem, "T16");
-                generador.regEnt(entorno.size);
                 //concatenar string
                 generador.addExp("T5", ntem);
                 generador.addExp("T3", nizq.valor);
                 //llamamos
-                generador.sigEnt(entorno.size);
                 generador.llamarfunc('concat_string_string');
                 generador.addExp(ntem, "T2");
-                generador.regEnt(entorno.size);
                 var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
                 return retorn;
             }
             else if (nder.tipo.tipo == Tipos_1.Tipos.STRING) {
+                //comprobacion de entorno
                 // para concatenar
                 generador.addExp("T3", nizq.valor);
                 generador.addExp("T5", nder.valor);
                 //llamamos
-                generador.sigEnt(entorno.size);
                 generador.llamarfunc('concat_string_string');
                 generador.addExp(ntem, "T2");
-                generador.regEnt(entorno.size);
                 var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
                 return retorn;
             }
@@ -179,10 +176,8 @@ var Mast = /** @class */ (function (_super) {
                 generador.addExp("T3", nizq.valor);
                 generador.addExp("T5", nuevotem);
                 //llamamos
-                generador.sigEnt(entorno.size);
                 generador.llamarfunc('concat_string_string');
                 generador.addExp(ntem, "T2");
-                generador.regEnt(entorno.size);
                 var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.STRING), true);
                 return retorn;
             }
