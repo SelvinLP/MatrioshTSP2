@@ -15,7 +15,9 @@
     const { Modt } = require('../build/Expresiones/Aritmeticas/Mod');
     const { Pott } = require('../build/Expresiones/Aritmeticas/Potencia');
     const { AsigId } = require('../build/Expresiones/Asignaciones/Asigid');
+    const { AsigArr } = require('../build/Expresiones/Asignaciones/AsigArr');
     const { AccesoId } = require('../build/Expresiones/AccesoId');
+    const { Accesoarr } = require('../build/Expresiones/Accesoarr');
     const { ExpFunc } = require('../build/Expresiones/ExpFunc');
 
     const { Tolower } = require('../build/Expresiones/Opestring/Tolower');
@@ -174,6 +176,7 @@
 %left '*' '/'
 %left '**' '%'
 %right '!'
+%nonassoc '.'
 
 %right UMENOS UMAS
 
@@ -248,7 +251,6 @@ Declaracion:
         $3.dimension = $4;
         $$ = new Declaracionarr($3, $2, $5, @1.first_line, @1.first_column);
     }
-
 ;
 
 Conjllaves:
@@ -274,6 +276,21 @@ Asignacion:
     | Asigid '--' ';'
     {
          $$ = new Dect($1, @1.first_line, @1.first_column);
+    }
+;
+
+Asigid:
+    Asigid '.' tk_id 
+    {
+        $$ = new AsigId($3,$1,@1.first_line,@1.first_column);
+    }
+    | Asigid '[' Expresion ']' 
+    {
+        $$ = new AsigArr($3,$1,@1.first_line,@1.first_column);
+    }
+    | tk_id 
+    {
+        $$ = new AsigId($1,null,@1.first_line,@1.first_column);
     }
 ;
 
@@ -433,6 +450,10 @@ Call:
     {
         $$ = new ExpFunc($1,$3,null,@1.first_line,@1.first_column);
     }
+    | tk_id '(' ')' 
+    {
+        $$ = new ExpFunc($1,null,null,@1.first_line,@1.first_column);
+    }
 ;
 
 Tipodeclaracion:
@@ -449,17 +470,6 @@ Tipodeclaracion:
 PosibleAsignacion:
     '=' Expresion                       { $$ = $2; }
     | %empty                            { $$ = null; } 
-;
-
-Asigid:
-    Asigid '.' tk_id 
-    {
-        $$ = new AsigId($3,$1,@1.first_line,@1.first_column);
-    }
-    | tk_id 
-    {
-        $$ = new AsigId($1,null,@1.first_line,@1.first_column);
-    }
 ;
 
 Expresion:
@@ -578,43 +588,23 @@ E_logica:
 ;
 
 Operastring:
-    AccesoId '.' tk_toLowerCase '(' ')'
+    Expresion '.' tk_toLowerCase '(' ')'
     {
         $$ = new Tolower($1, @1.first_line, @1.first_column);
     }
-    | AccesoId '.' tk_toUpperCase '(' ')'
+    | Expresion '.' tk_toUpperCase '(' ')'
     {
         $$ = new ToUpper($1, @1.first_line, @1.first_column);
     }
-    | AccesoId '.' tk_concat '(' Listacadenas ')'
+    | Expresion '.' tk_concat '(' Listacadenas ')'
     {
         $$ = new Concat($1, $5, @1.first_line, @1.first_column);
     }
-    | AccesoId '.' tk_charat '(' Expresion ')'
+    | Expresion '.' tk_charat '(' Expresion ')'
     {
         $$ = new CharAt($1, $5, @1.first_line, @1.first_column);
     }
-    | AccesoId '.' tk_length 
-    {
-        $$ = new StrLength($1, @1.first_line, @1.first_column);
-    }
-    | onlycadena '.' tk_concat '(' Listacadenas ')'
-    {
-        $$ = new Concat($1, $5, @1.first_line, @1.first_column);
-    }
-    | onlycadena '.' tk_toUpperCase '(' ')'
-    {
-        $$ = new ToUpper($1, @1.first_line, @1.first_column);
-    }
-    | onlycadena '.' tk_toLowerCase '(' ')'
-    {
-        $$ = new Tolower($1, @1.first_line, @1.first_column);
-    }
-    | onlycadena '.' tk_charat '(' Expresion ')'
-    {
-        $$ = new CharAt($1, $5, @1.first_line, @1.first_column);;
-    }
-    | onlycadena '.' tk_length 
+    | Expresion '.' tk_length 
     {
         $$ = new StrLength($1, @1.first_line, @1.first_column);
     }
@@ -686,9 +676,9 @@ Acceso:
 ;
 
 AccesoId: 
-    AccesoId '.' tk_id 
+    AccesoId '[' Expresion ']'
     {
-        $$ = new AccesoId($3,$1,@1.first_line,@1.first_column);
+        $$ = new Accesoarr($3,$1,@1.first_line,@1.first_column);
     }
     | tk_id 
     {

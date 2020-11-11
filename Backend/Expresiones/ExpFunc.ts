@@ -25,9 +25,12 @@ export class ExpFunc extends Expresion{
             //guardo variables dentro del entorno
             const size = generator.guardartems(entorno); 
             //Guardo temporales
-            this.params.forEach((param)=>{
-                paramsValues.push(param.ejecutar(entorno));
-            })
+            if(this.params != null){
+                this.params.forEach((param)=>{
+                    paramsValues.push(param.ejecutar(entorno));
+                })
+            }
+           
             //TODO comprobar parametros correctos
             const temp = generator.newTem();
             //Paso de parametros en cambio simulado

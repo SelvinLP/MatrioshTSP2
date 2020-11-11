@@ -86,17 +86,19 @@ var Declaracion = /** @class */ (function (_super) {
             generator.addComentario("DECLARACION EN FUNCION");
             var temnueva = generator.newTem();
             //generator.freeTemp(temp);
-            generator.addExp(temnueva, 'p', variable === null || variable === void 0 ? void 0 : variable.pos, '+');
             if (this.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
                 var tempetiq = generator.newEtiq();
                 generator.addEtiq(nvalor.Ltrue);
+                generator.addExp(temnueva, 'p', variable === null || variable === void 0 ? void 0 : variable.pos, '+');
                 generator.setstack(temnueva, '1');
                 generator.addGoto(tempetiq);
                 generator.addEtiq(nvalor.Lfalse);
+                generator.addExp(temnueva, 'p', variable === null || variable === void 0 ? void 0 : variable.pos, '+');
                 generator.setstack(temnueva, '0');
                 generator.addEtiq(tempetiq);
             }
             else {
+                generator.addExp(temnueva, 'p', variable === null || variable === void 0 ? void 0 : variable.pos, '+');
                 generator.setstack(temnueva, nvalor.valor);
             }
             generator.addComentario("FIN DECLARACION");

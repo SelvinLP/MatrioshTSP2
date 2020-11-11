@@ -67,16 +67,18 @@ export class Declaracion extends Instruccion{
             generator.addComentario("DECLARACION EN FUNCION");
             const temnueva = generator.newTem(); 
             //generator.freeTemp(temp);
-            generator.addExp(temnueva, 'p', variable?.pos,'+');
             if(this.tipo.tipo == Tipos.BOOLEAN){
                 const tempetiq = generator.newEtiq();
                 generator.addEtiq(nvalor.Ltrue);
+                generator.addExp(temnueva, 'p', variable?.pos,'+');
                 generator.setstack(temnueva,'1');
                 generator.addGoto(tempetiq);
                 generator.addEtiq(nvalor.Lfalse);
+                generator.addExp(temnueva, 'p', variable?.pos,'+');
                 generator.setstack(temnueva,'0');
                 generator.addEtiq(tempetiq);
             }else{
+                generator.addExp(temnueva, 'p', variable?.pos,'+');
                 generator.setstack(temnueva,nvalor.valor);
             }
             generator.addComentario("FIN DECLARACION");

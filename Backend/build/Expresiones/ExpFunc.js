@@ -40,9 +40,11 @@ var ExpFunc = /** @class */ (function (_super) {
             //guardo variables dentro del entorno
             var size = generator_1.guardartems(entorno);
             //Guardo temporales
-            this.params.forEach(function (param) {
-                paramsValues_1.push(param.ejecutar(entorno));
-            });
+            if (this.params != null) {
+                this.params.forEach(function (param) {
+                    paramsValues_1.push(param.ejecutar(entorno));
+                });
+            }
             //TODO comprobar parametros correctos
             var temp_1 = generator_1.newTem();
             //Paso de parametros en cambio simulado
