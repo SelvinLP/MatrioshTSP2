@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TipoRelacional = exports.TipoDato = exports.Tipos = exports.Tipo = void 0;
 var Tipo = /** @class */ (function () {
-    function Tipo(tipo, idtipo, struct) {
+    function Tipo(tipo, idtipo, dimension) {
         if (idtipo === void 0) { idtipo = ''; }
-        if (struct === void 0) { struct = null; }
+        if (dimension === void 0) { dimension = 0; }
         this.tipo = tipo;
         this.idtipo = idtipo;
-        this.struct = struct;
+        this.dimension = dimension;
     }
     return Tipo;
 }());

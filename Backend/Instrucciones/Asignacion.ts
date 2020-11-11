@@ -19,6 +19,23 @@ export class Asignacion extends Instruccion{
         const generador = Generador.getInstancia();
         const simbolo = nid.simbol;
 
+        if(value.tipo.tipo == Tipos.ARRAY){
+            const temp = generador.newTem();
+            const etiq1 = generador.newEtiq();
+            const etiq2 = generador.newEtiq();
+            generador.addExp(temp, value.valor, '1', '+');
+            generador.addEtiq(etiq1);
+            generador.addIf(temp, 'h', '==', etiq2);
+            if(nid.tipo.dimension == value.tipo.dimension){//para llenar posiciones por defecto
+                nid.tipo.tipo != Tipos.STRING && nid.tipo.tipo != Tipos.TYPE ? generador.setHeap(temp, '0'):  generador.setHeap(temp, '-1');
+            }else{
+                generador.setHeap(temp,'-1');
+            }
+            generador.addExp(temp, temp, '1', '+');
+            generador.addGoto(etiq1);
+            generador.addEtiq(etiq2);
+        }
+
         if (simbolo?.global) {
             if (nid.tipo.tipo == Tipos.BOOLEAN) {
                 const templabel = generador.newEtiq();

@@ -53,6 +53,10 @@
     const { Dect } = require('../build/Instrucciones/IncyDec/Dec');
     const {Returnt} = require('../build/Instrucciones/Returnt');
 
+    const {Newarray} = require('../build/Expresiones/Newarray');
+    const {Exparray} = require('../build/Expresiones/Exparray');
+    const {Declaracionarr} = require('../build/Instrucciones/Declaracionarr');
+
 %}
 
 /*------------------------------------------------PARTE LEXICA--------------------------------------------------- */
@@ -101,6 +105,7 @@
 "toUpperCase"       return 'tk_toUpperCase'
 "concat"            return 'tk_concat'
 "charAt"            return 'tk_charat'
+"new Array"         return 'tk_newarray'
 
 //Relacionales
 "=="    return '=='
@@ -225,13 +230,35 @@ Cuerpo:
 ;
 
 Declaracion:
-    tk_let tk_id Tipodeclaracion Posiblearray PosibleAsignacion ';'
+    tk_let tk_id Tipodeclaracion PosibleAsignacion ';'
     {
-        $$ = new Declaracion(TipoDato.LET, $2, $3, $4, $5, @1.first_line, @1.first_column);
+        $$ = new Declaracion(TipoDato.LET, $2, $3, null, $4, @1.first_line, @1.first_column);
     }
-    | tk_const tk_id Tipodeclaracion Posiblearray PosibleAsignacion ';'  
+    | tk_const tk_id Tipodeclaracion PosibleAsignacion ';'  
     {
-        $$ = new Declaracion(TipoDato.CONST, $2, $3, $4, $5, @1.first_line, @1.first_column);
+        $$ = new Declaracion(TipoDato.CONST, $2, $3, null, $4, @1.first_line, @1.first_column);
+    }
+    | tk_let tk_id Tipodeclaracion Conjllaves PosibleAsignacion ';'
+    {
+        $3.dimension = $4;
+        $$ = new Declaracionarr($3, $2, $5, @1.first_line, @1.first_column);
+    }
+    | tk_const tk_id Tipodeclaracion Conjllaves PosibleAsignacion ';'  
+    {
+        $3.dimension = $4;
+        $$ = new Declaracionarr($3, $2, $5, @1.first_line, @1.first_column);
+    }
+
+;
+
+Conjllaves:
+    Conjllaves '['']'
+    {
+        $$ = $1 + 1;
+    }
+    | '['']'                              
+    {
+        $$ = 1;
     }
 ;
 
@@ -312,7 +339,6 @@ Foroft:
         //$$ = new Forof(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
     }
 ;
-
 
 incydecfor:
     Asigid '++' 
@@ -436,19 +462,22 @@ Asigid:
     }
 ;
 
-Posiblearray:
-    '['']'                              {$$=[];}
-    | %empty                            {$$=null;} 
-;
-
 Expresion:
-    '(' Expresion ')'       {$$=$2;}
-    | OpeTernario           {$$=$1;}
-    | E_aritmetica          {$$=$1;}
-    | E_relacional          {$$=$1;}
-    | E_logica              {$$=$1;}
-    | Operastring           {$$=$1;}
-    | Factor                {$$=$1;}
+    '(' Expresion ')'                   {$$=$2;}
+    | OpeTernario                       {$$=$1;}
+    | E_aritmetica                      {$$=$1;}
+    | E_relacional                      {$$=$1;}
+    | E_logica                          {$$=$1;}
+    | Operastring                       {$$=$1;}
+    | Factor                            {$$=$1;}
+    | tk_newarray '(' Expresion ')'     
+    {
+        $$ = new Newarray($3,@1.first_line,@1.first_column);
+    }
+    | '[' ListaExp ']'                  
+    {
+        $$ = new Exparray($2,@1.first_line,@1.first_column);
+    }
     | error {CL_Error.L_Errores.push(new CN_Error.N_Error("Sintactico","Error en la expresion "+yytext,"",this._$.first_line,this._$.first_column));}
 ;
 

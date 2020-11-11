@@ -13,38 +13,34 @@ export class Declaracion extends Instruccion{
     }
 
     public ejecutar(entorno:Entorno){
-        if(this.posiblearr == null){
-            if(this.valor == null){
-                //Validaciones de const
-                if(this.letoconst == TipoDato.CONST){
-                    throw new N_Error('Semantico','La variable '+this.id+" tipo const no tiene definido un valor",'', this.linea, this.columna);
-                }else{
-                    if(this.tipo == null){
-                        this.tipo = new Tipo(Tipos.NULL);
-                    }
-                    entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna); 
-                    //validaciones de codigo intermedio
-                    this.codigointermedio(entorno, null);
-                }
+        if(this.valor == null){
+            //Validaciones de const
+            if(this.letoconst == TipoDato.CONST){
+                throw new N_Error('Semantico','La variable '+this.id+" tipo const no tiene definido un valor",'', this.linea, this.columna);
             }else{
-                let resp=this.valor.ejecutar(entorno);
-                //Definicion de tipo sino tiene
-                if( this.tipo == null){
-                    this.tipo=resp.tipo
-                }else if(this.tipo.tipo != resp.tipo.tipo){
-                    throw new N_Error('Semantico','La variable '+this.id+" no es de tipo compatible con la expresion",'', this.linea, this.columna);
+                if(this.tipo == null){
+                    this.tipo = new Tipo(Tipos.NULL);
                 }
-                if(this.letoconst == TipoDato.CONST){ //const es false porque no se puede editar
-                    entorno.guardarvar(false, this.id, this.tipo, false, this.linea, this.columna);
-                }else{
-                    entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
-                }
-                
-                //validaciones codigo intermedio
-                this.codigointermedio(entorno,resp);
+                entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna); 
+                //validaciones de codigo intermedio
+                this.codigointermedio(entorno, null);
             }
         }else{
-
+            let resp=this.valor.ejecutar(entorno);
+            //Definicion de tipo sino tiene
+            if( this.tipo == null){
+                this.tipo=resp.tipo
+            }else if(this.tipo.tipo != resp.tipo.tipo){
+                throw new N_Error('Semantico','La variable '+this.id+" no es de tipo compatible con la expresion",'', this.linea, this.columna);
+            }
+            if(this.letoconst == TipoDato.CONST){ //const es false porque no se puede editar
+                entorno.guardarvar(false, this.id, this.tipo, false, this.linea, this.columna);
+            }else{
+                entorno.guardarvar(true, this.id, this.tipo, false, this.linea, this.columna);
+            }
+            
+            //validaciones codigo intermedio
+            this.codigointermedio(entorno,resp);
         }
     }
 

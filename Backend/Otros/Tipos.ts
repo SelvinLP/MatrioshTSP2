@@ -1,6 +1,6 @@
 export class Tipo{
 
-    constructor(public tipo: Tipos, public idtipo: string = '', public struct: null = null){
+    constructor(public tipo: Tipos, public idtipo: string = '', public dimension: number = 0){
     }
 
 }

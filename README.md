@@ -10,6 +10,7 @@ Proyecto 2 de Organizacion de Lenguajes y Compiladores 2 2s 2020
 * While
 * Do while
 * Switch 
+* Array
 * For
 * Funciones recursivas
 * Ternario

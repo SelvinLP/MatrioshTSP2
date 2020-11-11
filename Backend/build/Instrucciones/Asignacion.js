@@ -30,6 +30,23 @@ var Asignacion = /** @class */ (function (_super) {
         var nid = this.id.ejecutar(entorno);
         var generador = Generador_1.Generador.getInstancia();
         var simbolo = nid.simbol;
+        if (value.tipo.tipo == Tipos_1.Tipos.ARRAY) {
+            var temp = generador.newTem();
+            var etiq1 = generador.newEtiq();
+            var etiq2 = generador.newEtiq();
+            generador.addExp(temp, value.valor, '1', '+');
+            generador.addEtiq(etiq1);
+            generador.addIf(temp, 'h', '==', etiq2);
+            if (nid.tipo.dimension == value.tipo.dimension) { //para llenar posiciones por defecto
+                nid.tipo.tipo != Tipos_1.Tipos.STRING && nid.tipo.tipo != Tipos_1.Tipos.TYPE ? generador.setHeap(temp, '0') : generador.setHeap(temp, '-1');
+            }
+            else {
+                generador.setHeap(temp, '-1');
+            }
+            generador.addExp(temp, temp, '1', '+');
+            generador.addGoto(etiq1);
+            generador.addEtiq(etiq2);
+        }
         if (simbolo === null || simbolo === void 0 ? void 0 : simbolo.global) {
             if (nid.tipo.tipo == Tipos_1.Tipos.BOOLEAN) {
                 var templabel = generador.newEtiq();
