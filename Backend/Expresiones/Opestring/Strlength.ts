@@ -15,7 +15,11 @@ export class StrLength extends Expresion{
         const generador = Generador.getInstancia();
         const nvalor = this.valor.ejecutar(entorno);
         const ntem =  generador.newTem();
-        if(nvalor.tipo.tipo == Tipos.STRING){
+        if(nvalor.tipo.dimension >= 1){
+            generador.getHeap(ntem,nvalor.valor);
+            const retorn = new Retorno(ntem, new Tipo(Tipos.NUMBER), true);
+            return retorn;
+        }else if(nvalor.tipo.tipo == Tipos.STRING){
             generador.addExp("T26",nvalor.valor);
             //llamamos
             generador.sigEnt(entorno.size);

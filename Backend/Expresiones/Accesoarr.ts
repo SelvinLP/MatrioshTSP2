@@ -18,7 +18,7 @@ export class Accesoarr extends Expresion {
         const index = this.posicion.ejecutar(entorno);
         if(nanterior.tipo.dimension == 0){
             throw new N_Error('Semantico','La variable no es un arreglo','', this.linea, this.columna);
-        }else if ( index.tipo.dimension != 0 ||  index.tipo.tipo != Tipos.NUMBER ){
+        }else if (  index.tipo.tipo != Tipos.NUMBER ){
             throw new N_Error('Semantico','La posicion no es un entero','', this.linea, this.columna);
         }
         const temaux = generador.newTem();

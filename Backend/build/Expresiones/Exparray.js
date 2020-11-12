@@ -49,9 +49,15 @@ var Exparray = /** @class */ (function (_super) {
     };
     Exparray.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        Cadena += ast.posdes + " [label =\"Expresion Array\"];\n";
+        Cadena += ast.posdes + " [label =\"Dimension\"];\n";
         Cadena += ast.posant + " -> " + ast.posdes + ";\n";
-        return { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        var retorno = { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        for (var _i = 0, _a = this.valores; _i < _a.length; _i++) {
+            var nodo = _a[_i];
+            retorno.posant = ast.posdes;
+            retorno = nodo.ejecutarast(retorno);
+        }
+        return retorno;
     };
     return Exparray;
 }(Expresion_1.Expresion));

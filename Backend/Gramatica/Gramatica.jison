@@ -336,24 +336,24 @@ Fort:
 ;
 
 Forint:
-    tk_for '(' tk_let tk_id tk_in tk_id ')' Cuerpo
+    tk_for '(' tk_let tk_id tk_in Expresion ')' Cuerpo
     {
-        //$$ = new Forin(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+        $$ = new Forin(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
     }
-    | tk_for '(' tk_const tk_id tk_in tk_id ')' Cuerpo
+    | tk_for '(' tk_const tk_id tk_in Expresion ')' Cuerpo
     {
-        //$$ = new Forin(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+        $$ = new Forin(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
     }
 ;
 
 Foroft:
-    tk_for '(' tk_let tk_id tk_of tk_id ')' Cuerpo
+    tk_for '(' tk_let tk_id tk_of Expresion ')' Cuerpo
     {
-        //$$ = new Forof(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+        $$ = new Forof(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
     }
-    | tk_for '(' tk_const tk_id tk_of tk_id ')' Cuerpo
+    | tk_for '(' tk_const tk_id tk_of Expresion ')' Cuerpo
     {
-        //$$ = new Forof(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
+        $$ = new Forof(TipoDato.LET, $4, $6, $8, @1.first_line, @1.first_column);
     }
 ;
 

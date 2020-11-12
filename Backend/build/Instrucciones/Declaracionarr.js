@@ -65,9 +65,10 @@ var Declaracionarr = /** @class */ (function (_super) {
     };
     Declaracionarr.prototype.ejecutarast = function (ast) {
         var Cadena = ast.cadena + "\n";
-        Cadena += ast.posdes + " [label =\"Declaracion Array\"];\n";
+        Cadena += ast.posdes + " [label =\"Declaracion Array: " + this.id + " = \"];\n";
         Cadena += ast.posant + " -> " + ast.posdes + ";\n";
-        return { posant: ast.posdes, posdes: ast.posdes + 1, cadena: Cadena };
+        var retorno = this.valor.ejecutarast({ posant: ast.posant, posdes: ast.posdes + 1, cadena: Cadena });
+        return retorno;
     };
     return Declaracionarr;
 }(Instruccion_1.Instruccion));

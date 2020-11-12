@@ -49,9 +49,9 @@ export class Declaracionarr extends Instruccion {
     
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
-        Cadena += ast.posdes+" [label =\"Declaracion Array\"];\n";
+        Cadena += ast.posdes+" [label =\"Declaracion Array: " + this.id + " = \"];\n";
         Cadena += ast.posant+" -> "+ast.posdes+";\n";
-
-        return {posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
+        let retorno = this.valor.ejecutarast({posant:ast.posant, posdes:ast.posdes+1,cadena:Cadena});
+        return retorno;
     }
 }

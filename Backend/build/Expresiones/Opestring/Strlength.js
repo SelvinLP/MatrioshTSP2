@@ -30,7 +30,12 @@ var StrLength = /** @class */ (function (_super) {
         var generador = Generador_1.Generador.getInstancia();
         var nvalor = this.valor.ejecutar(entorno);
         var ntem = generador.newTem();
-        if (nvalor.tipo.tipo == Tipos_1.Tipos.STRING) {
+        if (nvalor.tipo.dimension >= 1) {
+            generador.getHeap(ntem, nvalor.valor);
+            var retorn = new Retorno_1.Retorno(ntem, new Tipos_1.Tipo(Tipos_1.Tipos.NUMBER), true);
+            return retorn;
+        }
+        else if (nvalor.tipo.tipo == Tipos_1.Tipos.STRING) {
             generador.addExp("T26", nvalor.valor);
             //llamamos
             generador.sigEnt(entorno.size);

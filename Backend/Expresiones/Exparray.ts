@@ -35,9 +35,14 @@ export class Exparray extends Expresion {
     
     public ejecutarast(ast:N_Ast):N_Ast{
         let Cadena:string=ast.cadena+"\n";
-        Cadena += ast.posdes+" [label =\"Expresion Array\"];\n";
+        Cadena += ast.posdes+" [label =\"Dimension\"];\n";
         Cadena += ast.posant+" -> "+ast.posdes+";\n";
-
-        return {posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
+        let retorno = {posant:ast.posdes, posdes:ast.posdes+1,cadena:Cadena};
+        for(let nodo of this.valores){
+            retorno.posant =ast.posdes
+            retorno = nodo.ejecutarast(retorno);
+        }
+         
+        return retorno;
     }
 }
