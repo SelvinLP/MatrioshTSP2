@@ -137,33 +137,35 @@ var Generador = /** @class */ (function () {
         var _this = this;
         if (this.tempstorage.size > 0) {
             var temp_1 = this.newTem();
-            var size_1 = 0;
+            var tamanio_1 = 0;
             this.addComentario('Guardando temporales');
             this.addExp(temp_1, 'p', entorno.size, '+');
             this.tempstorage.forEach(function (value) {
-                size_1++;
+                tamanio_1++;
                 _this.setstack(temp_1, value);
-                if (size_1 != _this.tempstorage.size)
+                if (tamanio_1 != _this.tempstorage.size) {
                     _this.addExp(temp_1, temp_1, '1', '+');
+                }
             });
             this.addComentario('Fin Guardando temporales');
         }
-        var ptr = entorno.size;
-        entorno.size = ptr + this.tempstorage.size;
-        return ptr;
+        var cad = entorno.size;
+        entorno.size = cad + this.tempstorage.size;
+        return cad;
     };
     Generador.prototype.recoverTemps = function (entorno, pos) {
         var _this = this;
         if (this.tempstorage.size > 0) {
             var temp_2 = this.newTem();
-            var size_2 = 0;
+            var tamanio_2 = 0;
             this.addComentario('Obteniendo temporales');
             this.addExp(temp_2, 'p', pos, '+');
             this.tempstorage.forEach(function (value) {
-                size_2++;
+                tamanio_2++;
                 _this.getstack(value, temp_2);
-                if (size_2 != _this.tempstorage.size)
+                if (tamanio_2 != _this.tempstorage.size) {
                     _this.addExp(temp_2, temp_2, '1', '+');
+                }
             });
             this.addComentario('Fin Obteniendo temporales');
             entorno.size = pos;

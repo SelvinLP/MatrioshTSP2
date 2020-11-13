@@ -165,35 +165,37 @@ export class Generador{
     public guardartems(entorno: Entorno) : number{
         if(this.tempstorage.size > 0){
             const temp = this.newTem(); 
-            let size = 0;
+            let tamanio = 0;
 
             this.addComentario('Guardando temporales');
             this.addExp(temp,'p',entorno.size,'+');
             this.tempstorage.forEach((value)=>{
-                size++;
+                tamanio++;
                 this.setstack(temp,value);
-                if(size !=  this.tempstorage.size)
+                if(tamanio !=  this.tempstorage.size){
                     this.addExp(temp,temp,'1','+');
+                }
             });
             this.addComentario('Fin Guardando temporales');
         }
-        let ptr = entorno.size;
-        entorno.size = ptr + this.tempstorage.size;
-        return ptr;
+        let cad = entorno.size;
+        entorno.size = cad + this.tempstorage.size;
+        return cad;
     }
 
     public recoverTemps(entorno: Entorno, pos: number){
         if(this.tempstorage.size > 0){
             const temp = this.newTem(); 
-            let size = 0;
+            let tamanio = 0;
 
             this.addComentario('Obteniendo temporales');
             this.addExp(temp,'p',pos,'+');
             this.tempstorage.forEach((value)=>{
-                size++;
+                tamanio++;
                 this.getstack(value,temp);
-                if(size !=  this.tempstorage.size)
+                if(tamanio !=  this.tempstorage.size){
                     this.addExp(temp,temp,'1','+');
+                }
             });
             this.addComentario('Fin Obteniendo temporales');
             entorno.size = pos;
