@@ -10,6 +10,8 @@ import { Func_native } from "../../../../Backend/build/Generador/FuncNativas";
 import { Funciont } from "../../../../Backend/build/Instrucciones/Funciones/Funciont";
 import Parser from "../../../../Backend/Gramatica/Gramatica";
 
+import Parser2 from "../../../../Backend/Optimizacion/Gramatica/GramaticaOp";
+import { Codigonuevo, L_Optimizacion } from "../../../../Backend/build/Optimizacion/Noptimizacion";
 
 import { graphviz }  from 'd3-graphviz';
 import { wasmFolder } from "@hpcc-js/wasm";
@@ -30,6 +32,8 @@ export class HomeComponent implements OnInit {
   Salida = "";
   Consola = "";
   CadenaGraphviz = "";
+
+  temporal = "";
   ast;
 
   options: any = {
@@ -54,7 +58,18 @@ export class HomeComponent implements OnInit {
   }
 
   Ev_Ejecutar(){
-    this.Consola="";
+    Codigonuevo.splice(0, Codigonuevo.length);
+    L_Optimizacion.splice(0, L_Optimizacion.length);
+    //this.Salida = this.Consola;
+    let astoptimizacion = Parser2.parse(this.Salida);
+    //ejecutamos funciones
+    for(const Instruccion of astoptimizacion){
+      Instruccion.ejecutar();
+    }
+    for(let cadopti of Codigonuevo){
+      console.log(cadopti);
+    }
+    
   }
 
   Inst_Print(entorno:Entorno){
@@ -95,7 +110,7 @@ export class HomeComponent implements OnInit {
     for(let datos of gener.codigo){
       cadtem2 += "  " + datos + '\n';
     }
-
+    this.temporal = cadtem2;
     //ejecutamos traduccion
     gener.codigo = new Array();
     for(const Instruccion of this.ast){
@@ -131,10 +146,13 @@ export class HomeComponent implements OnInit {
     cadtem += cadtem2
     cadtem += "/**** MAIN ****/\n";
     cadtem += "int main() { \n";
+    this.temporal += "/**** MAIN ****/\n" + "int main() { \n";
     //Intrucciones de Imprimir
     for(let datos of gener.codigo){
       cadtem += "  " + datos + '\n';
+      this.temporal += "  " + datos + '\n';
     }
+    this.temporal += "  return 0; \n" +  "}\n";
     cadtem += "  return 0; \n";
     cadtem += "}\n";
     //agregamos funciones nativas
@@ -170,4 +188,9 @@ export class HomeComponent implements OnInit {
     graphviz('body').renderDot('digraph AST {}');
   }
 
+  Rep_Optimizar(){
+    this.router.navigate(['/opt']);
+    wasmFolder('assets/');
+    graphviz('body').renderDot('digraph AST {}');
+  }
 }

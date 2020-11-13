@@ -439,8 +439,16 @@ Parametros:
         $$ = $1;
         $$.push(new Paramfunc($3,$4));
     }
+    | Parametros ',' tk_id  TipoDato Conjllaves{
+        $$ = $1;
+        $4.dimension = $5;
+        $$.push(new Paramfunc($3,$4));
+    }
+    | tk_id  TipoDato Conjllaves{
+        $2.dimension = $3;
+        $$ = [new Paramfunc($1,$2)];
+    }
     | tk_id  TipoDato{
-        
         $$ = [new Paramfunc($1,$2)];
     }
 ;

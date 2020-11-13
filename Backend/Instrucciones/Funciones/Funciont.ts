@@ -2,7 +2,7 @@ import { Instruccion } from "../../Abstracto/Instruccion";
 import { Entorno } from "../../Entorno/Entorno";
 import { N_Ast } from "../../Ast/Ast";
 import { Paramfunc } from "./Parametrosfunc";
-import { Tipo } from "../../Otros/Tipos";
+import { Tipo, Tipos } from "../../Otros/Tipos";
 import { N_Error } from "../../Errores/N_Error";
 import { Generador } from "../../Generador/Generador";
 

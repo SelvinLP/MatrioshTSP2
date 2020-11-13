@@ -9,6 +9,7 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ErroresComponent } from './components/errores/errores.component';
 import { HomeComponent } from './components/home/home.component';
 import { TbsimbolosComponent } from './components/tbsimbolos/tbsimbolos.component';
+import { OptimizacionComponent } from './components/optimizacion/optimizacion.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { TbsimbolosComponent } from './components/tbsimbolos/tbsimbolos.componen
     AppComponent,
     ErroresComponent,
     HomeComponent,
-    TbsimbolosComponent
+    TbsimbolosComponent,
+    OptimizacionComponent
   ],
   imports: [
     BrowserModule,
