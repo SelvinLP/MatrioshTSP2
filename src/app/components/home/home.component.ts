@@ -55,19 +55,21 @@ export class HomeComponent implements OnInit {
     this.ast = Parser.parse(this.Entrada);
     //mandamos a imprimir el codigo nuevo
     this.Inst_Print(entorno);
+    //codigo para posible optimizar
+    this.Salida = this.temporal;
   }
 
   Ev_Ejecutar(){
     Codigonuevo.splice(0, Codigonuevo.length);
     L_Optimizacion.splice(0, L_Optimizacion.length);
-    //this.Salida = this.Consola;
     let astoptimizacion = Parser2.parse(this.Salida);
     //ejecutamos funciones
     for(const Instruccion of astoptimizacion){
       Instruccion.ejecutar();
     }
+    this.Salida =" ";
     for(let cadopti of Codigonuevo){
-      console.log(cadopti);
+      this.Salida += cadopti + "\n";
     }
     
   }
