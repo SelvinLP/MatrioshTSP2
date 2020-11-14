@@ -88,7 +88,6 @@ export class IfOp extends InstruccionOp {
             }
         }
         if(acceso){
-            console.log("llego");
             if(bandera){
                 L_Optimizacion.push(new N_Optim("Mirilla", "No. 3: Eliminacion de codigo muerto", 
                 "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() + this.goto2.onlycad()
@@ -108,6 +107,51 @@ export class IfOp extends InstruccionOp {
             }
             return;
         }
+        //Regla 2
+        if(this.ope == "=="){
+            L_Optimizacion.push(new N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", 
+            "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() + this.goto2.onlycad()
+            ,"if( "+this.izq+" != "+this.der+")"+ this.goto2.onlycad(),this.linea));
+            cadtem += "if( "+this.izq+" != "+this.der+")"+ this.goto2.onlycad()
+            Codigonuevo.push(cadtem);
+            return;
+        }else if(this.ope == "!="){
+            L_Optimizacion.push(new N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", 
+            "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() + this.goto2.onlycad()
+            ,"if( "+this.izq+" == "+this.der+")"+ this.goto2.onlycad(),this.linea));
+            cadtem += "if( "+this.izq+" == "+this.der+")"+ this.goto2.onlycad()
+            Codigonuevo.push(cadtem);
+            return;
+        }else if(this.ope == ">="){
+            L_Optimizacion.push(new N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", 
+            "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() + this.goto2.onlycad()
+            ,"if( "+this.izq+" < "+this.der+")"+ this.goto2.onlycad(),this.linea));
+            cadtem += "if( "+this.izq+" < "+this.der+")"+ this.goto2.onlycad()
+            Codigonuevo.push(cadtem);
+            return;
+        }else if(this.ope == "<="){
+            L_Optimizacion.push(new N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", 
+            "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() + this.goto2.onlycad()
+            ,"if( "+this.izq+" > "+this.der+")"+ this.goto2.onlycad(),this.linea));
+            cadtem += "if( "+this.izq+" > "+this.der+")"+ this.goto2.onlycad()
+            Codigonuevo.push(cadtem);
+            return;
+        }else if(this.ope == ">"){
+            L_Optimizacion.push(new N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", 
+            "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() + this.goto2.onlycad()
+            ,"if( "+this.izq+" <= "+this.der+")"+ this.goto2.onlycad(),this.linea));
+            cadtem += "if( "+this.izq+" <= "+this.der+")"+ this.goto2.onlycad()
+            Codigonuevo.push(cadtem);
+            return;
+        }else if(this.ope == "<"){
+            L_Optimizacion.push(new N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", 
+            "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() + this.goto2.onlycad()
+            ,"if( "+this.izq+" >= "+this.der+")"+ this.goto2.onlycad(),this.linea));
+            cadtem += "if( "+this.izq+" >= "+this.der+")"+ this.goto2.onlycad()
+            Codigonuevo.push(cadtem);
+            return;
+        }
+
         cadtem += "if( "+this.izq+" "+this.ope+" "+this.der+")"+this.goto1.onlycad() +"\n"+ this.goto2.onlycad();
         Codigonuevo.push(cadtem);
         cadtem = this.etiq.onlycad() +"";

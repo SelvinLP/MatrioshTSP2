@@ -256,20 +256,9 @@ Stackt:
         temres = "stack[(int)" + $6 + "]";
         $$ = new CadenaOtro(temres, $8, $9 , @1.first_line);
     }
-    | tk_stack '[' '(' tk_int ')' Factor ']' '=' '-' Factor ';'
-    {
-        temres = "stack[(int)" + $6 + "]";
-        temdos = "-" + $10;
-        $$ = new CadenaOtro(temres, $8, temdos, @1.first_line);
-    }
     | Factor '=' tk_stack '[' '(' tk_int ')' Factor ']' ';' 
     {
         temres = "stack[(int)" + $8 + "]";
-        $$ = new CadenaOtro($1, $2, temres, @1.first_line);
-    }
-    | Factor '=' tk_stack '[' '(' tk_int ')' '-' Factor ']' ';' 
-    {
-        temres = "stack[(int)" + "-" + $9 + "]";
         $$ = new CadenaOtro($1, $2, temres, @1.first_line);
     }
 ;
@@ -280,20 +269,9 @@ heapt:
         temres = "heap[(int)" + $6 + "]";
         $$ = new CadenaOtro(temres, $8, $9 , @1.first_line);
     }
-    | tk_heap '[' '(' tk_int ')' Factor ']' '=' '-' Factor ';'
-    {
-        temres = "heap[(int)" + $6 + "]";
-        temdos = "-" + $10;
-        $$ = new CadenaOtro(temres, $8, temdos, @1.first_line);
-    }
     | Factor '=' tk_heap '[' '(' tk_int ')' Factor ']' ';' 
     {
         temres = "heap[(int)" + $8 + "]";
-        $$ = new CadenaOtro($1, $2, temres, @1.first_line);
-    }
-    | Factor '=' tk_heap '[' '(' tk_int ')' '-' Factor ']' ';' 
-    {
-        temres = "heap[(int)" + "-" + $9 + "]";
         $$ = new CadenaOtro($1, $2, temres, @1.first_line);
     }
 ;
@@ -321,6 +299,10 @@ Factor:
     tk_terminal
     {
         $$ = $1;
+    }
+    | '-' Factor %prec UMENOS
+    {
+        $$ = $2 * -1;
     }
     | tk_entero
     {

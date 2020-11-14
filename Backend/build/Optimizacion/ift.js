@@ -117,7 +117,6 @@ var IfOp = /** @class */ (function (_super) {
             }
         }
         if (acceso) {
-            console.log("llego");
             if (bandera) {
                 Noptimizacion_1.L_Optimizacion.push(new Noptimizacion_1.N_Optim("Mirilla", "No. 3: Eliminacion de codigo muerto", "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + this.goto2.onlycad(), this.goto1.onlycad() + "", this.linea));
                 cadtem += this.goto1.onlycad() + "";
@@ -132,6 +131,43 @@ var IfOp = /** @class */ (function (_super) {
                 cadtem = this.etiq.onlycad() + "";
                 Noptimizacion_1.Codigonuevo.push(cadtem);
             }
+            return;
+        }
+        //Regla 2
+        if (this.ope == "==") {
+            Noptimizacion_1.L_Optimizacion.push(new Noptimizacion_1.N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + this.goto2.onlycad(), "if( " + this.izq + " != " + this.der + ")" + this.goto2.onlycad(), this.linea));
+            cadtem += "if( " + this.izq + " != " + this.der + ")" + this.goto2.onlycad();
+            Noptimizacion_1.Codigonuevo.push(cadtem);
+            return;
+        }
+        else if (this.ope == "!=") {
+            Noptimizacion_1.L_Optimizacion.push(new Noptimizacion_1.N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + this.goto2.onlycad(), "if( " + this.izq + " == " + this.der + ")" + this.goto2.onlycad(), this.linea));
+            cadtem += "if( " + this.izq + " == " + this.der + ")" + this.goto2.onlycad();
+            Noptimizacion_1.Codigonuevo.push(cadtem);
+            return;
+        }
+        else if (this.ope == ">=") {
+            Noptimizacion_1.L_Optimizacion.push(new Noptimizacion_1.N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + this.goto2.onlycad(), "if( " + this.izq + " < " + this.der + ")" + this.goto2.onlycad(), this.linea));
+            cadtem += "if( " + this.izq + " < " + this.der + ")" + this.goto2.onlycad();
+            Noptimizacion_1.Codigonuevo.push(cadtem);
+            return;
+        }
+        else if (this.ope == "<=") {
+            Noptimizacion_1.L_Optimizacion.push(new Noptimizacion_1.N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + this.goto2.onlycad(), "if( " + this.izq + " > " + this.der + ")" + this.goto2.onlycad(), this.linea));
+            cadtem += "if( " + this.izq + " > " + this.der + ")" + this.goto2.onlycad();
+            Noptimizacion_1.Codigonuevo.push(cadtem);
+            return;
+        }
+        else if (this.ope == ">") {
+            Noptimizacion_1.L_Optimizacion.push(new Noptimizacion_1.N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + this.goto2.onlycad(), "if( " + this.izq + " <= " + this.der + ")" + this.goto2.onlycad(), this.linea));
+            cadtem += "if( " + this.izq + " <= " + this.der + ")" + this.goto2.onlycad();
+            Noptimizacion_1.Codigonuevo.push(cadtem);
+            return;
+        }
+        else if (this.ope == "<") {
+            Noptimizacion_1.L_Optimizacion.push(new Noptimizacion_1.N_Optim("Mirilla", "No. 2: Eliminacion de codigo muerto", "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + this.goto2.onlycad(), "if( " + this.izq + " >= " + this.der + ")" + this.goto2.onlycad(), this.linea));
+            cadtem += "if( " + this.izq + " >= " + this.der + ")" + this.goto2.onlycad();
+            Noptimizacion_1.Codigonuevo.push(cadtem);
             return;
         }
         cadtem += "if( " + this.izq + " " + this.ope + " " + this.der + ")" + this.goto1.onlycad() + "\n" + this.goto2.onlycad();

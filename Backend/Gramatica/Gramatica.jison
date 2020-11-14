@@ -147,7 +147,9 @@
 "true"|"false"                     return 'tk_bool'
 [0-9]+"."[0-9]+                    return 'tk_decimal'
 [0-9]+                             return 'tk_entero'
-[\"|\']([^\"\n]|(\\\"))*[\"|\']    { yytext = yytext.slice(1,-1).replace(/\\n/g, "\n").replace(/\\t/g, "\t").replace(/\\r/g, "\r").replace(/\\\\/g, "\\").replace(/\\\"/g, "\""); return 'tk_cadena';}
+(\"[^"]*\")    { yytext = yytext.slice(1,-1).replace(/\\n/g, "\n").replace(/\\t/g, "\t").replace(/\\r/g, "\r").replace(/\\\\/g, "\\").replace(/\\\"/g, "\"");  return 'tk_cadena';}
+
+(\'[^']*\')    { yytext = yytext.slice(1,-1).replace(/\\n/g, "\n").replace(/\\t/g, "\t").replace(/\\r/g, "\r").replace(/\\\\/g, "\\").replace(/\\\"/g, "\"");  return 'tk_cadena';}
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*         return 'tk_id'; 
 
 
